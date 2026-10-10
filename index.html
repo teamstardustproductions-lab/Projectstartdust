@@ -1,0 +1,1184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Project Stardust — A cinematic production company crafting visual stories that move brands, audiences, and culture. Film Production, Commercials, Brand Films.">
+  <meta name="keywords" content="production company, film production, cinematography, brand films, commercials, video production, creative studio">
+  <meta name="author" content="Project Stardust">
+  <meta property="og:title" content="Project Stardust — We Make Things Move">
+  <meta property="og:description" content="A cinematic production company crafting visual stories that move brands, audiences, and culture.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://projectstardust.com">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Project Stardust — We Make Things Move">
+  <meta name="theme-color" content="#080810">
+
+  <title>Project Stardust — We Make Things Move</title>
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+
+  <!-- Preconnect for performance -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/typography.css">
+  <link rel="stylesheet" href="css/animations.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/circular-carousel.css">
+  <link rel="stylesheet" href="css/main.css">
+
+  <!-- GSAP, ScrollTrigger & Lenis Smooth Scroll Engine -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://unpkg.com/lenis@1.1.9/dist/lenis.min.js"></script>
+
+  <!-- Three.js Import Map — must be before any module scripts -->
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+    }
+  }
+  </script>
+</head>
+
+<body>
+
+  <!-- ========================================
+       PRELOADER
+  ======================================== -->
+  <div class="preloader" id="preloader" role="alert" aria-live="polite" aria-label="Loading Project Stardust">
+    <div class="preloader__stars" aria-hidden="true"></div>
+
+    <div class="preloader__logo" aria-label="Project Stardust">
+      <span class="preloader__letter" style="--i:0">S</span>
+      <span class="preloader__letter" style="--i:1">T</span>
+      <span class="preloader__letter" style="--i:2">A</span>
+      <span class="preloader__letter" style="--i:3">R</span>
+      <span class="preloader__letter" style="--i:4">D</span>
+      <span class="preloader__letter" style="--i:5">U</span>
+      <span class="preloader__letter" style="--i:6">S</span>
+      <span class="preloader__letter" style="--i:7">T</span>
+    </div>
+
+    <div class="preloader__line" aria-hidden="true"></div>
+    <div class="preloader__counter" aria-hidden="true">000 / 100</div>
+  </div>
+
+
+
+  <!-- ========================================
+       NAVIGATION
+  ======================================== -->
+  <!-- ========================================
+       TOP FIXED NAVBAR (Hamburger on Far Left End, WORKS CTA on Far Right End)
+  ======================================== -->
+  <header class="stardust-top-nav" id="stardust-top-nav">
+    <div class="stardust-nav-bar">
+      
+      <!-- Far Left End: ONLY Hamburger Icon Button -->
+      <button class="nav-hamburger-btn" id="nav-hamburger" aria-label="Toggle navigation menu" aria-expanded="false">
+        <span class="hamburger-box">
+          <span class="hamburger-line hamburger-line--1"></span>
+          <span class="hamburger-line hamburger-line--2"></span>
+        </span>
+      </button>
+
+      <!-- Far Right End: WORKS Button -->
+      <a href="work.html" class="nav-works-btn">
+        <span>WORKS</span>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="works-arrow-icon">
+          <path d="M7 17L17 7M17 7H7M17 7V17"/>
+        </svg>
+      </a>
+
+    </div>
+  </header>
+
+  <!-- ========================================
+       FULL-SCREEN HIGH-FASHION EDITORIAL NAV OVERLAY
+  ======================================== -->
+  <div class="stardust-nav-overlay" id="stardust-nav-overlay" aria-label="Navigation Directory">
+    <div class="nav-overlay-backdrop"></div>
+    
+    <!-- Magnetic Difference-Blend Spotlight Circle -->
+    <div class="nav-blend-circle" id="nav-blend-circle"></div>
+
+    <!-- Editorial Top Header Bar -->
+    <div class="nav-editorial-topbar">
+      <div class="editorial-brand">STARDUST©</div>
+      <button class="editorial-close-icon" id="nav-overlay-close-icon" aria-label="Close menu">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M18 6L6 18M6 6l12 12"/>
+        </svg>
+      </button>
+      <button class="editorial-cancel-btn" id="nav-overlay-cancel-btn" aria-label="Cancel">CANCEL</button>
+    </div>
+
+    <!-- Monumental Centered Editorial Typographic Navigation -->
+    <div class="nav-editorial-center">
+      <nav class="editorial-menu-list">
+        
+        <!-- 01 Home -->
+        <a href="index.html" class="editorial-menu-item">
+          <span class="item-number item-number--left"><i>01</i></span>
+          <span class="item-word"><span class="serif">H</span><span class="serif-italic">o</span><span class="sans">me</span></span>
+        </a>
+
+        <!-- 02 Catalogue -->
+        <a href="work.html" class="editorial-menu-item">
+          <span class="item-word"><span class="serif">C</span><span class="sans">at</span><span class="serif-italic">a</span><span class="sans">logue</span></span>
+          <span class="item-number item-number--right"><i>02</i></span>
+        </a>
+
+        <!-- 03 Studio -->
+        <a href="about.html" class="editorial-menu-item">
+          <span class="item-number item-number--left"><i>03</i></span>
+          <span class="item-word"><span class="serif">S</span><span class="sans">t</span><span class="serif-italic">u</span><span class="sans">dio</span></span>
+        </a>
+
+        <!-- 04 Contact -->
+        <a href="contact.html" class="editorial-menu-item">
+          <span class="item-word"><span class="serif">C</span><span class="serif-italic">o</span><span class="sans">ntact</span></span>
+          <span class="item-number item-number--right"><i>04</i></span>
+        </a>
+
+      </nav>
+    </div>
+  </div>
+
+
+  <!-- ========================================
+       MAIN CONTENT
+  ======================================== -->
+  <main>
+
+    <!-- ─── REDESIGNED 3D CAMERA LENS POSTER HERO ─── -->
+    <section class="hero" id="hero" aria-label="Hero">
+
+      <!-- Split Texture Background (Clean vs Dust) -->
+      <div class="hero__split-bg" aria-hidden="true">
+        <div class="hero__split-clean"></div>
+        <div class="hero__split-dust"></div>
+        <div class="hero__split-line"></div>
+      </div>
+
+      <!-- Top Corner Cine Specs Overlay -->
+      <div class="hero__corner-label hero__corner-label--left" aria-hidden="true">[ 35MM T1.5 CINE OPTICS ]</div>
+      <div class="hero__corner-label hero__corner-label--right" aria-hidden="true">[ 8K OPTICAL GLASS ]</div>
+
+      <div class="container">
+        <div class="hero__content">
+
+          <!-- Studio Meta Header -->
+          <div class="poster-meta-header reveal">
+            <span>PROJECT STARDUST STUDIO</span>
+            <span>CINEMATIC ENTERTAINMENT</span>
+          </div>
+
+          <!-- Monumental Headline -->
+          <div class="poster-title-wrap reveal reveal-delay-2">
+            <h1 class="poster-title" aria-label="Stardust Among the World">
+              STARDUST
+            </h1>
+            <span class="poster-subtitle font-noir" style="color: var(--color-accent-gold);">among the world</span>
+          </div>
+
+          <!-- Interactive 3D Camera Lens Canvas Container -->
+          <div class="hero-3d-wrapper reveal reveal-delay-3" id="hero-3d-container">
+            <canvas id="hero-lens-canvas" aria-label="Interactive 3D Camera Lens"></canvas>
+            <div class="hero-3d-glow" aria-hidden="true"></div>
+            <div class="hero-3d-badge" aria-hidden="true">
+              <span class="badge-dot"></span>
+              <span>35MM ANAMORPHIC CINE OPTICS</span>
+            </div>
+          </div>
+
+          <!-- Movie Billing Block (Film Credits) -->
+          <div class="poster-billing-block reveal reveal-delay-4" aria-label="Film production credits">
+            <p class="billing-line">
+              <span>DIRECTOR</span> <strong>JOEFOS</strong> <span class="billing-dot">▪</span>
+              <span>CINEMATOGRAPHY</span> <strong>JIYAD</strong> <span class="billing-dot">▪</span>
+              <span>EDITOR</span> <strong>JOEFOS</strong> <span class="billing-dot">▪</span>
+              <span>EXECUTIVE</span> <strong>PROJECT STARDUST</strong>
+            </p>
+            <p class="billing-line">
+              <span>PRODUCTION BY</span> <strong>STARDUST CREATIVE</strong> <span class="billing-dot">▪</span>
+              <span>WRITTEN BY</span> <strong>JIYAD</strong> <span class="billing-dot">▪</span>
+              <span>SOUND DESIGN</span> <strong>JOEFOS</strong> <span class="billing-dot">▪</span>
+              <span>GAFFER</span> <strong>JIYAD</strong>
+            </p>
+            <p class="billing-categories" aria-hidden="true">
+              COMMERCIAL FILMS &nbsp;▪&nbsp; FEATURE DOCUMENTARIES &nbsp;▪&nbsp; BRAND STORIES &nbsp;▪&nbsp; WORLDWIDE PRODUCTION
+            </p>
+          </div>
+
+          <!-- Actions -->
+          <div class="poster-actions reveal reveal-delay-5">
+            <a href="work.html" class="poster-btn poster-btn--primary">
+              Explore Work
+            </a>
+            <a href="#showreel" class="poster-btn poster-btn--secondary" data-reel-trigger="https://www.youtube.com/watch?v=dQw4w9WgXcQ">
+              ▶ Watch Reel
+            </a>
+          </div>
+
+        </div>
+      </div>
+
+    </section>
+
+
+    <!-- ─── 3D OPTICS SHOWCASE SECTION (GSAP SCROLLTRIGGERED) ─── -->
+    <section class="optics-showcase section" id="optics-showcase" aria-label="Precision Optics Showcase">
+      <!-- Split Curved Background (Black Left, White Right with Curve) -->
+      <div class="optics-split-bg" id="optics-split-bg" aria-hidden="true">
+        <div class="optics-bg-left"></div>
+        <div class="optics-bg-right-wrap" id="optics-bg-right-wrap">
+          <svg class="optics-bg-curve-svg" viewBox="0 0 1000 1000" preserveAspectRatio="none">
+            <path id="optics-bg-curve-path" d="M 0,0 L 480,0 C 535,280 535,720 480,1000 L 1000,1000 L 1000,0 Z" fill="#F4F3ED" />
+          </svg>
+        </div>
+      </div>
+
+      <div class="container optics-grid">
+        
+        <!-- Left Column Target for Centered 3D Camera Lens -->
+        <div class="optics-target-wrapper" id="optics-target">
+          <div class="optics-hud-ring" aria-hidden="true"></div>
+          <span class="optics-hud-badge" aria-hidden="true">35MM ANAMORPHIC CINE OPTICS</span>
+          
+          <!-- Subtle Connecting Vector Arc linking Lens visual to Spec Cards -->
+          <div class="optics-lens-connector" aria-hidden="true">
+            <svg class="lens-connector-svg" viewBox="0 0 450 180" fill="none">
+              <path d="M 20,90 C 150,90 240,25 430,25" class="connector-line-glow" />
+              <path d="M 20,90 C 150,90 240,25 430,25" class="connector-line-dash" />
+              <circle cx="430" cy="25" r="4" class="connector-pulse-dot" />
+            </svg>
+          </div>
+        </div>
+
+        <!-- Right Column: Interactive Circular Scroll Wheel Carousel -->
+        <div class="optics-content-col">
+
+          <!-- Circular Scroll Wheel System -->
+          <div class="optics-wheel-wrapper" id="optics-wheel-wrapper" aria-label="Precision Optics Interactive Scroll Wheel">
+
+            <!-- Vertical Category Labels on Right Edge (Collapses cleanly on mobile) -->
+            <div class="optics-side-labels" aria-hidden="true">
+              <span class="side-label">STARDUST SPECS</span>
+              <span class="side-divider"></span>
+              <span class="side-label">CINE TECH</span>
+            </div>
+
+            <!-- Rotating Arc Track containing 5 Storytelling Spec Cards (01/05 -> 05/05) -->
+            <div class="optics-wheel-track" id="optics-wheel-track">
+              
+              <!-- Spec 01 -->
+              <div class="wheel-item" data-index="0" id="spec-item-0">
+                <div class="wheel-item__card wheel-item__card--full-media">
+                  <img src="assets/images/spec-lens-glass.png" alt="Artifact-Free Cinematic AI Pipeline" class="wheel-item__full-img">
+                  <div class="wheel-item__active-overlay">
+                    <span class="active-overlay__counter font-display">01 <span class="dim">\ 05</span></span>
+                    <div class="active-overlay__text">
+                      <h4 class="active-overlay__title font-display">Artifact-Free Cinematic AI Pipeline</h4>
+                      <p class="active-overlay__desc">Neural generation & procedural rendering engineered without visual degradation.</p>
+                      <div class="active-overlay__result">
+                        <span class="active-overlay__result-badge">✦ ZERO GENERIC ARTIFACTS</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Spec 02 -->
+              <div class="wheel-item" data-index="1" id="spec-item-1">
+                <div class="wheel-item__card wheel-item__card--full-media">
+                  <img src="assets/images/spec-iris-aperture.png" alt="Concept-to-Distribution Continuity" class="wheel-item__full-img">
+                  <div class="wheel-item__active-overlay">
+                    <span class="active-overlay__counter font-display">02 <span class="dim">\ 05</span></span>
+                    <div class="active-overlay__text">
+                      <h4 class="active-overlay__title font-display">Concept-to-Distribution Continuity</h4>
+                      <p class="active-overlay__desc">End-to-end creative workflow bridging vision, storyboards, and global delivery.</p>
+                      <div class="active-overlay__result">
+                        <span class="active-overlay__result-badge">✦ END-TO-END WORKFLOW</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Spec 03 -->
+              <div class="wheel-item" data-index="2" id="spec-item-2">
+                <div class="wheel-item__card wheel-item__card--full-media">
+                  <img src="assets/images/spec-titanium-chassis.png" alt="Narrative Precision + Performance Forecasting" class="wheel-item__full-img">
+                  <div class="wheel-item__active-overlay">
+                    <span class="active-overlay__counter font-display">03 <span class="dim">\ 05</span></span>
+                    <div class="active-overlay__text">
+                      <h4 class="active-overlay__title font-display">Narrative Precision + Performance Forecasting</h4>
+                      <p class="active-overlay__desc">Algorithmic story pacing paired with audience retention & engagement analytics.</p>
+                      <div class="active-overlay__result">
+                        <span class="active-overlay__result-badge">✦ FORECASTED REACH MODELS</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Spec 04 -->
+              <div class="wheel-item" data-index="3" id="spec-item-3">
+                <div class="wheel-item__card wheel-item__card--full-media">
+                  <img src="assets/images/project-1.png" alt="Measurable Reach Engineering" class="wheel-item__full-img">
+                  <div class="wheel-item__active-overlay">
+                    <span class="active-overlay__counter font-display">04 <span class="dim">\ 05</span></span>
+                    <div class="active-overlay__text">
+                      <h4 class="active-overlay__title font-display">Measurable Reach Engineering</h4>
+                      <p class="active-overlay__desc">Data-backed distribution frameworks maximizing viewer conversion & impression depth.</p>
+                      <div class="active-overlay__result">
+                        <span class="active-overlay__result-badge">✦ HIGH-VELOCITY ROI</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Spec 05 -->
+              <div class="wheel-item" data-index="4" id="spec-item-4">
+                <div class="wheel-item__card wheel-item__card--full-media">
+                  <img src="assets/images/showreel-poster.png" alt="High-Transmittance Master Delivery" class="wheel-item__full-img">
+                  <div class="wheel-item__active-overlay">
+                    <span class="active-overlay__counter font-display">05 <span class="dim">\ 05</span></span>
+                    <div class="active-overlay__text">
+                      <h4 class="active-overlay__title font-display">High-Transmittance Master Delivery</h4>
+                      <p class="active-overlay__desc">Multi-format 8K master output optimized for IMAX, cinema, and digital screens.</p>
+                      <div class="active-overlay__result">
+                        <span class="active-overlay__result-badge">✦ 100% MASTER FIDELITY</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- ─── SECTION 3: 4-LINE DOTTED CINE PORTFOLIO ─── -->
+    <section class="paper-reveal-section" id="paper-reveal" aria-label="Selected Portfolio Archive">
+      
+      <div class="grid-section-container">
+        
+        <!-- Top Outer Labels (Outside Dotted Frame) -->
+        <div class="grid-outer-topbar">
+          <div class="grid-tag-left">
+            <span class="grid-tag">[ STARDUST STUDIO / 03 ]</span>
+            <span class="grid-sub">WORLDWIDE CINEMATOGRAPHY</span>
+          </div>
+          <div class="grid-tag-right">
+            <span class="grid-tag">[ SELECTED WORKS 2026 ]</span>
+            <span class="grid-sub">LOS ANGELES / TOKYO</span>
+          </div>
+        </div>
+
+        <!-- Center Widescreen Wrap (Framed by 2 Horizontal & 2 Vertical Dotted Lines Only) -->
+        <div class="center-portfolio-wrap">
+          
+          <!-- State 1: White Widescreen Portfolio Frame -->
+          <div class="cinematic-widescreen-frame cine-frame-white">
+            
+            <!-- Corner Crosshair Optical Reticles -->
+            <span class="reticle reticle--tl" aria-hidden="true">┌</span>
+            <span class="reticle reticle--tr" aria-hidden="true">┐</span>
+            <span class="reticle reticle--bl" aria-hidden="true">└</span>
+            <span class="reticle reticle--br" aria-hidden="true">┘</span>
+
+            <!-- Top Letterbox Bar Specs -->
+            <div class="cine-frame-topbar">
+              <div class="cine-aspect-pill">
+                <span class="frame-pulse"></span>
+                <span>2.39 : 1 ANAMORPHIC CINE SCOPE</span>
+              </div>
+              <span class="cine-frame-spec">8K RAW // 120 FPS MASTERS</span>
+            </div>
+
+            <!-- Main Content Area -->
+            <div class="cine-frame-body">
+              <span class="portfolio-badge">[ FEATURED SHOWCASE ARCHIVE ]</span>
+              
+              <h2 class="portfolio-title">
+                <span>SELECTED</span>
+                <em class="font-noir portfolio-title-noir">Portfolio</em>
+              </h2>
+
+              <!-- Horizontal Anamorphic Lens Flare Line Accent -->
+              <div class="anamorphic-flare-line" aria-hidden="true"></div>
+
+              <p class="portfolio-desc">A curated archive of concept-driven films, brand campaigns, and cinematic AI productions engineered for both emotion and measurable reach.</p>
+            </div>
+
+            <!-- Bottom Letterbox Bar CTA & Meta -->
+            <div class="cine-frame-footer">
+              <div class="cine-footer-meta">
+                <span class="meta-label">STATUS</span>
+                <span class="meta-val">20+ FEATURED PRODUCTIONS</span>
+              </div>
+              
+              <div class="cine-footer-actions">
+                <a href="work.html" class="portfolio-secondary-link">
+                  <span>View all case studies</span>
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+                </a>
+
+                <a href="work.html" class="portfolio-cta-btn">
+                  <span>EXPLORE PORTFOLIO GALLERY</span>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </a>
+              </div>
+            </div>
+
+            <!-- Card Media Layer (Reveals as frame resizes into carousel card size) -->
+            <div class="cine-frame-card-media" aria-hidden="true">
+              <img src="assets/images/project-1.png" alt="Valley Odyssey" class="cine-frame-card-img">
+            </div>
+
+          </div>
+
+          <!-- State 2: Circular Carousel Showcase from React Bits (Revealed on Pin Scroll) -->
+          <div class="cine-black-screen" id="sec3-dark-screen" aria-label="Cinematic Carousel Showcase">
+            <div id="circular-carousel-mount" style="width: 100%; height: 100%; position: relative;"></div>
+          </div>
+
+        </div>
+
+        <!-- Bottom Outer Labels (Outside Dotted Frame) -->
+        <div class="grid-outer-bottombar">
+          <span class="grid-meta-code">34.0522° N</span>
+          <span class="grid-meta-code">118.2437° W</span>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- ─── MARQUEE STRIP ─── -->
+    <div class="marquee-wrapper" aria-hidden="true">
+      <div class="marquee-track">
+        <!-- First set -->
+        <div class="marquee-item">
+          <span class="marquee-dot"></span>
+          We Craft Cinematic Excellence
+        </div>
+        <div class="marquee-item">
+          <span class="marquee-dot"></span>
+          Visual Stories That Move
+        </div>
+        <div class="marquee-item">
+          <span class="marquee-dot"></span>
+          Film · Commercial · Brand · Documentary
+        </div>
+        <div class="marquee-item">
+          <span class="marquee-dot"></span>
+          200+ Projects Delivered
+        </div>
+        <div class="marquee-item">
+          <span class="marquee-dot"></span>
+          Frame by Frame. Story by Story.
+        </div>
+        <!-- Duplicated set for seamless loop -->
+        <div class="marquee-item" aria-hidden="true">
+          <span class="marquee-dot"></span>
+          We Craft Cinematic Excellence
+        </div>
+        <div class="marquee-item" aria-hidden="true">
+          <span class="marquee-dot"></span>
+          Visual Stories That Move
+        </div>
+        <div class="marquee-item" aria-hidden="true">
+          <span class="marquee-dot"></span>
+          Film · Commercial · Brand · Documentary
+        </div>
+        <div class="marquee-item" aria-hidden="true">
+          <span class="marquee-dot"></span>
+          200+ Projects Delivered
+        </div>
+        <div class="marquee-item" aria-hidden="true">
+          <span class="marquee-dot"></span>
+          Frame by Frame. Story by Story.
+        </div>
+      </div>
+    </div>
+
+
+
+
+
+    <!-- ─── SECTION 4: HIGH-FASHION EDITORIAL CAPABILITIES & SERVICES ─── -->
+    <section class="services-section section" id="services" aria-label="Stardust Capabilities & Core Services">
+      
+      <!-- Top Editorial Watermark Bar & Rule Line -->
+      <div class="persona-topbar">
+        <div class="persona-watermark">
+          <span>STARDUST©</span>
+          <span>ART DIRECTION</span>
+          <span>DEVELOPMENT.</span>
+        </div>
+      </div>
+
+      <div class="container">
+
+        <!-- Monumental Editorial Typographic Hero Statement (Matching Reference Image) -->
+        <div class="persona-hero-wrap">
+          <div class="persona-poster">
+            
+            <!-- Reference 6-spoke Teardrop Asterisk Icon -->
+            <svg class="persona-asterisk" viewBox="0 0 100 100" aria-hidden="true">
+              <g fill="#000000">
+                <ellipse cx="50" cy="50" rx="6.5" ry="32"/>
+                <ellipse cx="50" cy="50" rx="6.5" ry="32" transform="rotate(60 50 50)"/>
+                <ellipse cx="50" cy="50" rx="6.5" ry="32" transform="rotate(120 50 50)"/>
+              </g>
+            </svg>
+
+            <!-- Line 1: Systems that -->
+            <div class="poster-row poster-row-1">
+              <span class="word-systems">Systems</span>
+              <span class="word-that">that</span>
+            </div>
+
+            <!-- Line 2: connect + Note 1 -->
+            <div class="poster-row poster-row-2">
+              <span class="word-connect">connect</span>
+              <div class="poster-note note-1">
+                <span class="note-id">1</span>&nbsp;&nbsp;<span class="note-text">CRAFTSMANSHIP<br>IN OPTICAL AND<br>AI PIPELINE*</span>
+              </div>
+            </div>
+
+            <!-- Line 3: Note 2 + people -->
+            <div class="poster-row poster-row-3">
+              <div class="poster-note note-2">
+                <span class="note-id">2</span>&nbsp;&nbsp;<span class="note-text">CONCEPT-DRIVEN CREATIVE<br>FOR INTERNATIONAL<br>BRANDS &amp; CINEMA.</span>
+              </div>
+              <span class="word-people">people</span>
+            </div>
+
+          </div>
+        </div>
+
+
+        <!-- Revealed Content & Service Cards (Pop Up on Scroll) -->
+        <div class="persona-cards-reveal" id="persona-cards-wrapper">
+          
+          <div class="persona-cards-header">
+            <span class="services-eyebrow">[ SYSTEM ARCHITECTURE &amp; CAPABILITIES ]</span>
+            <h2 class="services-title font-display">Four Connected Pillars. One Standard of Excellence.</h2>
+            <p class="services-subtitle">From narrative strategy to AI video production and performance distribution — designed as one unified cinematic ecosystem.</p>
+          </div>
+
+          <!-- Core Services Grid (2x2 Asymmetric Grid) -->
+          <div class="services-cards-grid">
+            
+            <!-- Card 01: Narrative Strategy & Concept -->
+            <article class="service-card-item">
+              <div class="service-card__top">
+                <span class="service-card__number font-display">01 <span class="service-card__total">// 04</span></span>
+                <div class="service-card__icon-wrap" aria-hidden="true">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                  </svg>
+                </div>
+              </div>
+              <div class="service-card__body">
+                <h3 class="service-card__title font-display">Narrative Strategy &amp; Concept</h3>
+                <p class="service-card__desc">Concept-driven creative development that sits at the intersection of story, commercial intent, and brand resonance.</p>
+              </div>
+              <div class="service-card__footer">
+                <span class="service-card__tag">✦ 100% ORIGINAL STORYBOARDS</span>
+                <a href="contact.html" class="service-card__link">
+                  <span>Explore Strategy</span>
+                  <svg class="link-arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+                </a>
+              </div>
+            </article>
+
+            <!-- Card 02: Cinematic AI Video Production -->
+            <article class="service-card-item">
+              <div class="service-card__top">
+                <span class="service-card__number font-display">02 <span class="service-card__total">// 04</span></span>
+                <div class="service-card__icon-wrap" aria-hidden="true">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                    <path d="M15 10l5 5-5 5M9 4L4 9l5 5M12 21a9 9 0 100-18 9 9 0 000 18z"/>
+                  </svg>
+                </div>
+              </div>
+              <div class="service-card__body">
+                <h3 class="service-card__title font-display">Cinematic AI Video Production</h3>
+                <p class="service-card__desc">High-end AI-assisted video engineered without generic artifacts — built for emotional impact and technical excellence.</p>
+              </div>
+              <div class="service-card__footer">
+                <span class="service-card__tag">✦ ARTIFACT-FREE PIPELINE</span>
+                <a href="contact.html" class="service-card__link">
+                  <span>Explore AI Pipeline</span>
+                  <svg class="link-arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+                </a>
+              </div>
+            </article>
+
+            <!-- Card 03: Performance Distribution -->
+            <article class="service-card-item">
+              <div class="service-card__top">
+                <span class="service-card__number font-display">03 <span class="service-card__total">// 04</span></span>
+                <div class="service-card__icon-wrap" aria-hidden="true">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                    <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+                  </svg>
+                </div>
+              </div>
+              <div class="service-card__body">
+                <h3 class="service-card__title font-display">Performance Distribution</h3>
+                <p class="service-card__desc">ROI-focused deployment across multi-platform networks and reach forecasting so every piece of content works harder.</p>
+              </div>
+              <div class="service-card__footer">
+                <span class="service-card__tag">✦ FORECASTED REACH MODELS</span>
+                <a href="contact.html" class="service-card__link">
+                  <span>Explore Distribution</span>
+                  <svg class="link-arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+                </a>
+              </div>
+            </article>
+
+            <!-- Card 04: Integrated Campaigns -->
+            <article class="service-card-item">
+              <div class="service-card__top">
+                <span class="service-card__number font-display">04 <span class="service-card__total">// 04</span></span>
+                <div class="service-card__icon-wrap" aria-hidden="true">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                  </svg>
+                </div>
+              </div>
+              <div class="service-card__body">
+                <h3 class="service-card__title font-display">Integrated Campaigns</h3>
+                <p class="service-card__desc">End-to-end commercial productions where narrative, visual effects, and channel distribution act as one system.</p>
+              </div>
+              <div class="service-card__footer">
+                <span class="service-card__tag">✦ AVERAGE 3.8× ROAS</span>
+                <a href="contact.html" class="service-card__link">
+                  <span>Explore Campaigns</span>
+                  <svg class="link-arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+                </a>
+              </div>
+            </article>
+
+          </div>
+
+          <!-- Action CTAs -->
+          <div class="services-footer-block">
+            
+            <div class="services-cta-wrap">
+              <a href="contact.html" class="services-primary-cta">
+                <span>Start a Project</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+              </a>
+              <a href="work.html" class="services-secondary-link">
+                <span>Explore All Work &amp; Case Studies</span>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+              </a>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ─── SECTION 5: THE STARDUST PROCESS (HOW WE WORK) ─── -->
+    <section class="process-section section" id="process" aria-label="The Stardust Process">
+      <div class="container process-pin-container">
+
+        <!-- Top Header & Metadata -->
+        <div class="process-header reveal">
+          <div class="process-header-meta">
+            <span class="process-eyebrow">[ END-TO-END SYSTEM × NARRATIVE CONTROL ]</span>
+            <span class="process-step-indicator" id="process-step-counter">STEP 01 / 05</span>
+          </div>
+          <div class="process-header-main">
+            <h2 class="process-title font-display">
+              The Stardust <em class="process-title-accent">Process.</em>
+            </h2>
+            <p class="process-subtitle">
+              “A connected system where narrative craft, cinematic production, and performance distribution operate as one.”
+            </p>
+          </div>
+        </div>
+
+        <!-- Monochrome Step Navigation Pills Track -->
+        <div class="process-nav-track reveal">
+          <div class="process-nav-progress-bar" id="process-progress-bar"></div>
+          <div class="process-nav-steps">
+            <button class="process-nav-item is-active" data-step="0">01 // DISCOVER</button>
+            <button class="process-nav-item" data-step="1">02 // CONCEPT</button>
+            <button class="process-nav-item" data-step="2">03 // PRODUCE</button>
+            <button class="process-nav-item" data-step="3">04 // DISTRIBUTE</button>
+            <button class="process-nav-item" data-step="4">05 // OPTIMIZE</button>
+          </div>
+        </div>
+
+        <!-- Pinned Stage Showcase (Monochrome Cards Stack) -->
+        <div class="process-stage-wrapper reveal">
+          <div class="process-cards-stage">
+
+            <!-- Step 01: Discover -->
+            <article class="process-stage-card is-active" data-card="0">
+              <div class="stage-card-top">
+                <span class="stage-card-num">01 <span class="stage-card-total">// 05</span></span>
+                <span class="stage-card-tag">✦ AUDIENCE &amp; TARGETING</span>
+              </div>
+              <div class="stage-card-body">
+                <h3 class="stage-card-title">Discover</h3>
+                <p class="stage-card-desc">
+                  Deep dive into brand, audience, and commercial goals. We define the narrative opportunity and the performance targets together.
+                </p>
+              </div>
+              <div class="stage-card-footer">
+                <span class="stage-footer-mono">PHASE 01: STRATEGIC ALIGNMENT</span>
+                <span class="stage-footer-status">SYSTEM READY</span>
+              </div>
+            </article>
+
+            <!-- Step 02: Concept -->
+            <article class="process-stage-card" data-card="1">
+              <div class="stage-card-top">
+                <span class="stage-card-num">02 <span class="stage-card-total">// 05</span></span>
+                <span class="stage-card-tag">✦ NARRATIVE ARCHITECTURE</span>
+              </div>
+              <div class="stage-card-body">
+                <h3 class="stage-card-title">Concept</h3>
+                <p class="stage-card-desc">
+                  Concept-driven creative development. Story and strategy are built side-by-side so the idea is both emotionally strong and commercially sharp.
+                </p>
+              </div>
+              <div class="stage-card-footer">
+                <span class="stage-footer-mono">PHASE 02: CREATIVE &amp; STRATEGY</span>
+                <span class="stage-footer-status">SYSTEM READY</span>
+              </div>
+            </article>
+
+            <!-- Step 03: Produce -->
+            <article class="process-stage-card" data-card="2">
+              <div class="stage-card-top">
+                <span class="stage-card-num">03 <span class="stage-card-total">// 05</span></span>
+                <span class="stage-card-tag">✦ ARTIFACT-FREE PIPELINE</span>
+              </div>
+              <div class="stage-card-body">
+                <h3 class="stage-card-title">Produce</h3>
+                <p class="stage-card-desc">
+                  Cinematic AI video production engineered without generic artifacts. High-end visual execution with full technical control.
+                </p>
+              </div>
+              <div class="stage-card-footer">
+                <span class="stage-footer-mono">PHASE 03: CINEMATIC AI PRODUCTION</span>
+                <span class="stage-footer-status">SYSTEM READY</span>
+              </div>
+            </article>
+
+            <!-- Step 04: Distribute -->
+            <article class="process-stage-card" data-card="3">
+              <div class="stage-card-top">
+                <span class="stage-card-num">04 <span class="stage-card-total">// 05</span></span>
+                <span class="stage-card-tag">✦ PERFORMANCE DEPLOYMENT</span>
+              </div>
+              <div class="stage-card-body">
+                <h3 class="stage-card-title">Distribute</h3>
+                <p class="stage-card-desc">
+                  ROI-focused deployment across SEO, paid campaigns, and organic channels. Every asset is released with reach and conversion in mind.
+                </p>
+              </div>
+              <div class="stage-card-footer">
+                <span class="stage-footer-mono">PHASE 04: MULTI-CHANNEL DEPLOYMENT</span>
+                <span class="stage-footer-status">SYSTEM READY</span>
+              </div>
+            </article>
+
+            <!-- Step 05: Optimize & Forecast -->
+            <article class="process-stage-card" data-card="4">
+              <div class="stage-card-top">
+                <span class="stage-card-num">05 <span class="stage-card-total">// 05</span></span>
+                <span class="stage-card-tag">✦ REAL-TIME PREDICTION</span>
+              </div>
+              <div class="stage-card-body">
+                <h3 class="stage-card-title">Optimize &amp; Forecast</h3>
+                <p class="stage-card-desc">
+                  Continuous performance tracking and reach forecasting. We refine in real time and project future impact.
+                </p>
+              </div>
+              <div class="stage-card-footer">
+                <span class="stage-footer-mono">PHASE 05: ANALYTICS &amp; FORECASTING</span>
+                <span class="stage-footer-status">SYSTEM READY</span>
+              </div>
+            </article>
+
+          </div>
+        </div>
+
+        <!-- Monochrome Section Footer -->
+        <div class="process-footer reveal">
+          <div class="process-proof-bar">
+            <span class="proof-star">✦</span>
+            <span class="proof-text">Average project delivers measurable lift in both brand equity and performance metrics.</span>
+          </div>
+
+          <a href="work.html" class="process-cta-btn">
+            <span>See the Process on a Real Project</span>
+            <svg class="cta-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+          </a>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- ─── SECTION 6: WHAT THE WORK DELIVERS ─── -->
+    <section class="delivers-section section" id="work" aria-label="What the Work Delivers">
+      <div class="container">
+
+        <!-- Centered Editorial Header -->
+        <div class="delivers-header reveal">
+          <div class="delivers-header-meta">
+            <span class="delivers-eyebrow">[ IMPACT × CRAFT ]</span>
+          </div>
+          <h2 class="delivers-title font-display">
+            What the Work <em class="delivers-title-accent">Delivers.</em>
+          </h2>
+          <p class="delivers-subtitle">
+            “Beautiful images and films that people actually feel — and remember.”
+          </p>
+        </div>
+
+        <!-- 4 Metric Cards (Short & Human) -->
+        <div class="delivers-metrics-grid">
+
+          <!-- Metric 01 -->
+          <article class="delivers-metric-card reveal reveal-delay-1">
+            <div class="metric-card-top">
+              <span class="delivers-card-index">01</span>
+              <span class="delivers-card-badge">FILMS</span>
+            </div>
+            <h3 class="delivers-card-title">Cinematic Films</h3>
+            <p class="delivers-card-desc">Stories shot with intention, not templates.</p>
+          </article>
+
+          <!-- Metric 02 -->
+          <article class="delivers-metric-card reveal reveal-delay-2">
+            <div class="metric-card-top">
+              <span class="delivers-card-index">02</span>
+              <span class="delivers-card-badge">STILLS</span>
+            </div>
+            <h3 class="delivers-card-title">Still Photography</h3>
+            <p class="delivers-card-desc">Frames that hold attention longer.</p>
+          </article>
+
+          <!-- Metric 03 -->
+          <article class="delivers-metric-card reveal reveal-delay-3">
+            <div class="metric-card-top">
+              <span class="delivers-card-index">03</span>
+              <span class="delivers-card-badge">BRAND</span>
+            </div>
+            <h3 class="delivers-card-title">Brand Films</h3>
+            <p class="delivers-card-desc">Commercial work that doesn’t feel commercial.</p>
+          </article>
+
+          <!-- Metric 04 -->
+          <article class="delivers-metric-card reveal reveal-delay-4">
+            <div class="metric-card-top">
+              <span class="delivers-card-index">04</span>
+              <span class="delivers-card-badge">REACH</span>
+            </div>
+            <h3 class="delivers-card-title">Global Reach</h3>
+            <p class="delivers-card-desc">Work made to travel across screens and cultures.</p>
+          </article>
+
+        </div>
+
+        <!-- Project Highlights Section Header -->
+        <div class="delivers-highlights-header reveal">
+          <div class="delivers-highlights-meta">
+            <span class="highlights-tag font-mono">✦ PROJECT HIGHLIGHTS</span>
+            <span class="highlights-count font-mono">03 FEATURED WORKS</span>
+          </div>
+        </div>
+
+        <!-- 3 Project Highlights (Punchy Showcase) -->
+        <div class="delivers-projects-grid">
+
+          <!-- Highlight 1: Glass Towers -->
+          <article class="delivers-project-card reveal reveal-delay-1">
+            <div class="delivers-project-media">
+              <div class="delivers-project-bg grad-glass">
+                <div class="project-overlay-content">
+                  <span class="project-category-tag font-mono">ARCHITECTURAL FILM</span>
+                  <span class="project-year-tag font-mono">2026</span>
+                </div>
+              </div>
+            </div>
+            <div class="delivers-project-content">
+              <h3 class="delivers-project-title">
+                Glass Towers
+                <svg class="project-title-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+              </h3>
+              <p class="delivers-project-desc">Architectural film that made a building feel alive.</p>
+            </div>
+          </article>
+
+          <!-- Highlight 2: Night Sky -->
+          <article class="delivers-project-card reveal reveal-delay-2">
+            <div class="delivers-project-media">
+              <div class="delivers-project-bg grad-night">
+                <div class="project-overlay-content">
+                  <span class="project-category-tag font-mono">PHOTOGRAPHY SERIES</span>
+                  <span class="project-year-tag font-mono">2026</span>
+                </div>
+              </div>
+            </div>
+            <div class="delivers-project-content">
+              <h3 class="delivers-project-title">
+                Night Sky
+                <svg class="project-title-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+              </h3>
+              <p class="delivers-project-desc">Photography series that turned darkness into emotion.</p>
+            </div>
+          </article>
+
+          <!-- Highlight 3: Horizon -->
+          <article class="delivers-project-card reveal reveal-delay-3">
+            <div class="delivers-project-media">
+              <div class="delivers-project-bg grad-horizon">
+                <div class="project-overlay-content">
+                  <span class="project-category-tag font-mono">BRAND FILM</span>
+                  <span class="project-year-tag font-mono">2025</span>
+                </div>
+              </div>
+            </div>
+            <div class="delivers-project-content">
+              <h3 class="delivers-project-title">
+                Horizon
+                <svg class="project-title-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+              </h3>
+              <p class="delivers-project-desc">A brand film people watched till the end.</p>
+            </div>
+          </article>
+
+        </div>
+
+        <!-- Bottom CTA -->
+        <div class="delivers-footer reveal">
+          <a href="work.html" class="delivers-cta-btn">
+            <span>See more of the work</span>
+            <svg class="cta-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+          </a>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- ─── SECTION 7: GAMIFIED MAINTENANCE LAB (UNDER MAINTENANCE) ─── -->
+    <section class="maintenance-lab-section section" id="maintenance-lab" aria-label="System Maintenance Experience">
+      <div class="container">
+
+        <!-- Top HUD Header -->
+        <div class="lab-header reveal">
+          <div class="lab-status-badge">
+            <span class="lab-status-dot"></span>
+            <span class="lab-status-text font-mono">[ WEBSITE IS BEGINNING DEVELOPING SO ENJOY THE GAME AND WAIT FOR THE COMPLETE WEBSITE SOON ]</span>
+          </div>
+          <h2 class="lab-title font-display">
+            Under <em class="lab-title-accent">Maintenance.</em>
+          </h2>
+          <p class="lab-subtitle">
+            Our full interactive catalog is being calibrated. Stay tuned for a visual treat — collect 100 Stardust Energy nodes below to unlock an exclusive VIP preview.
+          </p>
+        </div>
+
+        <!-- Gamified Interactive Canvas Arcade Container -->
+        <div class="lab-arcade-wrapper reveal">
+          
+          <!-- Arcade Top Meta Bar -->
+          <div class="arcade-meta-bar">
+            <div class="arcade-meta-item">
+              <span class="meta-label font-mono">CALIBRATION SCORE</span>
+              <span class="meta-val font-mono" id="game-score">0 / 100</span>
+            </div>
+            <div class="arcade-meta-item">
+              <span class="meta-label font-mono">ENERGY CHARGE</span>
+              <div class="arcade-progress-track">
+                <div class="arcade-progress-fill" id="game-progress-fill"></div>
+              </div>
+            </div>
+            <div class="arcade-meta-item">
+              <span class="meta-label font-mono">PHYSICS STATE</span>
+              <span class="meta-val font-mono" id="game-status-text">MAGNET ACTIVE</span>
+            </div>
+          </div>
+
+          <!-- Interactive Game Canvas Container -->
+          <div class="arcade-stage-container" id="arcade-stage">
+            <canvas id="maintenance-canvas" width="1200" height="480"></canvas>
+            
+            <!-- Canvas Overlay Guidance Text -->
+            <div class="arcade-canvas-guidance" id="game-guide-text">
+              <span class="guide-icon">✦</span>
+              <span class="guide-text">MOVE CURSOR / DRAG TOUCH TO ATTRACT &amp; HARVEST STARDUST ORBS</span>
+            </div>
+
+            <!-- Secret Reward Unlocked Modal Overlay -->
+            <div class="arcade-reward-overlay" id="game-reward-modal" aria-hidden="true">
+              <div class="reward-content">
+                <span class="reward-badge font-mono">✦ CALIBRATION COMPLETE ✦</span>
+                <h3 class="reward-title font-display">Visual Treat Unlocked.</h3>
+                <p class="reward-desc">You've successfully charged the Stardust Visual Engine! Enter your email below to get instant VIP launch access.</p>
+                
+                <form class="reward-email-form" onsubmit="event.preventDefault(); this.querySelector('.reward-submit-btn').textContent='VIP ACCESS GRANTED ✔';">
+                  <input type="email" class="reward-email-input" placeholder="Enter your email for VIP launch drop" required />
+                  <button type="submit" class="reward-submit-btn">GET VIP ACCESS</button>
+                </form>
+
+                <button class="reward-reset-btn font-mono" id="game-restart-btn">✦ REPLAY PARTICLE ACCELERATOR</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Arcade Controls Bar -->
+          <div class="arcade-controls-bar">
+            <button class="arcade-btn" id="btn-burst">
+              <span>✦ TRIGGER SUPERNOVA BURST</span>
+            </button>
+            <button class="arcade-btn" id="btn-gravity">
+              <span>✦ TOGGLE ZERO-GRAVITY</span>
+            </button>
+            <button class="arcade-btn" id="btn-reset-orbs">
+              <span>✦ RE-SPAWN ORBS</span>
+            </button>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+
+  <!-- ========================================
+       FOOTER
+  ======================================== -->
+  <footer class="footer" role="contentinfo">
+    <div class="container">
+
+      <div class="footer__top">
+
+        <!-- Brand -->
+        <div>
+          <div class="footer__logo">Project <span>Stardust</span></div>
+          <p class="footer__tagline">A cinematic production company crafting visual stories that move brands, audiences, and culture.</p>
+        </div>
+
+        <!-- Work Links -->
+        <nav aria-label="Work footer links">
+          <div class="footer__col-title">Work</div>
+          <a href="work.html" class="footer__link">Film Production</a>
+          <a href="work.html" class="footer__link">Commercials</a>
+          <a href="work.html" class="footer__link">Brand Films</a>
+          <a href="work.html" class="footer__link">Music Videos</a>
+          <a href="work.html" class="footer__link">Documentary</a>
+        </nav>
+
+        <!-- Studio Links -->
+        <nav aria-label="Studio footer links">
+          <div class="footer__col-title">Studio</div>
+          <a href="about.html" class="footer__link">About</a>
+          <a href="about.html#team" class="footer__link">Team</a>
+          <a href="about.html#values" class="footer__link">Values</a>
+          <a href="contact.html" class="footer__link">Contact</a>
+        </nav>
+
+        <!-- Contact Info -->
+        <div>
+          <div class="footer__col-title">Connect</div>
+          <a href="mailto:hello@projectstardust.com" class="footer__link">hello@projectstardust.com</a>
+          <a href="tel:+15551234567" class="footer__link">+1 555 123 4567</a>
+          <div style="margin-top: var(--space-md);">
+            <div class="footer__col-title">Follow</div>
+            <div class="footer__socials" style="margin-top: var(--space-xs);">
+
+              <!-- Instagram -->
+              <a href="#" class="footer__social" aria-label="Follow Project Stardust on Instagram">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+              </a>
+
+              <!-- X/Twitter -->
+              <a href="#" class="footer__social" aria-label="Follow Project Stardust on X/Twitter">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+              </a>
+
+              <!-- Vimeo -->
+              <a href="#" class="footer__social" aria-label="Watch Project Stardust work on Vimeo">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M23.977 6.416c-.105 2.338-1.739 5.543-4.894 9.609-3.268 4.247-6.026 6.37-8.29 6.37-1.409 0-2.578-1.294-3.553-3.881L5.322 11.4C4.603 8.816 3.834 7.522 3.01 7.522c-.179 0-.806.378-1.881 1.132L0 7.197c1.185-1.044 2.351-2.084 3.501-3.128C5.08 2.701 6.266 1.984 7.055 1.91c1.867-.18 3.016 1.1 3.447 3.838.465 2.953.789 4.789.971 5.507.539 2.45 1.131 3.674 1.776 3.674.502 0 1.256-.796 2.265-2.385 1.004-1.589 1.54-2.797 1.612-3.628.144-1.371-.395-2.061-1.612-2.061-.574 0-1.167.121-1.777.391 1.186-3.868 3.434-5.755 6.761-5.637 2.473.06 3.628 1.664 3.479 4.807z"/></svg>
+              </a>
+
+              <!-- LinkedIn -->
+              <a href="#" class="footer__social" aria-label="Connect with Project Stardust on LinkedIn">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+              </a>
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Bottom Bar -->
+      <div class="footer__bottom">
+        <p class="footer__copy">© 2026 Project Stardust. All rights reserved.</p>
+        <div style="display: flex; gap: var(--space-md);">
+          <a href="#" class="footer__link" style="font-size: var(--text-xs);">Privacy Policy</a>
+          <a href="#" class="footer__link" style="font-size: var(--text-xs);">Terms of Service</a>
+        </div>
+      </div>
+
+    </div>
+  </footer>
+
+
+  <!-- ========================================
+       VIDEO MODAL
+  ======================================== -->
+  <div class="video-modal" id="video-modal" role="dialog" aria-label="Showreel video" aria-hidden="true">
+    <button class="video-modal__close" id="video-modal-close" aria-label="Close video">
+      <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+        <path d="M1 1l16 16M17 1L1 17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+    </button>
+    <div class="video-modal__content">
+      <iframe class="video-modal__iframe" allow="autoplay; fullscreen" allowfullscreen title="Project Stardust Showreel"></iframe>
+    </div>
+  </div>
+
+
+  <!-- ========================================
+       SCRIPTS
+  ======================================== -->
+  <script type="module" src="js/main.js"></script>
+
+</body>
+</html>

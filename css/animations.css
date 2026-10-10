@@ -1,0 +1,271 @@
+/* ============================================
+   ANIMATIONS & KEYFRAMES
+   Project Stardust — Motion System
+   ============================================ */
+
+/* ─── Keyframes ─── */
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeDown {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(100%); }
+  to   { transform: translateY(0); }
+}
+
+@keyframes revealRight {
+  from { clip-path: inset(0 100% 0 0); }
+  to   { clip-path: inset(0 0% 0 0); }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes loaderTextReveal {
+  0%   { opacity: 0; transform: translateY(20px) rotate3d(1, 0, 0, 40deg); }
+  100% { opacity: 1; transform: translateY(0) rotate3d(1, 0, 0, 0deg); }
+}
+
+@keyframes loaderExit {
+  0%   { clip-path: inset(0 0 0 0); }
+  100% { clip-path: inset(0 0 100% 0); }
+}
+
+@keyframes marqueeScroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+@keyframes marqueePause {
+  from { transform: translateX(0); }
+  to   { transform: translateX(0); }
+}
+
+@keyframes starTwinkle {
+  0%, 100% { opacity: 0.15; transform: scale(1); }
+  50%      { opacity: 0.8;  transform: scale(1.4); }
+}
+
+@keyframes starFloat {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  33%      { transform: translateY(-8px) rotate(15deg); }
+  66%      { transform: translateY(5px)  rotate(-10deg); }
+}
+
+@keyframes particleBurst {
+  0%   { opacity: 1; transform: translate(-50%, -50%) scale(0); }
+  60%  { opacity: 1; transform: translate(var(--tx), var(--ty)) scale(1); }
+  100% { opacity: 0; transform: translate(var(--tx), var(--ty)) scale(0.8); }
+}
+
+@keyframes numberPulse {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.02); }
+}
+
+@keyframes gradientShift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes borderGlow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(201, 168, 76, 0); }
+  50%      { box-shadow: 0 0 20px 2px rgba(201, 168, 76, 0.2); }
+}
+
+@keyframes cursorPulse {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); }
+  50%      { transform: translate(-50%, -50%) scale(0.8); }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+@keyframes shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+
+/* ─── Utility Animation Classes ─── */
+
+.anim-fade-in {
+  animation: fadeIn var(--duration-normal) var(--ease-out) both;
+}
+
+.anim-fade-up {
+  animation: fadeUp var(--duration-slow) var(--ease-out-expo) both;
+}
+
+.anim-scale-in {
+  animation: scaleIn var(--duration-slow) var(--ease-out-back) both;
+}
+
+/* ─── Scroll Reveal (via Intersection Observer) ─── */
+
+.reveal {
+  opacity: 0;
+  transform: translateY(50px);
+  transition:
+    opacity var(--duration-cinematic) var(--ease-out-expo),
+    transform var(--duration-cinematic) var(--ease-out-expo);
+}
+
+.reveal.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.reveal-delay-1 { transition-delay: 100ms; }
+.reveal-delay-2 { transition-delay: 200ms; }
+.reveal-delay-3 { transition-delay: 300ms; }
+.reveal-delay-4 { transition-delay: 450ms; }
+.reveal-delay-5 { transition-delay: 600ms; }
+
+.reveal-right {
+  clip-path: inset(0 100% 0 0);
+  opacity: 1;
+  transition: clip-path 1.4s var(--ease-out-quart);
+}
+
+.reveal-right.revealed {
+  clip-path: inset(0 0% 0 0);
+}
+
+.reveal-left {
+  opacity: 0;
+  transform: translateX(-40px);
+  transition:
+    opacity var(--duration-cinematic) var(--ease-out-expo),
+    transform var(--duration-cinematic) var(--ease-out-expo);
+}
+
+.reveal-left.revealed {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.reveal-scale {
+  opacity: 0;
+  transform: scale(0.9);
+  transition:
+    opacity var(--duration-cinematic) var(--ease-out-expo),
+    transform var(--duration-cinematic) var(--ease-out-expo);
+}
+
+.reveal-scale.revealed {
+  opacity: 1;
+  transform: scale(1);
+}
+
+
+/* ─── Word/Letter Reveal (split text) ─── */
+
+.word-wrap {
+  overflow: hidden;
+  display: inline-block;
+}
+
+.word-inner {
+  display: inline-block;
+  transform: translateY(110%);
+  transition: transform var(--duration-cinematic) var(--ease-out-expo);
+}
+
+.word-inner.revealed {
+  transform: translateY(0);
+}
+
+/* ─── Hover Animations ─── */
+
+.hover-lift {
+  transition: transform var(--duration-normal) var(--ease-out-expo);
+}
+
+.hover-lift:hover {
+  transform: translateY(-4px);
+}
+
+.hover-glow {
+  transition: box-shadow var(--duration-normal) var(--ease-out);
+}
+
+.hover-glow:hover {
+  box-shadow: var(--shadow-gold);
+}
+
+/* ─── Button Double-Label (from Osmo reference) ─── */
+
+.btn-label-wrap {
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.btn-label {
+  display: block;
+  transition: transform var(--duration-normal) var(--ease-out-expo);
+}
+
+.btn-label + .btn-label {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  transform: translateY(0%);
+}
+
+.btn:hover .btn-label-wrap .btn-label:first-child {
+  transform: translateY(-100%);
+}
+
+.btn:hover .btn-label-wrap .btn-label:last-child {
+  transform: translateY(-100%);
+}
+
+/* ─── Shimmer Effect ─── */
+.shimmer {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(201, 168, 76, 0.1) 50%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
+}

@@ -1,0 +1,3 @@
+[     326ms] [WARNING] Allow attribute will take precedence over 'allowfullscreen'. @ http://localhost:3000/:1231
+[     409ms] TypeError: scroll.initSection3PinScroll is not a function
+    at HTMLDocument.<anonymous> (http://localhost:3000/js/main.js:22:10)

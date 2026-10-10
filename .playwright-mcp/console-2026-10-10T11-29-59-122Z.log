@@ -1,0 +1,4 @@
+[     517ms] [WARNING] Allow attribute will take precedence over 'allowfullscreen'. @ http://localhost:8080/:1167
+[    1681ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://localhost:8080/assets/images/project-2.png:0
+[  141752ms] [WARNING] Allow attribute will take precedence over 'allowfullscreen'. @ http://localhost:8080/:1167
+[  142299ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://localhost:8080/assets/images/project-2.png:0

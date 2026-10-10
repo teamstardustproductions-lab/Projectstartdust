@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Project Stardust — Our portfolio of cinematic work. Film production, commercials, brand films, music videos, and documentary.">
+  <meta name="author" content="Project Stardust">
+  <meta property="og:title" content="Work — Project Stardust">
+  <meta property="og:description" content="A portfolio of cinematic visual stories crafted for brands, artists, and audiences worldwide.">
+  <meta property="og:type" content="website">
+  <title>Work — Project Stardust</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/typography.css">
+  <link rel="stylesheet" href="css/animations.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/main.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://unpkg.com/lenis@1.1.9/dist/lenis.min.js"></script>
+</head>
+
+<body>
+
+  <!-- Navigation -->
+  <!-- ========================================
+       TOP FIXED NAVBAR (Hamburger on Far Left End, WORKS CTA on Far Right End)
+  ======================================== -->
+  <header class="stardust-top-nav" id="stardust-top-nav">
+    <div class="stardust-nav-bar">
+      
+      <!-- Far Left End: ONLY Hamburger Icon Button -->
+      <button class="nav-hamburger-btn" id="nav-hamburger" aria-label="Toggle navigation menu" aria-expanded="false">
+        <span class="hamburger-box">
+          <span class="hamburger-line hamburger-line--1"></span>
+          <span class="hamburger-line hamburger-line--2"></span>
+        </span>
+      </button>
+
+      <!-- Far Right End: WORKS Button -->
+      <a href="work.html" class="nav-works-btn">
+        <span>WORKS</span>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="works-arrow-icon">
+          <path d="M7 17L17 7M17 7H7M17 7V17"/>
+        </svg>
+      </a>
+
+    </div>
+  </header>
+
+  <!-- ========================================
+       FULL-SCREEN HIGH-FASHION EDITORIAL NAV OVERLAY
+  ======================================== -->
+  <div class="stardust-nav-overlay" id="stardust-nav-overlay" aria-label="Navigation Directory">
+    <div class="nav-overlay-backdrop"></div>
+    
+    <!-- Magnetic Difference-Blend Spotlight Circle -->
+    <div class="nav-blend-circle" id="nav-blend-circle"></div>
+
+    <!-- Editorial Top Header Bar -->
+    <div class="nav-editorial-topbar">
+      <div class="editorial-brand">STARDUST©</div>
+      <button class="editorial-close-icon" id="nav-overlay-close-icon" aria-label="Close menu">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M18 6L6 18M6 6l12 12"/>
+        </svg>
+      </button>
+      <button class="editorial-cancel-btn" id="nav-overlay-cancel-btn" aria-label="Cancel">CANCEL</button>
+    </div>
+
+    <!-- Monumental Centered Editorial Typographic Navigation -->
+    <div class="nav-editorial-center">
+      <nav class="editorial-menu-list">
+        
+        <!-- 01 Home -->
+        <a href="index.html" class="editorial-menu-item">
+          <span class="item-number item-number--left"><i>01</i></span>
+          <span class="item-word"><span class="serif">H</span><span class="serif-italic">o</span><span class="sans">me</span></span>
+        </a>
+
+        <!-- 02 Catalogue -->
+        <a href="work.html" class="editorial-menu-item">
+          <span class="item-word"><span class="serif">C</span><span class="sans">at</span><span class="serif-italic">a</span><span class="sans">logue</span></span>
+          <span class="item-number item-number--right"><i>02</i></span>
+        </a>
+
+        <!-- 03 Studio -->
+        <a href="about.html" class="editorial-menu-item">
+          <span class="item-number item-number--left"><i>03</i></span>
+          <span class="item-word"><span class="serif">S</span><span class="sans">t</span><span class="serif-italic">u</span><span class="sans">dio</span></span>
+        </a>
+
+        <!-- 04 Contact -->
+        <a href="contact.html" class="editorial-menu-item">
+          <span class="item-word"><span class="serif">C</span><span class="serif-italic">o</span><span class="sans">ntact</span></span>
+          <span class="item-number item-number--right"><i>04</i></span>
+        </a>
+
+      </nav>
+    </div>
+  </div>
+
+  <main>
+
+    <!-- ─── PAGE HERO ─── -->
+    <section class="work-page-hero section-sm" style="padding-top: calc(var(--nav-height) + var(--space-2xl));" aria-label="Work portfolio header">
+      <div class="container">
+        <div class="reveal">
+          <span class="eyebrow">Our Portfolio</span>
+        </div>
+        <h1 class="text-hero reveal reveal-delay-2" style="margin-top: 0.5rem;">
+          Every frame<br><em class="font-noir" style="color: var(--color-accent-gold);">tells a story.</em>
+        </h1>
+        <p class="text-secondary reveal reveal-delay-3" style="margin-top: var(--space-md); max-width: 560px; line-height: 1.7;">
+          From intimate brand films to large-scale commercial productions — browse our work across every discipline we practice.
+        </p>
+
+        <!-- Filter Buttons -->
+        <div class="filter-group reveal reveal-delay-4" style="margin-top: var(--space-xl);" role="group" aria-label="Filter work by category">
+          <button class="filter-btn active" data-filter="all" id="filter-all">All</button>
+          <button class="filter-btn" data-filter="film" id="filter-film">Film</button>
+          <button class="filter-btn" data-filter="commercial" id="filter-commercial">Commercial</button>
+          <button class="filter-btn" data-filter="brand" id="filter-brand">Brand</button>
+          <button class="filter-btn" data-filter="music" id="filter-music">Music Video</button>
+          <button class="filter-btn" data-filter="documentary" id="filter-documentary">Documentary</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Divider -->
+    <div class="container"><div class="divider-gold" style="margin-bottom: var(--space-xl);"></div></div>
+
+    <!-- ─── PROJECT GRID ─── -->
+    <section class="section-sm" aria-label="Portfolio project grid">
+      <div class="container">
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-md);" id="work-grid">
+
+          <!-- Film 1 -->
+          <article class="project-card reveal" data-category="film">
+            <div class="project-card__media">
+              <div style="position:absolute;inset:0;background:linear-gradient(135deg,#0a0818 0%,#141030 100%);display:flex;align-items:center;justify-content:center;">
+                <div style="text-align:center;padding:2rem;">
+                  <div style="font-size:3rem;opacity:0.2;margin-bottom:0.75rem;">🎬</div>
+                  <div style="font-family:var(--font-display);font-size:1.2rem;font-weight:300;color:rgba(201,168,76,0.5);letter-spacing:0.1em;">ECHOES</div>
+                </div>
+              </div>
+              <div class="project-card__overlay">
+                <div class="project-card__meta"><span class="project-card__category">Film</span></div>
+                <h2 style="font-family:var(--font-display);font-size:var(--text-xl);font-weight:400;color:white;">Echoes</h2>
+              </div>
+            </div>
+            <div class="project-card__info">
+              <h2 class="project-card__title">Echoes</h2>
+              <p class="project-card__subtitle">Short Film · 2026 · Directed by James Forte</p>
+            </div>
+          </article>
+
+          <!-- Commercial 1 -->
+          <article class="project-card reveal reveal-delay-1" data-category="commercial">
+            <div class="project-card__media">
+              <div style="position:absolute;inset:0;background:linear-gradient(135deg,#0a1018 0%,#10202e 100%);display:flex;align-items:center;justify-content:center;">
+                <div style="text-align:center;padding:2rem;">
+                  <div style="font-size:3rem;opacity:0.2;margin-bottom:0.75rem;">🏎</div>
+                  <div style="font-family:var(--font-display);font-size:1.2rem;font-weight:300;color:rgba(201,168,76,0.5);letter-spacing:0.1em;">APEX DRIVE</div>
+                </div>
+              </div>
+              <div class="project-card__overlay">
+                <div class="project-card__meta"><span class="project-card__category">Commercial</span></div>
+                <h2 style="font-family:var(--font-display);font-size:var(--text-xl);font-weight:400;color:white;">Apex Drive</h2>
+              </div>
+            </div>
+            <div class="project-card__info">
+              <h2 class="project-card__title">Apex Drive</h2>
+              <p class="project-card__subtitle">Commercial · 2025 · Apex Motors</p>
+            </div>
+          </article>
+
+          <!-- Brand 1 -->
+          <article class="project-card reveal reveal-delay-2" data-category="brand">
+            <div class="project-card__media">
+              <div style="position:absolute;inset:0;background:linear-gradient(135deg,#180a0a 0%,#2a1018 100%);display:flex;align-items:center;justify-content:center;">
+                <div style="text-align:center;padding:2rem;">
+                  <div style="font-size:3rem;opacity:0.2;margin-bottom:0.75rem;">⬡</div>
+                  <div style="font-family:var(--font-display);font-size:1.2rem;font-weight:300;color:rgba(201,168,76,0.5);letter-spacing:0.1em;">LUMINARY</div>
+                </div>
+              </div>
+              <div class="project-card__overlay">
+                <div class="project-card__meta"><span class="project-card__category">Brand</span></div>
+                <h2 style="font-family:var(--font-display);font-size:var(--text-xl);font-weight:400;color:white;">Luminary Origins</h2>
+              </div>
+            </div>
+            <div class="project-card__info">
+              <h2 class="project-card__title">Luminary Origins</h2>
+              <p class="project-card__subtitle">Brand Film · 2025 · Luminary Brands</p>
+            </div>
+          </article>
+
+          <!-- Music 1 -->
+          <article class="project-card reveal" data-category="music">
+            <div class="project-card__media">
+              <div style="position:absolute;inset:0;background:linear-gradient(135deg,#0a1800 0%,#101e00 100%);display:flex;align-items:center;justify-content:center;">
+                <div style="text-align:center;padding:2rem;">
+                  <div style="font-size:3rem;opacity:0.2;margin-bottom:0.75rem;">♬</div>
+                  <div style="font-family:var(--font-display);font-size:1.2rem;font-weight:300;color:rgba(201,168,76,0.5);letter-spacing:0.1em;">CONSTELLATION</div>
+                </div>
+              </div>
+              <div class="project-card__overlay">
+                <div class="project-card__meta"><span class="project-card__category">Music Video</span></div>
+                <h2 style="font-family:var(--font-display);font-size:var(--text-xl);font-weight:400;color:white;">Nova — "Constellation"</h2>
+              </div>
+            </div>
+            <div class="project-card__info">
+              <h2 class="project-card__title">Nova — "Constellation"</h2>
+              <p class="project-card__subtitle">Music Video · 2026 · Nova Records</p>
+            </div>
+          </article>
+
+          <!-- Documentary 1 -->
+          <article class="project-card reveal reveal-delay-1" data-category="documentary">
+            <div class="project-card__media">
+              <div style="position:absolute;inset:0;background:linear-gradient(135deg,#101010 0%,#1e1814 100%);display:flex;align-items:center;justify-content:center;">
+                <div style="text-align:center;padding:2rem;">
+                  <div style="font-size:3rem;opacity:0.2;margin-bottom:0.75rem;">🌍</div>
+                  <div style="font-family:var(--font-display);font-size:1.2rem;font-weight:300;color:rgba(201,168,76,0.5);letter-spacing:0.1em;">PULSE</div>
+                </div>
+              </div>
+              <div class="project-card__overlay">
+                <div class="project-card__meta"><span class="project-card__category">Documentary</span></div>
+                <h2 style="font-family:var(--font-display);font-size:var(--text-xl);font-weight:400;color:white;">Pulse</h2>
+              </div>
+            </div>
+            <div class="project-card__info">
+              <h2 class="project-card__title">Pulse</h2>
+              <p class="project-card__subtitle">Documentary · 2024 · Social Impact</p>
+            </div>
+          </article>
+
+          <!-- Commercial 2 -->
+          <article class="project-card reveal reveal-delay-2" data-category="commercial">
+            <div class="project-card__media">
+              <div style="position:absolute;inset:0;background:linear-gradient(135deg,#10100a 0%,#1e1e0a 100%);display:flex;align-items:center;justify-content:center;">
+                <div style="text-align:center;padding:2rem;">
+                  <div style="font-size:3rem;opacity:0.2;margin-bottom:0.75rem;">✦</div>
+                  <div style="font-family:var(--font-display);font-size:1.2rem;font-weight:300;color:rgba(201,168,76,0.5);letter-spacing:0.1em;">ZENITH</div>
+                </div>
+              </div>
+              <div class="project-card__overlay">
+                <div class="project-card__meta"><span class="project-card__category">Commercial</span></div>
+                <h2 style="font-family:var(--font-display);font-size:var(--text-xl);font-weight:400;color:white;">Zenith Launch</h2>
+              </div>
+            </div>
+            <div class="project-card__info">
+              <h2 class="project-card__title">Zenith Launch</h2>
+              <p class="project-card__subtitle">Commercial · 2024 · Zenith Films</p>
+            </div>
+          </article>
+
+          <!-- Film 2 -->
+          <article class="project-card reveal" data-category="film">
+            <div class="project-card__media">
+              <div style="position:absolute;inset:0;background:linear-gradient(135deg,#0a0010 0%,#180020 100%);display:flex;align-items:center;justify-content:center;">
+                <div style="text-align:center;padding:2rem;">
+                  <div style="font-size:3rem;opacity:0.2;margin-bottom:0.75rem;">🎭</div>
+                  <div style="font-family:var(--font-display);font-size:1.2rem;font-weight:300;color:rgba(201,168,76,0.5);letter-spacing:0.1em;">THE LAST LIGHT</div>
+                </div>
+              </div>
+              <div class="project-card__overlay">
+                <div class="project-card__meta"><span class="project-card__category">Film</span></div>
+                <h2 style="font-family:var(--font-display);font-size:var(--text-xl);font-weight:400;color:white;">The Last Light</h2>
+              </div>
+            </div>
+            <div class="project-card__info">
+              <h2 class="project-card__title">The Last Light</h2>
+              <p class="project-card__subtitle">Short Film · 2024</p>
+            </div>
+          </article>
+
+          <!-- Brand 2 -->
+          <article class="project-card reveal reveal-delay-1" data-category="brand">
+            <div class="project-card__media">
+              <div style="position:absolute;inset:0;background:linear-gradient(135deg,#001018 0%,#002030 100%);display:flex;align-items:center;justify-content:center;">
+                <div style="text-align:center;padding:2rem;">
+                  <div style="font-size:3rem;opacity:0.2;margin-bottom:0.75rem;">◉</div>
+                  <div style="font-family:var(--font-display);font-size:1.2rem;font-weight:300;color:rgba(201,168,76,0.5);letter-spacing:0.1em;">ORBIT</div>
+                </div>
+              </div>
+              <div class="project-card__overlay">
+                <div class="project-card__meta"><span class="project-card__category">Brand</span></div>
+                <h2 style="font-family:var(--font-display);font-size:var(--text-xl);font-weight:400;color:white;">Orbit Identity</h2>
+              </div>
+            </div>
+            <div class="project-card__info">
+              <h2 class="project-card__title">Orbit Identity</h2>
+              <p class="project-card__subtitle">Brand Film · 2024 · Orbit Creative</p>
+            </div>
+          </article>
+
+          <!-- Music 2 -->
+          <article class="project-card reveal reveal-delay-2" data-category="music">
+            <div class="project-card__media">
+              <div style="position:absolute;inset:0;background:linear-gradient(135deg,#180018 0%,#280028 100%);display:flex;align-items:center;justify-content:center;">
+                <div style="text-align:center;padding:2rem;">
+                  <div style="font-size:3rem;opacity:0.2;margin-bottom:0.75rem;">♭</div>
+                  <div style="font-family:var(--font-display);font-size:1.2rem;font-weight:300;color:rgba(201,168,76,0.5);letter-spacing:0.1em;">SHADOWS</div>
+                </div>
+              </div>
+              <div class="project-card__overlay">
+                <div class="project-card__meta"><span class="project-card__category">Music Video</span></div>
+                <h2 style="font-family:var(--font-display);font-size:var(--text-xl);font-weight:400;color:white;">Elara — "Shadows"</h2>
+              </div>
+            </div>
+            <div class="project-card__info">
+              <h2 class="project-card__title">Elara — "Shadows"</h2>
+              <p class="project-card__subtitle">Music Video · 2023</p>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta-section section" aria-label="Work page call to action">
+      <div class="container" style="text-align:center; position:relative; z-index:1;">
+        <span class="eyebrow reveal">Start a Project</span>
+        <h2 class="text-hero reveal reveal-delay-2" style="font-family:var(--font-display); font-weight:300; margin-top:0.5rem;">
+          Have a vision?<br><em style="font-style:italic; color:var(--color-accent-gold);">Let's make it real.</em>
+        </h2>
+        <div class="reveal reveal-delay-3" style="margin-top:var(--space-xl);">
+          <a href="contact.html" class="btn btn-primary" style="padding:1em 2.8em; font-size:var(--text-md);">Get in Touch</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer" role="contentinfo">
+    <div class="container">
+      <div style="display:flex; justify-content:space-between; align-items:center; padding-bottom:var(--space-lg); border-bottom:1px solid var(--color-border); margin-bottom:var(--space-lg);">
+        <div class="footer__logo">Project <span>Stardust</span></div>
+        <div style="display:flex; gap:var(--space-xl);">
+          <a href="index.html" class="footer__link">Home</a>
+          <a href="work.html" class="footer__link">Work</a>
+          <a href="about.html" class="footer__link">About</a>
+          <a href="contact.html" class="footer__link">Contact</a>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <p class="footer__copy">© 2026 Project Stardust. All rights reserved.</p>
+        <div class="footer__socials">
+          <a href="#" class="footer__social" aria-label="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073z"/></svg></a>
+          <a href="#" class="footer__social" aria-label="X/Twitter"><svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

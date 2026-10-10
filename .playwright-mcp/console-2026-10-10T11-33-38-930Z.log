@@ -1,0 +1,5 @@
+[     350ms] [WARNING] Allow attribute will take precedence over 'allowfullscreen'. @ http://localhost:8080/:1167
+[     554ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://localhost:8080/assets/images/project-2.png:0
+[  118216ms] [WARNING] Allow attribute will take precedence over 'allowfullscreen'. @ http://localhost:8080/:1167
+[  118696ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://localhost:8080/assets/images/project-2.png:0
+[  500828ms] Failed to resolve module specifier "three". Relative references must start with either "/", "./", or "../".

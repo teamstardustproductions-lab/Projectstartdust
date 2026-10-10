@@ -1,0 +1,2 @@
+[     707ms] [WARNING] Allow attribute will take precedence over 'allowfullscreen'. @ http://localhost:3000/:1231
+[  205614ms] [LOG] Checking elements: {paperSection: section#paper-reveal.paper-reveal-section, frame: div.cinematic-widescreen-frame, pillText: span.aspect-pill-text, worksGrid: div.portfolio-4by3-grid, workCards: 4} @ :8

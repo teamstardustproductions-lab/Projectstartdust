@@ -1,0 +1,4 @@
+[     253ms] [WARNING] Allow attribute will take precedence over 'allowfullscreen'. @ http://localhost:3000/:1231
+[ 1524062ms] [WARNING] [.WebGL-0xc00a6e000] GL_CONTEXT_LOST_KHR: glDebugMessageCallbackKHR: Context has been lost. @ http://localhost:3000/:0
+[ 1527770ms] [WARNING] WebGL: CONTEXT_LOST_WEBGL: loseContext: context lost @ http://localhost:3000/:0
+[ 1527860ms] [LOG] THREE.WebGLRenderer: Context Lost. @ https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js:29093

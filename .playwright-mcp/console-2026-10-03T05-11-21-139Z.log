@@ -1,0 +1,4 @@
+[     293ms] [WARNING] Allow attribute will take precedence over 'allowfullscreen'. @ http://localhost:3000/:1231
+[     430ms] [LOG] [PinScroll] Timeline successfully registered on #paper-reveal @ http://localhost:3000/js/scroll.js:193
+[ 1509007ms] [WARNING] Allow attribute will take precedence over 'allowfullscreen'. @ http://localhost:3000/:1231
+[ 1509475ms] [LOG] [PinScroll] Timeline successfully registered on #paper-reveal @ http://localhost:3000/js/scroll.js:194

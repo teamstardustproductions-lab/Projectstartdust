@@ -1,0 +1,414 @@
+- generic [active] [ref=f4e1]:
+  - banner:
+    - generic [ref=f4e2]:
+      - generic [ref=f4e4]:
+        - button "Toggle menu" [ref=f4e5] [cursor=pointer]:
+          - generic [ref=f4e9]: Menu
+        - link "Project Stardust — Home" [ref=f4e10] [cursor=pointer]:
+          - /url: index.html
+          - text: STARDUST
+        - generic [ref=f4e11]:
+          - link "Work" [ref=f4e12] [cursor=pointer]:
+            - /url: work.html
+          - link "Join" [ref=f4e13] [cursor=pointer]:
+            - /url: contact.html
+      - button "Explore Showreel 2026" [ref=f4e14] [cursor=pointer]:
+        - generic [ref=f4e15]:
+          - generic [ref=f4e16]:
+            - generic [ref=f4e17]: EXPLORE SHOWREEL 2026
+            - generic [ref=f4e18]: ✦
+            - generic [ref=f4e19]: STARDUST CREATIVE PRODUCTIONS
+            - generic [ref=f4e20]: ✦
+            - generic [ref=f4e21]: 20+ CINEMATIC PROJECTS
+            - generic [ref=f4e22]: ✦
+            - generic [ref=f4e23]: DIRECTOR JOEFOS & JIYAD
+            - generic [ref=f4e24]: ✦
+          - generic [aria-hidden] [ref=f4e25]:
+            - generic [ref=f4e26]: EXPLORE SHOWREEL 2026
+            - generic [ref=f4e27]: ✦
+            - generic [ref=f4e28]: STARDUST CREATIVE PRODUCTIONS
+            - generic [ref=f4e29]: ✦
+            - generic [ref=f4e30]: 20+ CINEMATIC PROJECTS
+            - generic [ref=f4e31]: ✦
+            - generic [ref=f4e32]: DIRECTOR JOEFOS & JIYAD
+            - generic [ref=f4e33]: ✦
+  - main [ref=f4e34]:
+    - region "Hero" [ref=f4e35]:
+      - generic [aria-hidden] [ref=f4e36]: "[ 35MM T1.5 CINE OPTICS ]"
+      - generic [aria-hidden] [ref=f4e37]: "[ 8K OPTICAL GLASS ]"
+      - generic [ref=f4e39]:
+        - generic [ref=f4e40]:
+          - generic [ref=f4e41]: PROJECT STARDUST STUDIO
+          - generic [ref=f4e42]: CINEMATIC ENTERTAINMENT
+        - generic [ref=f4e43]:
+          - heading "Stardust Among the World" [level=1] [ref=f4e44]: STARDUST
+          - generic [ref=f4e45]: among the world
+        - generic:
+          - generic "Interactive 3D Camera Lens"
+          - generic [aria-hidden]:
+            - generic: 35MM ANAMORPHIC CINE OPTICS
+        - generic "Film production credits" [ref=f4e46]:
+          - paragraph [ref=f4e47]:
+            - text: DIRECTOR
+            - strong [ref=f4e48]: JOEFOS
+            - text: ▪ CINEMATOGRAPHY
+            - strong [ref=f4e49]: JIYAD
+            - text: ▪ EDITOR
+            - strong [ref=f4e50]: JOEFOS
+            - text: ▪ EXECUTIVE
+            - strong [ref=f4e51]: PROJECT STARDUST
+          - paragraph [ref=f4e52]:
+            - text: PRODUCTION BY
+            - strong [ref=f4e53]: STARDUST CREATIVE
+            - text: ▪ WRITTEN BY
+            - strong [ref=f4e54]: JIYAD
+            - text: ▪ SOUND DESIGN
+            - strong [ref=f4e55]: JOEFOS
+            - text: ▪ GAFFER
+            - strong [ref=f4e56]: JIYAD
+          - paragraph [aria-hidden] [ref=f4e57]: COMMERCIAL FILMS ▪ FEATURE DOCUMENTARIES ▪ BRAND STORIES ▪ WORLDWIDE PRODUCTION
+        - generic [ref=f4e58]:
+          - link "Explore Work" [ref=f4e59] [cursor=pointer]:
+            - /url: work.html
+          - link "▶ Watch Reel" [ref=f4e60] [cursor=pointer]:
+            - /url: "#showreel"
+    - region "Precision Optics Showcase" [ref=f4e62]:
+      - generic [ref=f4e63]:
+        - generic [aria-hidden] [ref=f4e65]: 35MM ANAMORPHIC CINE OPTICS
+        - generic [ref=f4e66]:
+          - generic [ref=f4e67]:
+            - text: "[ PRECISION OPTICS SPECS ]"
+            - heading "CRAFTED FOR CINEMATIC IMMERSION" [level=2] [ref=f4e68]
+          - generic [ref=f4e69]:
+            - generic:
+              - generic:
+                - generic: SPEC 01 / 03
+                - generic: ANAMORPHIC CINE
+              - generic:
+                - generic: "01"
+                - generic:
+                  - heading "8K ANAMORPHIC GLASS" [level=3]
+                  - paragraph: Dual-coated spherical optical elements delivering zero-chromatic aberration and iconic horizontal anamorphic streak glare.
+                  - generic:
+                    - generic: 8K RESOLUTION
+                    - generic: ZERO ABERRATION
+            - generic:
+              - generic:
+                - generic: SPEC 02 / 03
+                - generic: IRIS SYSTEM
+              - generic:
+                - generic: "02"
+                - generic:
+                  - heading "T1.5 ULTRA-FAST APERTURE" [level=3]
+                  - paragraph: 11-blade circular iris engineering razor-thin depth of field with silky cinematic background bokeh for extreme low-light scenes.
+                  - generic:
+                    - generic: T1.5 FAST IRIS
+                    - generic: 11-BLADE BOKEH
+            - generic:
+              - generic:
+                - generic: SPEC 03 / 03
+                - generic: CHASSIS BUILD
+              - generic:
+                - generic: "03"
+                - generic:
+                  - heading "AEROSPACE TITANIUM HOUSING" [level=3]
+                  - paragraph: Precision CNC-milled casing built for thermal stability and high-vibration handheld cinema camera rigs.
+                  - generic:
+                    - generic: TITANIUM CNC
+                    - generic: THERMAL STABLE
+    - region "Selected Portfolio Archive" [ref=f4e70]:
+      - generic [ref=f4e71]:
+        - generic [ref=f4e72]:
+          - generic [ref=f4e73]:
+            - generic [ref=f4e74]: "[ STARDUST STUDIO / 03 ]"
+            - generic [ref=f4e75]: WORLDWIDE CINEMATOGRAPHY
+          - generic [ref=f4e76]:
+            - generic [ref=f4e77]: "[ SELECTED WORKS 2026 ]"
+            - generic [ref=f4e78]: LOS ANGELES / TOKYO
+        - generic [ref=f4e80]:
+          - generic [aria-hidden]: ┌
+          - generic [aria-hidden]: ┐
+          - generic [aria-hidden]: └
+          - generic [aria-hidden]: ┘
+          - generic [ref=f4e81]:
+            - generic [ref=f4e82]: "2.39 : 1 ANAMORPHIC CINE SCOPE"
+            - generic [ref=f4e85]: 8K RAW // 120 FPS MASTERS
+          - generic [ref=f4e86]:
+            - generic [ref=f4e87]: "[ FEATURED SHOWCASE ARCHIVE ]"
+            - heading "S E L E C T E D P o r t f o l i o" [level=2] [ref=f4e88]:
+              - generic [ref=f4e89]:
+                - generic [ref=f4e90]: S
+                - generic [ref=f4e91]: E
+                - generic [ref=f4e92]: L
+                - generic [ref=f4e93]: E
+                - generic [ref=f4e94]: C
+                - generic [ref=f4e95]: T
+                - generic [ref=f4e96]: E
+                - generic [ref=f4e97]: D
+              - emphasis [ref=f4e98]:
+                - generic [ref=f4e99]: P
+                - generic [ref=f4e100]: o
+                - generic [ref=f4e101]: r
+                - generic [ref=f4e102]: t
+                - generic [ref=f4e103]: f
+                - generic [ref=f4e104]: o
+                - generic [ref=f4e105]: l
+                - generic [ref=f4e106]: i
+                - generic [ref=f4e107]: o
+            - paragraph [ref=f4e108]: A monumental 8K archive of feature films, commercial campaigns, and anamorphic brand stories engineered for global screens.
+          - generic [ref=f4e109]:
+            - generic [ref=f4e110]:
+              - generic [ref=f4e111]: STATUS
+              - generic [ref=f4e112]: 20+ FEATURED PRODUCTIONS
+            - link "EXPLORE PORTFOLIO GALLERY" [ref=f4e113] [cursor=pointer]:
+              - /url: work.html
+        - generic [ref=f4e117]:
+          - generic [ref=f4e118]: 34.0522° N
+          - generic [ref=f4e119]: 118.2437° W
+    - generic [ref=f4e121]:
+      - generic [ref=f4e122]: We Craft Cinematic Excellence
+      - generic [ref=f4e124]: Visual Stories That Move
+      - generic [ref=f4e126]: Film · Commercial · Brand · Documentary
+      - generic [ref=f4e128]: 200+ Projects Delivered
+      - generic [ref=f4e130]: Frame by Frame. Story by Story.
+      - generic [aria-hidden] [ref=f4e132]: We Craft Cinematic Excellence
+      - generic [aria-hidden] [ref=f4e134]: Visual Stories That Move
+      - generic [aria-hidden] [ref=f4e136]: Film · Commercial · Brand · Documentary
+      - generic [aria-hidden] [ref=f4e138]: 200+ Projects Delivered
+      - generic [aria-hidden] [ref=f4e140]: Frame by Frame. Story by Story.
+    - region "Showreel" [ref=f4e142]:
+      - generic [ref=f4e143]:
+        - generic [ref=f4e144]:
+          - generic [ref=f4e145]: Our Reel
+          - heading "See what we're made of." [level=2] [ref=f4e146]
+        - button "Play Project Stardust showreel" [ref=f4e147] [cursor=pointer]:
+          - img "Project Stardust showreel — cinematic production highlight" [ref=f4e148]
+          - button "Play showreel" [ref=f4e150]
+        - generic "Clients we've worked with" [ref=f4e154]:
+          - generic [ref=f4e155]:
+            - generic [ref=f4e156]: Apex Studios
+            - generic [ref=f4e159]: Luminary Brands
+            - generic [ref=f4e162]: Nova Pictures
+            - generic [ref=f4e165]: Celestial Media
+            - generic [ref=f4e168]: Orbit Creative
+            - generic [ref=f4e171]: Zenith Films
+            - generic [aria-hidden] [ref=f4e174]: Apex Studios
+            - generic [aria-hidden] [ref=f4e177]: Luminary Brands
+            - generic [aria-hidden] [ref=f4e180]: Nova Pictures
+            - generic [aria-hidden] [ref=f4e183]: Celestial Media
+            - generic [aria-hidden] [ref=f4e186]: Orbit Creative
+            - generic [aria-hidden] [ref=f4e189]: Zenith Films
+    - region "Our services" [ref=f4e192]:
+      - generic [ref=f4e193]:
+        - generic [ref=f4e194]:
+          - generic [ref=f4e195]: What We Do
+          - heading [level=2] [ref=f4e196]:
+            - text: Full-spectrum
+            - emphasis [ref=f4e197]: production.
+        - generic [ref=f4e198]:
+          - tablist "Service categories" [ref=f4e199]:
+            - tab "Film Production" [selected] [ref=f4e200] [cursor=pointer]
+            - tab "Commercial" [ref=f4e201] [cursor=pointer]
+            - tab "Brand Films" [ref=f4e202] [cursor=pointer]
+            - tab "Music Videos" [ref=f4e203] [cursor=pointer]
+            - tab "Documentary" [ref=f4e204] [cursor=pointer]
+          - tabpanel "Film Production" [ref=f4e205]:
+            - generic [ref=f4e213]:
+              - heading "Feature-level production quality for every frame." [level=3] [ref=f4e214]
+              - paragraph [ref=f4e215]: From pre-production through final color grade, we handle every technical aspect of film production. Our team of directors, cinematographers, and editors work in harmony to deliver cinematic results.
+              - list [ref=f4e216]:
+                - listitem [ref=f4e217]:
+                  - generic [ref=f4e218]: —
+                  - text: Full crew production
+                - listitem [ref=f4e219]:
+                  - generic [ref=f4e220]: —
+                  - text: RED & ARRI camera systems
+                - listitem [ref=f4e221]:
+                  - generic [ref=f4e222]: —
+                  - text: Color grade & VFX finishing
+              - link "See Film Work" [ref=f4e223] [cursor=pointer]:
+                - /url: work.html
+    - region "Featured work" [ref=f4e227]:
+      - generic [ref=f4e228]:
+        - generic [ref=f4e229]:
+          - generic [ref=f4e230]:
+            - text: Selected Work
+            - heading [level=2] [ref=f4e231]:
+              - text: Featured
+              - emphasis [ref=f4e232]: projects.
+          - link "View All Work" [ref=f4e233] [cursor=pointer]:
+            - /url: work.html
+        - generic [ref=f4e237]:
+          - article [ref=f4e238] [cursor=pointer]:
+            - generic [ref=f4e239]:
+              - 'img "Project: Echoes — A cinematic short film about urban isolation" [ref=f4e240]'
+              - generic [ref=f4e241]:
+                - generic [ref=f4e242]: Film
+                - heading "Echoes" [level=3] [ref=f4e244]
+                - paragraph [ref=f4e245]: A short film about urban isolation and human connection in the modern age.
+            - generic [ref=f4e246]:
+              - heading "Echoes" [level=3] [ref=f4e247]
+              - paragraph [ref=f4e248]: Short Film · 2026
+          - article [ref=f4e249] [cursor=pointer]:
+            - generic [ref=f4e250]:
+              - generic [ref=f4e252]:
+                - generic [ref=f4e253]: 🏎
+                - generic [ref=f4e254]: APEX
+                - generic [ref=f4e255]: Automotive
+              - generic [ref=f4e256]:
+                - generic [ref=f4e257]: Commercial
+                - heading "Apex Drive" [level=3] [ref=f4e259]
+                - paragraph [ref=f4e260]: 30-second automotive commercial for Apex Motors global campaign.
+            - generic [ref=f4e261]:
+              - heading "Apex Drive" [level=3] [ref=f4e262]
+              - paragraph [ref=f4e263]: Commercial · 2025
+          - article [ref=f4e264] [cursor=pointer]:
+            - generic [ref=f4e265]:
+              - generic [ref=f4e267]:
+                - generic [ref=f4e268]: ⬡
+                - generic [ref=f4e269]: LUMINARY
+                - generic [ref=f4e270]: Brand Film
+              - generic [ref=f4e271]:
+                - generic [ref=f4e272]: Brand
+                - heading "Luminary Origins" [level=3] [ref=f4e274]
+                - paragraph [ref=f4e275]: Brand origin film exploring the philosophy behind Luminary's founding vision.
+            - generic [ref=f4e276]:
+              - heading "Luminary Origins" [level=3] [ref=f4e277]
+              - paragraph [ref=f4e278]: Brand Film · 2025
+          - article [ref=f4e279] [cursor=pointer]:
+            - generic [ref=f4e280]:
+              - generic [ref=f4e282]:
+                - generic [ref=f4e283]: ♬
+                - generic [ref=f4e284]: NOVA
+                - generic [ref=f4e285]: Music Video · Dir. James Forte
+              - generic [ref=f4e294]:
+                - generic [ref=f4e295]: Music Video
+                - heading "Nova — \"Constellation\"" [level=3] [ref=f4e297]
+                - paragraph [ref=f4e298]: A concept music video exploring light, space, and memory. Directed by James Forte.
+            - generic [ref=f4e299]:
+              - generic [ref=f4e300]:
+                - heading "Nova — \"Constellation\"" [level=3] [ref=f4e301]
+                - paragraph [ref=f4e302]: Music Video · 2026
+              - link "View Project" [ref=f4e303]:
+                - /url: work.html
+    - region "Studio statistics" [ref=f4e307]:
+      - generic [ref=f4e309]:
+        - generic [ref=f4e310]:
+          - generic [ref=f4e311]: 200+
+          - generic [ref=f4e312]: Projects Delivered
+        - generic [ref=f4e313]:
+          - generic [ref=f4e314]: 50+
+          - generic [ref=f4e315]: Global Brands
+        - generic [ref=f4e316]:
+          - generic [ref=f4e317]: "8"
+          - generic [ref=f4e318]: Industry Awards
+        - generic [ref=f4e319]:
+          - generic [ref=f4e320]: "12"
+          - generic [ref=f4e321]: Years Crafting
+    - region "Our process" [ref=f4e322]:
+      - generic [ref=f4e323]:
+        - generic [ref=f4e324]:
+          - generic [ref=f4e325]: How We Work
+          - heading [level=2] [ref=f4e326]:
+            - text: Our creative
+            - emphasis [ref=f4e327]: process.
+          - paragraph [ref=f4e328]: Every great film starts with a conversation. Here's how we turn your vision into a cinematic reality.
+        - generic [ref=f4e329]:
+          - generic [ref=f4e330]:
+            - generic [ref=f4e331]: 01 / Discover
+            - heading "Brief & Vision" [level=3] [ref=f4e332]
+            - paragraph [ref=f4e333]: We start by deeply understanding your goals, audience, and the story you need to tell. This discovery phase shapes everything that follows.
+          - generic [ref=f4e334]:
+            - generic [ref=f4e335]: 02 / Develop
+            - heading "Concept & Script" [level=3] [ref=f4e336]
+            - paragraph [ref=f4e337]: From mood boards to storyboards and full scripts — we build the conceptual architecture of your film before a single frame is shot.
+          - generic [ref=f4e338]:
+            - generic [ref=f4e339]: 03 / Produce
+            - heading "Shoot & Direct" [level=3] [ref=f4e340]
+            - paragraph [ref=f4e341]: On set, our crew executes the vision with precision. Every lighting setup, camera move, and performance is guided by our cinematic eye.
+          - generic [ref=f4e342]:
+            - generic [ref=f4e343]: 04 / Deliver
+            - heading "Edit & Finish" [level=3] [ref=f4e344]
+            - paragraph [ref=f4e345]: Post-production is where films come alive. Color grading, sound design, VFX — we obsess over every detail until the final export is perfect.
+    - region "Client testimonials" [ref=f4e346]:
+      - generic [ref=f4e347]:
+        - generic [ref=f4e348]:
+          - generic [ref=f4e349]: What Clients Say
+          - heading "Trusted by brands who demand excellence." [level=2] [ref=f4e350]
+        - generic [ref=f4e351]:
+          - generic "Testimonial 1 of 3" [ref=f4e352]:
+            - blockquote [ref=f4e353]:
+              - paragraph [ref=f4e354]: "\"Project Stardust didn't just produce our brand film — they elevated our entire visual identity. The attention to cinematic detail is unlike anything we've experienced.\""
+              - generic [ref=f4e355]:
+                - generic [ref=f4e356]: Sarah Chen
+                - generic [ref=f4e357]: CMO, Luminary Brands
+          - tablist "Testimonial navigation" [ref=f4e358]:
+            - button "Go to testimonial 1" [ref=f4e359] [cursor=pointer]
+            - button "Go to testimonial 2" [ref=f4e360] [cursor=pointer]
+            - button "Go to testimonial 3" [ref=f4e361] [cursor=pointer]
+    - region "Call to action" [ref=f4e362]:
+      - generic [ref=f4e363]:
+        - generic [ref=f4e364]: Let's Create Together
+        - heading [level=2] [ref=f4e365]:
+          - text: Ready to tell your
+          - emphasis [ref=f4e366]: story?
+        - generic [ref=f4e367]:
+          - link "Start a Project" [ref=f4e368] [cursor=pointer]:
+            - /url: contact.html
+          - link "See Our Work" [ref=f4e369] [cursor=pointer]:
+            - /url: work.html
+  - contentinfo [ref=f4e373]:
+    - generic [ref=f4e374]:
+      - generic [ref=f4e375]:
+        - generic [ref=f4e376]:
+          - generic [ref=f4e377]: Project Stardust
+          - paragraph [ref=f4e378]: A cinematic production company crafting visual stories that move brands, audiences, and culture.
+        - navigation "Work footer links" [ref=f4e379]:
+          - generic [ref=f4e380]: Work
+          - link "Film Production" [ref=f4e381] [cursor=pointer]:
+            - /url: work.html
+          - link "Commercials" [ref=f4e382] [cursor=pointer]:
+            - /url: work.html
+          - link "Brand Films" [ref=f4e383] [cursor=pointer]:
+            - /url: work.html
+          - link "Music Videos" [ref=f4e384] [cursor=pointer]:
+            - /url: work.html
+          - link "Documentary" [ref=f4e385] [cursor=pointer]:
+            - /url: work.html
+        - navigation "Studio footer links" [ref=f4e386]:
+          - generic [ref=f4e387]: Studio
+          - link "About" [ref=f4e388] [cursor=pointer]:
+            - /url: about.html
+          - link "Team" [ref=f4e389] [cursor=pointer]:
+            - /url: about.html#team
+          - link "Values" [ref=f4e390] [cursor=pointer]:
+            - /url: about.html#values
+          - link "Contact" [ref=f4e391] [cursor=pointer]:
+            - /url: contact.html
+        - generic [ref=f4e392]:
+          - generic [ref=f4e393]: Connect
+          - link "hello@projectstardust.com" [ref=f4e394] [cursor=pointer]:
+            - /url: mailto:hello@projectstardust.com
+          - link "+1 555 123 4567" [ref=f4e395] [cursor=pointer]:
+            - /url: tel:+15551234567
+          - generic [ref=f4e396]:
+            - generic [ref=f4e397]: Follow
+            - generic [ref=f4e398]:
+              - link "Follow Project Stardust on Instagram" [ref=f4e399] [cursor=pointer]:
+                - /url: "#"
+              - link "Follow Project Stardust on X/Twitter" [ref=f4e402] [cursor=pointer]:
+                - /url: "#"
+              - link "Watch Project Stardust work on Vimeo" [ref=f4e405] [cursor=pointer]:
+                - /url: "#"
+              - link "Connect with Project Stardust on LinkedIn" [ref=f4e408] [cursor=pointer]:
+                - /url: "#"
+      - generic [ref=f4e411]:
+        - paragraph [ref=f4e412]: © 2026 Project Stardust. All rights reserved.
+        - generic [ref=f4e413]:
+          - link "Privacy Policy" [ref=f4e414] [cursor=pointer]:
+            - /url: "#"
+          - link "Terms of Service" [ref=f4e415] [cursor=pointer]:
+            - /url: "#"
+  - dialog [aria-hidden]:
+    - button
+    - iframe [ref=f4e416]

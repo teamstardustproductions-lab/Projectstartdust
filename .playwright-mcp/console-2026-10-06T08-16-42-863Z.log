@@ -1,0 +1,6 @@
+[     740ms] [WARNING] Allow attribute will take precedence over 'allowfullscreen'. @ http://localhost:3000/:1162
+[  116575ms] TypeError: Failed to execute 'scrollIntoView' on 'Element': Failed to read the 'block' property from 'ScrollIntoViewOptions': The provided value 'top' is not a valid enum value of type ScrollLogicalPosition.
+    at eval (eval at <anonymous> (eval at evaluate (:368:30)), <anonymous>:3:8)
+    at eval (eval at evaluate (:368:30), <anonymous>:4:50)
+    at UtilityScript.evaluate (<anonymous>:370:16)
+    at UtilityScript.<anonymous> (<anonymous>:1:44)
