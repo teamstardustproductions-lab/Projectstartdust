@@ -1,0 +1,1192 @@
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KINETIC // Social Media & Portfolio Hub</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+            display: ['Inter', 'system-ui', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          colors: {
+            neon: {
+              DEFAULT: '#B77BFF',
+              dim: '#7C3AED',
+              glow: 'rgba(183, 123, 255, 0.38)',
+              soft: 'rgba(168, 85, 247, 0.08)'
+            },
+            obsidian: {
+              DEFAULT: '#05030A',
+              card: 'rgba(11, 7, 20, 0.62)',
+              border: 'rgba(183, 123, 255, 0.14)'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    :root {
+      --neon: #B77BFF;
+      --neon-bright: #E9D5FF;
+      --neon-deep: #7C3AED;
+      --neon-rgb: 183, 123, 255;
+      --bg-dark: #05030A;
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    html, body {
+      height: 100%;
+      background-color: var(--bg-dark);
+      color: #F5F3FF;
+      font-family: 'Inter', sans-serif;
+      overflow: hidden;
+    }
+
+    ::selection {
+      background: #B77BFF;
+      color: #05030A;
+    }
+
+    /* Premium Dark Violet Motion Graphics Background Grid Layers */
+    .mg-grid-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 26% 50%, rgba(139, 92, 246, 0.16) 0%, rgba(124, 58, 237, 0.04) 42%, transparent 72%),
+        radial-gradient(circle at 82% 22%, rgba(192, 132, 252, 0.08) 0%, transparent 55%),
+        radial-gradient(circle at 50% 100%, rgba(88, 28, 135, 0.12) 0%, transparent 60%),
+        #05030A;
+    }
+
+    .mg-grid-plane {
+      position: absolute;
+      inset: -45%;
+      background-size: 64px 64px;
+      background-image:
+        linear-gradient(to right, rgba(183, 123, 255, 0.085) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(183, 123, 255, 0.085) 1px, transparent 1px);
+      transform: perspective(920px) rotateX(58deg) rotateZ(-14deg) translateY(-6%);
+      transform-origin: center center;
+      animation: gridDrift 20s linear infinite;
+      mask-image: radial-gradient(ellipse at 42% 50%, rgba(0,0,0,0.95) 12%, rgba(0,0,0,0.38) 58%, transparent 84%);
+      -webkit-mask-image: radial-gradient(ellipse at 42% 50%, rgba(0,0,0,0.95) 12%, rgba(0,0,0,0.38) 58%, transparent 84%);
+    }
+
+    .mg-subgrid-overlay {
+      position: absolute;
+      inset: 0;
+      background-size: 128px 128px;
+      background-image:
+        linear-gradient(to right, rgba(183, 123, 255, 0.035) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(183, 123, 255, 0.035) 1px, transparent 1px);
+      mask-image: radial-gradient(circle at 45% 50%, black 20%, transparent 88%);
+      -webkit-mask-image: radial-gradient(circle at 45% 50%, black 20%, transparent 88%);
+    }
+
+    @keyframes gridDrift {
+      0% {
+        background-position: 0px 0px;
+      }
+      100% {
+        background-position: 64px 128px;
+      }
+    }
+
+    /* Subtle Motion Scanline sheen */
+    .mg-scanlines {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      background: repeating-linear-gradient(
+        to bottom,
+        transparent 0px,
+        transparent 3px,
+        rgba(183, 123, 255, 0.01) 4px
+      );
+    }
+
+    /* FULL-SCREEN UNBOXED 3D Kinetic Drum Stage */
+    .kinetic-stage {
+      position: relative;
+      height: calc(100vh - 7rem);
+      min-height: 480px;
+      max-height: 860px;
+      width: 100%;
+      perspective: 1200px;
+      user-select: none;
+      overflow: visible;
+      mask-image: linear-gradient(
+        to bottom,
+        transparent 0%,
+        rgba(0, 0, 0, 0.35) 10%,
+        #000 28%,
+        #000 72%,
+        rgba(0, 0, 0, 0.35) 90%,
+        transparent 100%
+      );
+      -webkit-mask-image: linear-gradient(
+        to bottom,
+        transparent 0%,
+        rgba(0, 0, 0, 0.35) 10%,
+        #000 28%,
+        #000 72%,
+        rgba(0, 0, 0, 0.35) 90%,
+        transparent 100%
+      );
+    }
+
+    @media (max-width: 768px) {
+      .kinetic-stage {
+        height: 58vh;
+        min-height: 380px;
+      }
+    }
+
+    .kinetic-item {
+      position: absolute;
+      left: 0;
+      top: 50%;
+      width: 100%;
+      transform-origin: left center;
+      will-change: transform, filter, opacity;
+      transition:
+        transform 0.62s cubic-bezier(0.18, 0.89, 0.22, 1.03),
+        filter 0.62s cubic-bezier(0.18, 0.89, 0.22, 1),
+        opacity 0.58s ease,
+        color 0.35s ease;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      padding-left: 0.25rem;
+    }
+
+    .kinetic-arrow {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: #C084FC;
+      margin-right: 0.85rem;
+      transform: translateX(-24px) scale(0.72);
+      opacity: 0;
+      transition:
+        transform 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+        opacity 0.38s ease,
+        filter 0.38s ease;
+      filter: drop-shadow(0 0 24px rgba(183, 123, 255, 0.85));
+      flex-shrink: 0;
+    }
+
+    .kinetic-item.is-active .kinetic-arrow {
+      transform: translateX(0) scale(1);
+      opacity: 1;
+    }
+
+    .kinetic-word {
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 0.98;
+      color: #B77BFF;
+      white-space: nowrap;
+      transition: text-shadow 0.45s ease, color 0.35s ease, transform 0.35s ease;
+    }
+
+    .kinetic-item.is-active .kinetic-word {
+      color: #C490FF;
+      text-shadow:
+        0 0 42px rgba(168, 85, 247, 0.62),
+        0 0 12px rgba(216, 180, 254, 0.35);
+    }
+
+    .kinetic-item:hover:not(.is-active) .kinetic-word {
+      color: #D8B4FE;
+      text-shadow: 0 0 20px rgba(183, 123, 255, 0.45);
+    }
+
+    /* Ultra-Minimal Translucent Violet Surface */
+    .neon-card {
+      background: rgba(11, 7, 20, 0.55);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(183, 123, 255, 0.14);
+      transition: all 0.28s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    .neon-card:hover {
+      border-color: rgba(183, 123, 255, 0.38);
+      box-shadow: 0 10px 34px -14px rgba(139, 92, 246, 0.25);
+    }
+  </style>
+</head>
+<body class="h-screen w-screen relative selection:bg-neon selection:text-black overflow-hidden flex flex-col justify-between">
+
+  <!-- MOTION GRAPHICS BACKGROUND GRID & INTERACTIVE CANVAS -->
+  <div class="mg-grid-backdrop" aria-hidden="true">
+    <div id="gridPlane" class="mg-grid-plane"></div>
+    <div class="mg-subgrid-overlay"></div>
+    <canvas id="mgCanvas" class="absolute inset-0 w-full h-full opacity-80"></canvas>
+  </div>
+  <div class="mg-scanlines" aria-hidden="true"></div>
+
+  <!-- MAIN REEL CONTAINER -->
+  <main class="relative z-10 w-full h-full flex flex-col justify-between p-4 sm:p-8 lg:px-14 overflow-hidden">
+    <!-- Ambient Deep Violet Backlight behind the unboxed reel -->
+    <div class="absolute left-[10%] top-1/2 -translate-y-1/2 w-[28rem] h-[28rem] rounded-full bg-purple-600/20 blur-[140px] pointer-events-none"></div>
+
+    <!-- Subtle Top Filter Bar (Floating, No Box) -->
+    <div class="relative z-20 max-w-7xl w-full mx-auto flex flex-wrap items-center justify-between gap-2 text-[11px] font-mono text-neutral-400 shrink-0">
+      <div class="flex items-center gap-2">
+        <span class="inline-block w-1.5 h-1.5 rounded-full bg-neon animate-ping"></span>
+        <span class="text-neon font-semibold">KINETIC FOCUS</span>
+        <span class="text-neutral-600">//</span>
+        <span id="activeIndexCounter" class="text-neutral-300">01/17</span>
+      </div>
+
+      <div class="flex flex-wrap items-center gap-2" role="group" aria-label="Kinetic Wheel Mode">
+        <button type="button" data-wheel-filter="all" class="wheel-filter-btn px-2.5 py-1 rounded-full bg-neon text-[#05030A] font-semibold transition text-[11px]">
+          All (Social + Video Reel)
+        </button>
+        <button type="button" data-wheel-filter="social" class="wheel-filter-btn px-2.5 py-1 rounded-full bg-white/[0.04] hover:bg-white/10 text-neutral-300 transition text-[11px]">
+          Socials & Portfolio Only
+        </button>
+        <button type="button" data-wheel-filter="video" class="wheel-filter-btn px-2.5 py-1 rounded-full bg-white/[0.04] hover:bg-white/10 text-neutral-300 transition text-[11px]">
+          Original Video Reel (11)
+        </button>
+        <button id="toggleSoundBtn" type="button" class="px-2.5 py-1 rounded-full border border-white/10 bg-white/[0.03] hover:border-neon/40 text-neutral-300 hover:text-neon text-[11px] font-mono flex items-center gap-1.5 transition ml-1" title="Toggle rhythmic motion sound">
+          <span id="soundDot" class="w-1.5 h-1.5 rounded-full bg-neutral-500"></span>
+          <span id="soundLabel">SFX: OFF</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- FULL-SCREEN STAGE: UNBOXED KINETIC REEL + MINIMAL FLOATING INSPECTOR -->
+    <div class="relative z-10 max-w-7xl w-full mx-auto my-auto grid grid-cols-1 lg:grid-cols-12 items-center gap-6">
+
+      <!-- LEFT / MAIN: UNBOXED FULL-VIEWPORT 3D KINETIC DRUM (NO BOX, NO BORDER) -->
+      <div class="lg:col-span-8 relative">
+        <div id="kineticStage" class="kinetic-stage focus:outline-none" tabindex="0" aria-label="Interactive 3D Kinetic Link Wheel">
+          <!-- Populated dynamically by JS -->
+        </div>
+      </div>
+
+      <!-- RIGHT: ULTRA-MINIMAL FLOATING HUD FOR THE ACTIVE REEL ITEM -->
+      <div class="lg:col-span-4 flex flex-col items-start lg:items-end justify-center">
+        <div id="activeLinkCard" class="w-full max-w-sm rounded-2xl bg-[#090514]/70 backdrop-blur-xl border border-neon/20 p-5 space-y-4 shadow-[0_0_50px_rgba(124,58,237,0.15)]">
+          <div class="flex items-center justify-between gap-2 text-[10px] font-mono">
+            <span id="inspectorCategory" class="text-neon uppercase tracking-widest">PORTFOLIO SHOWCASE</span>
+            <span id="inspectorHandle" class="text-neutral-400">@volt.studio</span>
+          </div>
+
+          <div>
+            <div class="flex items-baseline gap-2 mb-1">
+              <span class="text-neon font-black text-xl">→</span>
+              <h1 id="inspectorTitle" class="text-2xl font-black tracking-tight text-white">Website</h1>
+            </div>
+            <p id="inspectorDesc" class="text-xs text-neutral-300/90 leading-relaxed line-clamp-2">
+              Interactive WebGL & high-conversion brand websites engineered with motion-first storytelling.
+            </p>
+          </div>
+
+          <!-- Compact Telemetry Sparkline -->
+          <div id="inspectorVisual" class="rounded-xl bg-black/50 border border-white/[0.07] px-3.5 py-2.5">
+            <!-- Populated by JS -->
+          </div>
+
+          <!-- Minimal Inline Metrics -->
+          <div class="grid grid-cols-3 gap-2 pt-1 border-t border-white/[0.08] text-left">
+            <div>
+              <div class="text-[9px] font-mono text-neutral-500">METRIC</div>
+              <div id="inspectorStat1" class="text-xs font-bold text-neon truncate">48+ Live</div>
+            </div>
+            <div>
+              <div class="text-[9px] font-mono text-neutral-500">REACH</div>
+              <div id="inspectorStat2" class="text-xs font-bold text-white truncate">99.4% Score</div>
+            </div>
+            <div>
+              <div class="text-[9px] font-mono text-neutral-500">STATUS</div>
+              <div id="inspectorStat3" class="text-xs font-bold text-neon truncate">Verified</div>
+            </div>
+          </div>
+
+          <!-- Clean Action Row -->
+          <div class="flex items-center gap-2 pt-1">
+            <button id="openDestinationBtn" type="button" class="flex-1 py-2.5 px-4 rounded-xl bg-neon text-[#05030A] font-extrabold text-xs tracking-tight hover:brightness-110 active:scale-[0.99] transition shadow-[0_0_24px_rgba(183,123,255,0.4)] flex items-center justify-center gap-1.5">
+              <span>Launch Destination</span>
+              <span>↗</span>
+            </button>
+            <button id="copyActiveUrlBtn" type="button" class="py-2.5 px-3 rounded-xl border border-white/15 bg-white/[0.04] hover:border-neon/50 hover:text-neon text-xs font-mono text-neutral-200 transition" title="Copy Link URL">
+              <span id="copyBtnText">Copy Link</span>
+            </button>
+            <button id="openQrModalBtn" type="button" class="py-2.5 px-2.5 rounded-xl border border-white/15 bg-white/[0.04] hover:border-neon/50 hover:text-neon text-xs font-mono text-neutral-200 transition" title="Show QR Code">
+              QR
+            </button>
+          </div>
+
+          <!-- Subtle Shortlink Line -->
+          <div class="flex items-center justify-between text-[10px] font-mono text-neutral-400 pt-1">
+            <code id="activeShortUrl" class="text-neon/90 truncate">volt.studio/website</code>
+            <button id="shareProfileBtn" type="button" class="hover:text-neon underline">Share Hub</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- BOTTOM FLOATING REEL TRANSPORT BAR (UNBOXED, MINIMAL) -->
+    <div class="relative z-20 max-w-7xl w-full mx-auto flex flex-wrap items-center justify-between gap-3 text-[11px] font-mono text-neutral-400 shrink-0">
+      <div class="flex items-center gap-1.5">
+        <button id="prevWheelBtn" type="button" class="w-7 h-7 rounded-full border border-white/15 bg-white/[0.03] hover:border-neon text-neutral-200 hover:text-neon flex items-center justify-center transition" title="Previous Item">
+          ↑
+        </button>
+        <button id="toggleAutoPlayBtn" type="button" class="px-3 h-7 rounded-full border border-neon/40 bg-neon/10 hover:bg-neon/20 text-neon flex items-center gap-1.5 transition" title="Pause or Resume Auto-Scroll">
+          <span id="autoPlayIcon">❚❚</span>
+          <span id="autoPlayText">AUTO</span>
+        </button>
+        <button id="nextWheelBtn" type="button" class="w-7 h-7 rounded-full border border-white/15 bg-white/[0.03] hover:border-neon text-neutral-200 hover:text-neon flex items-center justify-center transition" title="Next Item">
+          ↓
+        </button>
+        <span class="ml-2 hidden sm:inline text-neutral-500">SCROLL OR CLICK ANY WORD</span>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <span class="text-neutral-500">TEMPO:</span>
+        <button type="button" data-speed="2200" class="speed-btn text-neutral-400 hover:text-neon">SLOW</button>
+        <span class="text-neutral-700">/</span>
+        <button type="button" data-speed="1400" class="speed-btn text-neon font-bold underline">VIDEO (1.4s)</button>
+        <span class="text-neutral-700">/</span>
+        <button type="button" data-speed="850" class="speed-btn text-neutral-400 hover:text-neon">FAST</button>
+      </div>
+    </div>
+  </main>
+
+  <!-- MODAL 1: DESTINATION LAUNCHER / PREVIEW -->
+  <div id="destinationModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/80 backdrop-blur-md">
+    <div class="neon-card rounded-3xl max-w-lg w-full p-6 sm:p-8 relative border border-neon/40 shadow-[0_0_50px_rgba(168,85,247,0.25)]">
+      <button id="closeDestinationModalBtn" type="button" class="absolute top-5 right-5 w-8 h-8 rounded-lg bg-white/10 hover:bg-neon hover:text-black text-neutral-300 flex items-center justify-center font-mono transition">
+        ✕
+      </button>
+      <div class="text-xs font-mono text-neon uppercase tracking-widest mb-2" id="modalCategory">SOCIAL CHANNEL</div>
+      <h3 class="text-2xl sm:text-3xl font-black text-white mb-2 flex items-center gap-2">
+        <span class="text-neon">→</span>
+        <span id="modalTitle">Instagram</span>
+      </h3>
+      <p id="modalDescription" class="text-sm text-neutral-300 mb-5 leading-relaxed"></p>
+
+      <div class="p-4 rounded-2xl bg-black/80 border border-white/10 mb-5 space-y-2 font-mono text-xs">
+        <div class="flex justify-between text-neutral-400">
+          <span>DIRECT URL:</span>
+          <span id="modalUrlText" class="text-neon truncate max-w-[240px]">https://instagram.com/volt.studio</span>
+        </div>
+        <div class="flex justify-between text-neutral-400">
+          <span>HANDLE / TAG:</span>
+          <span id="modalHandleText" class="text-white">@volt.studio</span>
+        </div>
+        <div class="flex justify-between text-neutral-400">
+          <span>HIGHLIGHT:</span>
+          <span id="modalStatText" class="text-neon">142K Followers</span>
+        </div>
+      </div>
+
+      <div class="flex flex-wrap gap-3">
+        <a id="modalExternalAnchor" href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="flex-1 py-3 px-4 rounded-xl bg-neon text-[#05030A] font-extrabold text-sm text-center hover:brightness-110 transition">
+          Open in New Tab ↗
+        </a>
+        <button id="modalCopyUrlBtn" type="button" class="py-3 px-4 rounded-xl border border-white/15 bg-white/5 hover:border-neon text-xs font-mono text-white transition">
+          Copy URL
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 2: QR CODE MODAL -->
+  <div id="qrModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/80 backdrop-blur-md">
+    <div class="neon-card rounded-3xl max-w-sm w-full p-6 text-center relative border border-neon/40">
+      <button id="closeQrModalBtn" type="button" class="absolute top-4 right-4 w-8 h-8 rounded-lg bg-white/10 hover:bg-neon hover:text-black text-neutral-300 flex items-center justify-center font-mono transition">
+        ✕
+      </button>
+      <div class="text-xs font-mono text-neon uppercase tracking-widest mb-1">INSTANT MOBILE SCAN</div>
+      <h3 id="qrModalTitle" class="text-xl font-black text-white mb-4">→ Website</h3>
+      <div id="qrSvgContainer" class="w-48 h-48 mx-auto rounded-2xl bg-neon p-4 flex items-center justify-center shadow-[0_0_35px_rgba(183,123,255,0.4)] mb-4">
+      </div>
+      <p id="qrModalUrl" class="text-xs font-mono text-neutral-400 mb-4 break-all">https://volt.studio/website</p>
+      <button id="qrCopyBtn" type="button" class="w-full py-2.5 rounded-xl bg-white/10 hover:bg-neon hover:text-black font-mono text-xs text-white font-semibold transition">
+        Copy Shareable Link
+      </button>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION -->
+  <div id="toastBanner" class="fixed bottom-5 right-5 z-50 pointer-events-none opacity-0 translate-y-3 transition-all duration-300">
+    <div class="px-4 py-3 rounded-xl bg-neon text-[#05030A] font-mono text-xs font-bold shadow-[0_0_30px_rgba(183,123,255,0.55)] flex items-center gap-2">
+      <span>→</span>
+      <span id="toastMessage">Link copied to clipboard!</span>
+    </div>
+  </div>
+
+  <!-- APPLICATION SCRIPT -->
+  <script>
+    (function () {
+      const DEFAULT_ITEMS = [
+        {
+          id: 'ads',
+          word: 'Ads',
+          category: 'services',
+          inVideo: true,
+          handle: '@volt.growth',
+          url: 'https://volt.studio/ads-campaigns',
+          shortUrl: 'volt.studio/ads',
+          stat1: '4.8x ROAS',
+          stat2: '$12M+ Scaled',
+          stat3: 'Meta & TikTok',
+          desc: 'High-velocity paid social & motion ad creatives engineered to stop the scroll within 0.8 seconds.'
+        },
+        {
+          id: 'growth',
+          word: 'Growth',
+          category: 'services',
+          inVideo: true,
+          handle: 'Growth Engine',
+          url: 'https://volt.studio/growth-systems',
+          shortUrl: 'volt.studio/growth',
+          stat1: '+310% YoY',
+          stat2: 'Full-Funnel',
+          stat3: 'CRO + Loops',
+          desc: 'Data-backed acquisition loops, landing page experiments, and viral retention mechanics.'
+        },
+        {
+          id: 'seo',
+          word: 'Seo',
+          category: 'services',
+          inVideo: true,
+          handle: 'Organic Search',
+          url: 'https://volt.studio/seo-architecture',
+          shortUrl: 'volt.studio/seo',
+          stat1: '#1 Rankings',
+          stat2: '2.4M Clicks',
+          stat3: 'Technical SEO',
+          desc: 'Programmatic SEO architecture, high-authority digital PR, and semantic content clusters.'
+        },
+        {
+          id: 'content',
+          word: 'Content',
+          category: 'social',
+          inVideo: true,
+          handle: '@volt.content',
+          url: 'https://youtube.com/@voltstudio',
+          shortUrl: 'volt.studio/content',
+          stat1: '18M+ Views',
+          stat2: '4K 60fps',
+          stat3: 'Daily Reels',
+          desc: 'Short-form kinetic typography reels, founder storytelling, and YouTube documentary breakdowns.'
+        },
+        {
+          id: 'marketing',
+          word: 'Marketing',
+          category: 'services',
+          inVideo: true,
+          handle: '360° Campaigns',
+          url: 'https://volt.studio/marketing',
+          shortUrl: 'volt.studio/marketing',
+          stat1: '92 Campaigns',
+          stat2: 'Global Reach',
+          stat3: 'Omnichannel',
+          desc: 'Integrated product launches combining creator partnerships, motion systems, and community drops.'
+        },
+        {
+          id: 'ranking',
+          word: 'Ranking',
+          category: 'services',
+          inVideo: true,
+          handle: 'SERP & AI Index',
+          url: 'https://volt.studio/ranking-report',
+          shortUrl: 'volt.studio/ranking',
+          stat1: 'Top 0.1%',
+          stat2: 'AI Search Ready',
+          stat3: 'Live Audit',
+          desc: 'Dominate search results and AI answer engines with structured authority and brand citations.'
+        },
+        {
+          id: 'profit',
+          word: 'Profit',
+          category: 'services',
+          inVideo: true,
+          handle: 'Revenue Ops',
+          url: 'https://volt.studio/profit-calculator',
+          shortUrl: 'volt.studio/profit',
+          stat1: '+64% Margin',
+          stat2: 'LTV : CAC 6:1',
+          stat3: 'Verified ROI',
+          desc: 'Unit-economics optimization turning creative attention and social traffic into net margin.'
+        },
+        {
+          id: 'journey',
+          word: 'Journey',
+          category: 'portfolio',
+          inVideo: true,
+          handle: 'Interactive Casebook',
+          url: 'https://volt.studio/journey',
+          shortUrl: 'volt.studio/journey',
+          stat1: '2019 → 2026',
+          stat2: '140+ Brands',
+          stat3: '14 Awards',
+          desc: 'Explore our studio timeline, behind-the-scenes motion experiments, and client transformations.'
+        },
+        {
+          id: 'website',
+          word: 'Website',
+          category: 'portfolio',
+          inVideo: true,
+          handle: 'WebGL & Next.js',
+          url: 'https://volt.studio/websites',
+          shortUrl: 'volt.studio/website',
+          stat1: '48+ Sites',
+          stat2: '99 Perf Score',
+          stat3: 'SOTD Winner',
+          desc: 'Custom interactive websites, 3D shaders, and ultra-responsive digital flagships.'
+        },
+        {
+          id: 'brand',
+          word: 'Brand',
+          category: 'portfolio',
+          inVideo: true,
+          handle: 'Identity Systems',
+          url: 'https://behance.net/voltstudio',
+          shortUrl: 'volt.studio/brand',
+          stat1: '65 Identities',
+          stat2: 'Motion Guidelines',
+          stat3: 'Type & Grid',
+          desc: 'Complete visual identities, bespoke kinetic typography systems, and sonic branding.'
+        },
+        {
+          id: 'shoots',
+          word: 'Shoots',
+          category: 'portfolio',
+          inVideo: true,
+          handle: 'Commercial & Editorial',
+          url: 'https://instagram.com/volt.shoots',
+          shortUrl: 'volt.studio/shoots',
+          stat1: 'RED V-Raptor',
+          stat2: 'Studio + On-Set',
+          stat3: '120+ Productions',
+          desc: 'High-contrast product cinematography, fashion lookbooks, and cyber-minimal studio lighting.'
+        },
+        {
+          id: 'design',
+          word: 'Design',
+          category: 'portfolio',
+          inVideo: true,
+          handle: '@volt.dribbble',
+          url: 'https://dribbble.com/voltstudio',
+          shortUrl: 'volt.studio/design',
+          stat1: 'UI/UX + 3D',
+          stat2: 'Design Systems',
+          stat3: 'Figma Kits',
+          desc: 'Minimalist interface architecture, motion design systems, and tactile micro-interactions.'
+        },
+        {
+          id: 'instagram',
+          word: 'Instagram',
+          category: 'social',
+          inVideo: false,
+          handle: '@volt.studio',
+          url: 'https://instagram.com/volt.studio',
+          shortUrl: 'instagr.am/volt.studio',
+          stat1: '184K Followers',
+          stat2: 'Daily Motion',
+          stat3: 'Reels & BTS',
+          desc: 'Daily motion graphics reels, typography experiments, and studio behind-the-scenes.'
+        },
+        {
+          id: 'behance',
+          word: 'Behance',
+          category: 'portfolio',
+          inVideo: false,
+          handle: 'be.net/voltstudio',
+          url: 'https://behance.net/voltstudio',
+          shortUrl: 'be.net/voltstudio',
+          stat1: '24 Featured',
+          stat2: '1.1M Appreciations',
+          stat3: 'Full Decks',
+          desc: 'Deep-dive visual case studies, grid systems, and full identity presentation decks.'
+        },
+        {
+          id: 'youtube',
+          word: 'YouTube',
+          category: 'social',
+          inVideo: false,
+          handle: 'youtube.com/@voltstudio',
+          url: 'https://youtube.com/@voltstudio',
+          shortUrl: 'yt.be/voltstudio',
+          stat1: '96K Subscribers',
+          stat2: 'Showreels + Breakdowns',
+          stat3: '4K Tutorials',
+          desc: 'Full 4K studio showreels, After Effects & WebGL breakdowns, and creative director logs.'
+        },
+        {
+          id: 'linkedin',
+          word: 'LinkedIn',
+          category: 'social',
+          inVideo: false,
+          handle: '/company/volt-studio',
+          url: 'https://linkedin.com/company/volt-studio',
+          shortUrl: 'in.com/volt-studio',
+          stat1: '52K Network',
+          stat2: 'B2B Growth Notes',
+          stat3: 'Hiring / Collab',
+          desc: 'Founder insights on creative strategy, agency growth metrics, and partnership inquiries.'
+        },
+        {
+          id: 'github',
+          word: 'GitHub',
+          category: 'portfolio',
+          inVideo: false,
+          handle: 'github.com/volt-lab',
+          url: 'https://github.com/volt-lab',
+          shortUrl: 'git.io/volt-lab',
+          stat1: '38 Open Repos',
+          stat2: '4.2K Stars',
+          stat3: 'Shaders & UI',
+          desc: 'Open-source kinetic UI components, WebGL grid shaders, and motion easing libraries.'
+        }
+      ];
+
+      // --- 2. STATE MANAGEMENT ---
+      let allItems = DEFAULT_ITEMS.slice();
+      let wheelFilter = 'all';
+      let wheelItems = [];
+      let activeIndex = 0;
+      let autoPlayTimer = null;
+      let isAutoPlaying = true;
+      let autoPlayIntervalMs = 1400;
+      let soundEnabled = false;
+      let audioCtx = null;
+
+      // --- 3. WEB AUDIO SYNTHESIZER ---
+      function playStepTick(index) {
+        if (!soundEnabled) return;
+        try {
+          if (!audioCtx) {
+            const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+            if (!AudioContextClass) return;
+            audioCtx = new AudioContextClass();
+          }
+          if (audioCtx.state === 'suspended') {
+            audioCtx.resume();
+          }
+          const now = audioCtx.currentTime;
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          const notes = [110, 130.81, 146.83, 164.81, 196.00, 146.83, 130.81, 98.00];
+          const freq = notes[index % notes.length];
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(freq, now);
+          osc.frequency.exponentialRampToValueAtTime(freq * 0.5, now + 0.14);
+
+          gain.gain.setValueAtTime(0.08, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
+
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.start(now);
+          osc.stop(now + 0.15);
+        } catch (err) {}
+      }
+
+      // --- 4. FILTER & BUILD THE 3D KINETIC DRUM ---
+      const kineticStage = document.getElementById('kineticStage');
+      const activeIndexCounter = document.getElementById('activeIndexCounter');
+
+      function computeWheelItems() {
+        if (wheelFilter === 'video') {
+          wheelItems = allItems.filter(it => it.inVideo);
+        } else if (wheelFilter === 'social') {
+          wheelItems = allItems.filter(it => it.category === 'social' || it.category === 'portfolio');
+        } else {
+          wheelItems = allItems.slice();
+        }
+        if (wheelItems.length === 0) wheelItems = allItems.slice();
+        if (activeIndex >= wheelItems.length) activeIndex = 0;
+      }
+
+      function renderWheelDOM() {
+        computeWheelItems();
+        kineticStage.innerHTML = '';
+        wheelItems.forEach((item, idx) => {
+          const row = document.createElement('div');
+          row.className = 'kinetic-item';
+          row.dataset.index = String(idx);
+          row.innerHTML = `
+            <span class="kinetic-arrow text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black select-none" aria-hidden="true">→</span>
+            <span class="kinetic-word text-5xl sm:text-7xl md:text-8xl lg:text-[6.25rem] tracking-tight">${escapeHtml(item.word)}</span>
+          `;
+          row.addEventListener('click', () => {
+            setActiveIndex(idx, true);
+          });
+          kineticStage.appendChild(row);
+        });
+        updateWheelPositions(false);
+        updateInspectorCard();
+      }
+
+      function getCircularOffset(index, current, total) {
+        let diff = index - current;
+        const half = Math.floor(total / 2);
+        if (diff > half) diff -= total;
+        if (diff < -half) diff += total;
+        return diff;
+      }
+
+      function updateWheelPositions(withSound) {
+        const total = wheelItems.length;
+        const nodes = kineticStage.querySelectorAll('.kinetic-item');
+        const isMobile = window.innerWidth < 640;
+        const verticalStep = isMobile ? 64 : 92;
+
+        nodes.forEach((node, idx) => {
+          const offset = getCircularOffset(idx, activeIndex, total);
+          const absOff = Math.abs(offset);
+
+          if (absOff > 4) {
+            node.style.opacity = '0';
+            node.style.pointerEvents = 'none';
+            node.style.transform = `translate3d(48px, calc(-50% + ${offset * verticalStep}px), -380px) rotateX(${offset * -16}deg) rotateZ(${offset * -4}deg) scale(0.62)`;
+            node.style.filter = 'blur(14px)';
+            node.classList.remove('is-active');
+            return;
+          }
+
+          node.style.pointerEvents = 'auto';
+
+          if (offset === 0) {
+            node.classList.add('is-active');
+            node.style.opacity = '1';
+            node.style.filter = 'blur(0px) brightness(1.1)';
+            node.style.transform = `translate3d(0px, -50%, 0px) rotateX(0deg) rotateZ(0deg) scale(1)`;
+            node.style.zIndex = '20';
+          } else {
+            node.classList.remove('is-active');
+            const yPx = offset * verticalStep;
+            const xIndent = (isMobile ? 26 : 44) + Math.pow(absOff, 1.35) * (isMobile ? 10 : 16);
+            const zDepth = -absOff * 72;
+            const rotX = offset * -14.5;
+            const rotZ = offset * -3.4;
+            const scale = Math.max(0.66, 1 - absOff * 0.09);
+            const blurPx = Math.min(10.5, absOff * 2.3);
+            const opacity = Math.max(0.14, 0.72 - (absOff - 1) * 0.19);
+
+            node.style.opacity = String(opacity);
+            node.style.filter = `blur(${blurPx.toFixed(2)}px) brightness(0.8)`;
+            node.style.transform = `translate3d(${xIndent.toFixed(1)}px, calc(-50% + ${yPx.toFixed(1)}px), ${zDepth}px) rotateX(${rotX.toFixed(1)}deg) rotateZ(${rotZ.toFixed(1)}deg) scale(${scale.toFixed(3)})`;
+            node.style.zIndex = String(20 - absOff);
+          }
+        });
+
+        const formattedIdx = String(activeIndex + 1).padStart(2, '0');
+        const formattedTotal = String(total).padStart(2, '0');
+        activeIndexCounter.textContent = `${formattedIdx}/${formattedTotal}`;
+
+        if (withSound) {
+          playStepTick(activeIndex);
+        }
+      }
+
+      function setActiveIndex(newIndex, userTriggered) {
+        const total = wheelItems.length;
+        if (total === 0) return;
+        activeIndex = ((newIndex % total) + total) % total;
+        updateWheelPositions(true);
+        updateInspectorCard();
+        if (userTriggered && isAutoPlaying) {
+          restartAutoPlayTimer();
+        }
+      }
+
+      // --- 5. UPDATE SYNCHRONIZED INSPECTOR CARD ---
+      function updateInspectorCard() {
+        const item = wheelItems[activeIndex];
+        if (!item) return;
+
+        document.getElementById('inspectorCategory').textContent =
+          item.category === 'social' ? 'SOCIAL CHANNEL' :
+          item.category === 'portfolio' ? 'PORTFOLIO' : 'CAPABILITY';
+        document.getElementById('inspectorHandle').textContent = item.handle;
+        document.getElementById('inspectorTitle').textContent = item.word;
+        document.getElementById('inspectorDesc').textContent = item.desc;
+        document.getElementById('inspectorStat1').textContent = item.stat1;
+        document.getElementById('inspectorStat2').textContent = item.stat2;
+        document.getElementById('inspectorStat3').textContent = item.stat3;
+        document.getElementById('activeShortUrl').textContent = item.shortUrl || item.url.replace(/^https?:\/\//, '');
+
+        const visualBox = document.getElementById('inspectorVisual');
+        visualBox.innerHTML = `
+          <div class="flex items-center justify-between gap-3">
+            <div class="min-w-0">
+              <div class="text-[10px] font-mono text-neutral-400 uppercase">DESTINATION</div>
+              <div class="text-xs font-mono text-neon truncate">${escapeHtml(item.url)}</div>
+            </div>
+            <svg class="w-20 h-8 text-neon shrink-0" viewBox="0 0 120 44" fill="none">
+              <path d="M2 36 L22 26 L42 30 L64 14 L86 19 L116 4" stroke="#B77BFF" stroke-width="2.5" stroke-linecap="round"/>
+              <path d="M2 36 L22 26 L42 30 L64 14 L86 19 L116 4 L116 42 L2 42 Z" fill="url(#neonGrad)" opacity="0.28"/>
+              <circle cx="116" cy="4" r="3.5" fill="#E9D5FF" />
+              <defs>
+                <linearGradient id="neonGrad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#B77BFF"/>
+                  <stop offset="100%" stop-color="#B77BFF" stop-opacity="0"/>
+                </linearGradient>
+              </defs>
+            </svg>
+          </div>
+        `;
+      }
+
+      // --- 6. AUTO-PLAY LOOP & WHEEL INTERACTION ---
+      function startAutoPlayTimer() {
+        stopAutoPlayTimer();
+        autoPlayTimer = setInterval(() => {
+          if (isAutoPlaying) {
+            setActiveIndex(activeIndex + 1, false);
+          }
+        }, autoPlayIntervalMs);
+      }
+
+      function stopAutoPlayTimer() {
+        if (autoPlayTimer) {
+          clearInterval(autoPlayTimer);
+          autoPlayTimer = null;
+        }
+      }
+
+      function restartAutoPlayTimer() {
+        if (isAutoPlaying) {
+          startAutoPlayTimer();
+        }
+      }
+
+      function updateAutoPlayButtonUI() {
+        const icon = document.getElementById('autoPlayIcon');
+        const text = document.getElementById('autoPlayText');
+        if (isAutoPlaying) {
+          icon.textContent = '❚❚';
+          text.textContent = 'AUTO';
+        } else {
+          icon.textContent = '▶';
+          text.textContent = 'PAUSED';
+        }
+      }
+
+      let wheelCooldown = false;
+      kineticStage.addEventListener('wheel', (e) => {
+        e.preventDefault();
+        if (wheelCooldown) return;
+        wheelCooldown = true;
+        setTimeout(() => { wheelCooldown = false; }, 180);
+        if (e.deltaY > 0) {
+          setActiveIndex(activeIndex + 1, true);
+        } else if (e.deltaY < 0) {
+          setActiveIndex(activeIndex - 1, true);
+        }
+      }, { passive: false });
+
+      let touchStartY = null;
+      kineticStage.addEventListener('touchstart', (e) => {
+        if (e.touches.length === 1) {
+          touchStartY = e.touches[0].clientY;
+        }
+      }, { passive: true });
+
+      kineticStage.addEventListener('touchend', (e) => {
+        if (touchStartY === null || e.changedTouches.length === 0) return;
+        const dy = touchStartY - e.changedTouches[0].clientY;
+        if (Math.abs(dy) > 24) {
+          if (dy > 0) setActiveIndex(activeIndex + 1, true);
+          else setActiveIndex(activeIndex - 1, true);
+        }
+        touchStartY = null;
+      }, { passive: true });
+
+      kineticStage.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowDown') {
+          e.preventDefault();
+          setActiveIndex(activeIndex + 1, true);
+        } else if (e.key === 'ArrowUp') {
+          e.preventDefault();
+          setActiveIndex(activeIndex - 1, true);
+        }
+      });
+
+      // --- 7. MODALS, CLIPBOARD, & QR GENERATOR ---
+      const destinationModal = document.getElementById('destinationModal');
+      const qrModal = document.getElementById('qrModal');
+
+      function openDestinationModal(item) {
+        document.getElementById('modalCategory').textContent = item.category.toUpperCase() + ' DESTINATION';
+        document.getElementById('modalTitle').textContent = item.word;
+        document.getElementById('modalDescription').textContent = item.desc;
+        document.getElementById('modalUrlText').textContent = item.url;
+        document.getElementById('modalHandleText').textContent = item.handle;
+        document.getElementById('modalStatText').textContent = item.stat1 + ' • ' + item.stat2;
+        document.getElementById('modalExternalAnchor').href = item.url;
+        destinationModal.classList.remove('hidden');
+        destinationModal.classList.add('flex');
+      }
+
+      function closeDestinationModal() {
+        destinationModal.classList.add('hidden');
+        destinationModal.classList.remove('flex');
+      }
+
+      function buildDeterministicQrSvg(seedString) {
+        let hash = 2166136261;
+        for (let i = 0; i < seedString.length; i++) {
+          hash ^= seedString.charCodeAt(i);
+          hash = Math.imul(hash, 16777619);
+        }
+        const size = 11;
+        let rects = '';
+        for (let r = 0; r < size; r++) {
+          for (let c = 0; c < size; c++) {
+            const isCorner = (r < 3 && c < 3) || (r < 3 && c >= size - 3) || (r >= size - 3 && c < 3);
+            const bit = ((hash >> ((r * size + c) % 24)) & 1) === 1;
+            if (isCorner || bit) {
+              rects += `<rect x="${c * 10}" y="${r * 10}" width="8.5" height="8.5" rx="1.5" fill="#05030A"/>`;
+            }
+          }
+        }
+        return `<svg viewBox="0 0 110 110" class="w-full h-full">${rects}</svg>`;
+      }
+
+      function openQrModal(item) {
+        document.getElementById('qrModalTitle').textContent = '→ ' + item.word;
+        document.getElementById('qrModalUrl').textContent = item.url;
+        document.getElementById('qrSvgContainer').innerHTML = buildDeterministicQrSvg(item.url);
+        qrModal.classList.remove('hidden');
+        qrModal.classList.add('flex');
+      }
+
+      function copyTextToClipboard(text) {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).then(() => {
+            showToast(`Copied: ${text}`);
+          }).catch(() => fallbackCopy(text));
+        } else {
+          fallbackCopy(text);
+        }
+      }
+
+      function fallbackCopy(text) {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        try {
+          document.execCommand('copy');
+          showToast(`Copied: ${text}`);
+        } catch (err) {
+          showToast('Link ready to share');
+        }
+        document.body.removeChild(ta);
+      }
+
+      let toastTimeout = null;
+      function showToast(msg) {
+        const banner = document.getElementById('toastBanner');
+        document.getElementById('toastMessage').textContent = msg;
+        banner.classList.remove('opacity-0', 'translate-y-3');
+        banner.classList.add('opacity-100', 'translate-y-0');
+        if (toastTimeout) clearTimeout(toastTimeout);
+        toastTimeout = setTimeout(() => {
+          banner.classList.add('opacity-0', 'translate-y-3');
+          banner.classList.remove('opacity-100', 'translate-y-0');
+        }, 2400);
+      }
+
+      function escapeHtml(str) {
+        return String(str)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;');
+      }
+
+      // --- 8. EVENT LISTENERS ---
+      document.getElementById('prevWheelBtn').addEventListener('click', () => setActiveIndex(activeIndex - 1, true));
+      document.getElementById('nextWheelBtn').addEventListener('click', () => setActiveIndex(activeIndex + 1, true));
+
+      document.getElementById('toggleAutoPlayBtn').addEventListener('click', () => {
+        isAutoPlaying = !isAutoPlaying;
+        updateAutoPlayButtonUI();
+        if (isAutoPlaying) startAutoPlayTimer();
+        else stopAutoPlayTimer();
+      });
+
+      document.querySelectorAll('.speed-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          autoPlayIntervalMs = Number(btn.getAttribute('data-speed'));
+          document.querySelectorAll('.speed-btn').forEach(b => {
+            b.classList.remove('text-neon', 'font-bold', 'underline');
+            b.classList.add('text-neutral-400');
+          });
+          btn.classList.add('text-neon', 'font-bold', 'underline');
+          btn.classList.remove('text-neutral-400');
+          if (isAutoPlaying) startAutoPlayTimer();
+        });
+      });
+
+      function updateWheelFilterButtons() {
+        document.querySelectorAll('.wheel-filter-btn').forEach(btn => {
+          if (btn.getAttribute('data-wheel-filter') === wheelFilter) {
+            btn.className = 'wheel-filter-btn px-2.5 py-1 rounded-full bg-neon text-[#05030A] font-semibold transition text-[11px]';
+          } else {
+            btn.className = 'wheel-filter-btn px-2.5 py-1 rounded-full bg-white/[0.04] hover:bg-white/10 text-neutral-300 transition text-[11px]';
+          }
+        });
+      }
+
+      document.querySelectorAll('.wheel-filter-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          wheelFilter = btn.getAttribute('data-wheel-filter');
+          activeIndex = 0;
+          updateWheelFilterButtons();
+          renderWheelDOM();
+        });
+      });
+
+      document.getElementById('openDestinationBtn').addEventListener('click', () => {
+        const current = wheelItems[activeIndex];
+        if (current) openDestinationModal(current);
+      });
+
+      document.getElementById('copyActiveUrlBtn').addEventListener('click', () => {
+        const current = wheelItems[activeIndex];
+        if (current) copyTextToClipboard(current.url);
+      });
+
+      document.getElementById('openQrModalBtn').addEventListener('click', () => {
+        const current = wheelItems[activeIndex];
+        if (current) openQrModal(current);
+      });
+
+      document.getElementById('shareProfileBtn').addEventListener('click', () => {
+        const current = wheelItems[activeIndex];
+        if (current) openQrModal(current);
+      });
+
+      document.getElementById('closeDestinationModalBtn').addEventListener('click', closeDestinationModal);
+      destinationModal.addEventListener('click', (e) => {
+        if (e.target === destinationModal) closeDestinationModal();
+      });
+
+      document.getElementById('modalCopyUrlBtn').addEventListener('click', () => {
+        const url = document.getElementById('modalUrlText').textContent;
+        copyTextToClipboard(url);
+      });
+
+      document.getElementById('closeQrModalBtn').addEventListener('click', () => {
+        qrModal.classList.add('hidden');
+        qrModal.classList.remove('flex');
+      });
+      qrModal.addEventListener('click', (e) => {
+        if (e.target === qrModal) {
+          qrModal.classList.add('hidden');
+          qrModal.classList.remove('flex');
+        }
+      });
+      document.getElementById('qrCopyBtn').addEventListener('click', () => {
+        copyTextToClipboard(document.getElementById('qrModalUrl').textContent);
+      });
+
+      // Sound Toggle
+      document.getElementById('toggleSoundBtn').addEventListener('click', () => {
+        soundEnabled = !soundEnabled;
+        const dot = document.getElementById('soundDot');
+        const label = document.getElementById('soundLabel');
+        if (soundEnabled) {
+          dot.className = 'w-1.5 h-1.5 rounded-full bg-neon animate-pulse';
+          label.textContent = 'SFX: ON';
+          playStepTick(activeIndex);
+        } else {
+          dot.className = 'w-1.5 h-1.5 rounded-full bg-neutral-500';
+          label.textContent = 'SFX: OFF';
+        }
+      });
+
+      // --- 9. MOTION GRAPHICS INTERACTIVE CANVAS ---
+      const canvas = document.getElementById('mgCanvas');
+      const ctx = canvas.getContext('2d');
+      let cw = 0, ch = 0;
+      let pointerX = -999, pointerY = -999;
+      let tick = 0;
+
+      function resizeCanvas() {
+        cw = canvas.width = window.innerWidth;
+        ch = canvas.height = window.innerHeight;
+      }
+      window.addEventListener('resize', () => {
+        resizeCanvas();
+        updateWheelPositions(false);
+      });
+      window.addEventListener('mousemove', (e) => {
+        pointerX = e.clientX;
+        pointerY = e.clientY;
+      });
+
+      function drawMotionGridNodes() {
+        ctx.clearRect(0, 0, cw, ch);
+        tick += 0.016;
+        const spacing = 104;
+        const cols = Math.ceil(cw / spacing) + 1;
+        const rows = Math.ceil(ch / spacing) + 1;
+
+        for (let r = 0; r < rows; r++) {
+          for (let c = 0; c < cols; c++) {
+            const x = c * spacing + ((tick * 12) % spacing);
+            const y = r * spacing + Math.sin(tick + c * 0.6 + r * 0.4) * 6;
+            const dx = x - pointerX;
+            const dy = y - pointerY;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            const proximity = Math.max(0, 1 - dist / 280);
+
+            const alpha = 0.10 + proximity * 0.52;
+            ctx.strokeStyle = `rgba(183, 123, 255, ${alpha.toFixed(3)})`;
+            ctx.lineWidth = 1;
+            const arm = 3 + proximity * 4;
+            ctx.beginPath();
+            ctx.moveTo(x - arm, y);
+            ctx.lineTo(x + arm, y);
+            ctx.moveTo(x, y - arm);
+            ctx.lineTo(x, y + arm);
+            ctx.stroke();
+          }
+        }
+        requestAnimationFrame(drawMotionGridNodes);
+      }
+
+      // Initialize everything on load
+      resizeCanvas();
+      renderWheelDOM();
+      startAutoPlayTimer();
+      drawMotionGridNodes();
+    })();
+  </script>
+</body>
+</html>

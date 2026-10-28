@@ -246,6 +246,19 @@ body.is-menu-open main {
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.65);
 }
 
+.hero-3d-badge .badge-cache-tag {
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: #C7F255;
+  background: rgba(199, 242, 85, 0.12);
+  border: 1px solid rgba(199, 242, 85, 0.35);
+  padding: 2px 7px;
+  border-radius: 999px;
+  margin-left: 4px;
+  text-transform: uppercase;
+}
+
 .hero-3d-badge .badge-dot {
   width: 6px;
   height: 6px;

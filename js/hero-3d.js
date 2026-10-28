@@ -7,6 +7,7 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import OpticsWheel from './optics-wheel.js';
+import CacheQualityManager from './cache-quality-manager.js';
 
 /**
  * 3D LENS DIRECT AXIS, ROTATION & SCROLL ANIMATION CONFIGURATION
@@ -79,9 +80,10 @@ export const LENS_CONFIG = {
 
   // 11. SCROLL TIMING & SCRUB SMOOTHNESS CONTROL
   cardScrollDistance: 450, // Scroll height (px) per card during Section 2 pin lock
-  flyInScrub: 1.2,        // Hero -> Sec 2 transition scrub smoothness (higher = smoother lerp)
+  flyInScrub: 2.4,        // Hero -> Sec 2 transition scrub smoothness (higher = smoother, slower cinematic lerp)
   pinScrub: 1.5,          // Section 2 pin scroll scrub smoothness
   scrollRollSpinIntensity: 0.0, // Stable roll transition during hero -> sec 2 fly-in (no tilt action)
+  lerpDamping: 0.045,     // Ultra-smooth, slow cinematic damping factor (0.045 = luxurious slow motion inertia)
 
   // 12. SECTION 3 (SHOWREEL) FADE-OUT CONTROLS
   fadeOutOnNextSection: true,  // Automatically fade lens out when scrolling to Showreel section
@@ -164,6 +166,10 @@ export class Hero3D {
     this.currentMouseX = 0;
     this.currentMouseY = 0;
 
+    // Cache & Visual Quality Management via Cache API & Cookies
+    this.cacheManager = new CacheQualityManager();
+    this.lerpDamping = this.cacheManager.qualityProfile.lerpDamping || this.config.lerpDamping || 0.045;
+
     this.init();
   }
 
@@ -215,9 +221,13 @@ export class Hero3D {
     const width = window.innerWidth || 1200;
     const height = window.innerHeight || 800;
     this.renderer.setSize(width, height);
-    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    this.renderer.toneMappingExposure = this.config.exposure;
+    if (this.cacheManager) {
+      this.cacheManager.applyRendererQuality(this.renderer, this.scene, this.camera);
+    } else {
+      this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
+      this.renderer.toneMappingExposure = this.config.exposure;
+    }
   }
 
   setupLights() {
@@ -246,77 +256,113 @@ export class Hero3D {
     this.scene.add(glassGlare);
   }
 
-  loadModel() {
+  async loadModel() {
     const loader = new GLTFLoader();
     const modelUrl = this.config.modelPath;
 
+    const setupGltfScene = (gltf, fromCache = false) => {
+      this.lensModel = gltf.scene;
+
+      // Center model inside pivot safely
+      const box = new THREE.Box3().setFromObject(this.lensModel);
+      const center = box.getCenter(new THREE.Vector3());
+      const size = box.getSize(new THREE.Vector3());
+
+      if (Number.isFinite(center.x) && Number.isFinite(center.y) && Number.isFinite(center.z)) {
+        this.lensModel.position.set(-center.x, -center.y, -center.z);
+      } else {
+        this.lensModel.position.set(0, 0, 0);
+      }
+
+      // Scale model based on LENS_CONFIG safely
+      const maxDim = Math.max(size.x || 0, size.y || 0, size.z || 0);
+      this.baseScaleFactor = (maxDim > 0 && Number.isFinite(maxDim)) ? (1.0 / maxDim) : 1.0;
+      const initialScale = (this.config.scale || 3.1) * this.baseScaleFactor;
+      this.lensModel.scale.set(initialScale, initialScale, initialScale);
+
+      // Adjust materials for solid finish
+      this.lensModel.traverse((child) => {
+        if (child.isMesh) {
+          child.castShadow = true;
+          child.receiveShadow = true;
+
+          const materials = Array.isArray(child.material) ? child.material : [child.material];
+          materials.forEach((mat) => {
+            if (!mat) return;
+            try {
+              if (this.config.isSolid !== false) {
+                mat.transparent = false;
+                mat.opacity = 1.0;
+                mat.depthWrite = true;
+                mat.depthTest = true;
+                mat.side = THREE.DoubleSide;
+              }
+              if (typeof mat.roughness === 'number') mat.roughness = 0.25;
+              if (typeof mat.metalness === 'number') mat.metalness = 0.85;
+              mat.needsUpdate = true;
+            } catch (matErr) {
+              console.warn('Material adjustment notice:', matErr);
+            }
+          });
+        }
+      });
+
+      // Enhance materials with anisotropic filtering & texture clarity from CacheQualityManager
+      if (this.cacheManager) {
+        this.cacheManager.enhanceMaterials(this.lensModel, this.renderer);
+        this.cacheManager.applyRendererQuality(this.renderer, this.scene, this.camera);
+      }
+
+      // Add model inside pivot group
+      this.pivotGroup.add(this.lensModel);
+
+      // Set initial position from heroPosition config
+      const startX = this.config.heroPosition?.x || 0;
+      const startY = this.config.heroPosition?.y || 0;
+      const startZ = this.config.heroPosition?.z || 0;
+      this.pivotGroup.position.set(startX, startY, startZ);
+
+      // Convert initial rotation angles from degrees to radians
+      this.baseRadX = (this.config.initialRotationDeg.x * Math.PI) / 180;
+      this.baseRadY = (this.config.initialRotationDeg.y * Math.PI) / 180;
+      this.baseRadZ = (this.config.initialRotationDeg.z * Math.PI) / 180;
+
+      this.pivotGroup.rotation.set(this.baseRadX, this.baseRadY, this.baseRadZ);
+
+      this.container.classList.add('is-loaded');
+
+      // Update badge with Cache & Quality status tag
+      const badge = document.querySelector('.hero-3d-badge');
+      if (badge) {
+        const cacheTag = fromCache ? 'CACHED' : 'CACHE ACTIVE';
+        const qualityName = this.cacheManager?.qualityProfile?.quality?.toUpperCase() || 'ULTRA HD';
+        badge.innerHTML = `<span class="badge-dot"></span><span>35MM ANAMORPHIC CINE OPTICS</span><span class="badge-cache-tag">${cacheTag} ▪ ${qualityName}</span>`;
+      }
+    };
+
+    // Load with Cache Storage API if available
+    try {
+      if (this.cacheManager) {
+        const { arrayBuffer, fromCache } = await this.cacheManager.fetchModelWithCache(modelUrl);
+        loader.parse(
+          arrayBuffer,
+          '',
+          (gltf) => setupGltfScene(gltf, fromCache),
+          (parseErr) => {
+            console.warn('Cache parse error, falling back to direct load:', parseErr);
+            loader.load(modelUrl, (gltf) => setupGltfScene(gltf, false));
+          }
+        );
+        return;
+      }
+    } catch (e) {
+      console.warn('Cache fetch notice, falling back:', e);
+    }
+
+    // Direct fallback load
     loader.load(
       modelUrl,
-      (gltf) => {
-        this.lensModel = gltf.scene;
-
-        // Center model inside pivot safely
-        const box = new THREE.Box3().setFromObject(this.lensModel);
-        const center = box.getCenter(new THREE.Vector3());
-        const size = box.getSize(new THREE.Vector3());
-
-        if (Number.isFinite(center.x) && Number.isFinite(center.y) && Number.isFinite(center.z)) {
-          this.lensModel.position.set(-center.x, -center.y, -center.z);
-        } else {
-          this.lensModel.position.set(0, 0, 0);
-        }
-
-        // Scale model based on LENS_CONFIG safely
-        const maxDim = Math.max(size.x || 0, size.y || 0, size.z || 0);
-        this.baseScaleFactor = (maxDim > 0 && Number.isFinite(maxDim)) ? (1.0 / maxDim) : 1.0;
-        const initialScale = (this.config.scale || 3.1) * this.baseScaleFactor;
-        this.lensModel.scale.set(initialScale, initialScale, initialScale);
-
-        // Adjust materials for solid finish
-        this.lensModel.traverse((child) => {
-          if (child.isMesh) {
-            child.castShadow = true;
-            child.receiveShadow = true;
-
-            const materials = Array.isArray(child.material) ? child.material : [child.material];
-            materials.forEach((mat) => {
-              if (!mat) return;
-              try {
-                if (this.config.isSolid !== false) {
-                  mat.transparent = false;
-                  mat.opacity = 1.0;
-                  mat.depthWrite = true;
-                  mat.depthTest = true;
-                  mat.side = THREE.DoubleSide;
-                }
-                if (typeof mat.roughness === 'number') mat.roughness = 0.25;
-                if (typeof mat.metalness === 'number') mat.metalness = 0.85;
-                mat.needsUpdate = true;
-              } catch (matErr) {
-                console.warn('Material adjustment notice:', matErr);
-              }
-            });
-          }
-        });
-
-        // Add model inside pivot group
-        this.pivotGroup.add(this.lensModel);
-
-        // Set initial position from heroPosition config
-        const startX = this.config.heroPosition?.x || 0;
-        const startY = this.config.heroPosition?.y || 0;
-        const startZ = this.config.heroPosition?.z || 0;
-        this.pivotGroup.position.set(startX, startY, startZ);
-
-        // Convert initial rotation angles from degrees to radians
-        this.baseRadX = (this.config.initialRotationDeg.x * Math.PI) / 180;
-        this.baseRadY = (this.config.initialRotationDeg.y * Math.PI) / 180;
-        this.baseRadZ = (this.config.initialRotationDeg.z * Math.PI) / 180;
-
-        this.pivotGroup.rotation.set(this.baseRadX, this.baseRadY, this.baseRadZ);
-
-        this.container.classList.add('is-loaded');
-      },
+      (gltf) => setupGltfScene(gltf, false),
       undefined,
       (err) => {
         console.warn('3D Lens Model loading fallback:', err);
@@ -346,13 +392,13 @@ export class Hero3D {
     if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
     gsap.registerPlugin(ScrollTrigger);
 
-    // ── PHASE 1: Hero → Section 2 fly-in scroll progress ──────────────────────
+    // ── PHASE 1: Hero → Section 2 fly-in scroll progress (Cinematic Smooth & Slow) ──
     ScrollTrigger.create({
       trigger: '#hero',
-      start: 'bottom 90%',
+      start: 'top top',
       endTrigger: '#optics-showcase',
-      end: 'top 30%',
-      scrub: this.config.flyInScrub ?? 1.2,
+      end: 'top top',
+      scrub: this.config.flyInScrub ?? 2.4,
       onUpdate: (self) => {
         this.scrollProgress = self.progress;
       }
@@ -411,19 +457,23 @@ export class Hero3D {
       this.opticsWheel.updateWheel(0.12);
     }
 
-    // Smooth Lerp Damping for scroll progress values (gives 60fps cinematic fluidity)
-    this.currentScrollProgress += (this.scrollProgress - this.currentScrollProgress) * 0.08;
+    // Smooth Lerp Damping for scroll progress values (gives velvety cinematic fluidity)
+    const damping = this.lerpDamping || 0.045;
+    this.currentScrollProgress += (this.scrollProgress - this.currentScrollProgress) * damping;
     this.currentPinProgress += (this.pinScrollProgress - this.currentPinProgress) * 0.08;
     this.currentCoverProgress += (this.coverProgress - this.currentCoverProgress) * 0.08;
     this.currentCanvasOpacity += (this.targetCanvasOpacity - this.currentCanvasOpacity) * 0.08;
 
+    // Cinematic Hermite / Smoothstep easing for silky slow start, majestic glide, and soft settling
+    const rawScrollP = Math.max(0, Math.min(1, this.currentScrollProgress));
+    const smoothScrollP = rawScrollP * rawScrollP * (3 - 2 * rawScrollP);
+
     // Animate Section 2 split background right-curved reveal on Hero -> Sec 2 scroll transition
     const bgRightWrap = document.querySelector('#optics-bg-right-wrap');
     if (bgRightWrap) {
-      const scrollP = Math.max(0, Math.min(1, this.currentScrollProgress));
-      const translateX = (1 - scrollP) * 100;
+      const translateX = (1 - smoothScrollP) * 100;
       bgRightWrap.style.transform = `translateX(${translateX.toFixed(2)}%)`;
-      bgRightWrap.style.opacity = `${Math.min(1, scrollP * 1.5).toFixed(3)}`;
+      bgRightWrap.style.opacity = `${Math.min(1, smoothScrollP * 1.5).toFixed(3)}`;
     }
 
     // Apply smooth opacity to 3D Canvas element
@@ -442,7 +492,7 @@ export class Hero3D {
     this.currentMouseY += (this.targetMouseY - this.currentMouseY) * 0.05;
 
     if (this.pivotGroup && this.lensModel) {
-      const scrollP = this.currentScrollProgress;
+      const scrollP = smoothScrollP;
       const pinP = this.currentPinProgress;
 
       // Continuous spin factor: keeps rotating until paper-reveal section fully covers it

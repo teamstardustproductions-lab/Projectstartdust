@@ -1,0 +1,1858 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PROJECT STARDUST® — Cinema In Motion</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-gray: #b9b9b9;
+      --ink-dark: #1d1d1d;
+      --ink-muted: #2e2e2e;
+      --hairline: rgba(0, 0, 0, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    html {
+      width: 100%;
+      min-height: 100%;
+      overflow-x: hidden;
+      overflow-y: auto;
+      scroll-behavior: auto !important;
+      -webkit-text-size-adjust: 100%;
+      overscroll-behavior-y: none;
+    }
+
+    body {
+      width: 100%;
+      min-height: 100%;
+      background-color: var(--bg-gray);
+      color: var(--ink-dark);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      overflow-x: hidden;
+      user-select: none;
+      -webkit-user-select: none;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      touch-action: pan-y;
+    }
+
+    /* 620vh virtual scroll container for 14.0s master timeline */
+    #scroll-spacer {
+      height: 620vh;
+      height: 620dvh;
+      min-height: 4200px;
+      width: 100%;
+      position: relative;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    /* Fixed main stage */
+    #stage {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      height: 100dvh;
+      background: radial-gradient(circle at 50% 48%, #bebebe 0%, #b9b9b9 62%, #b3b3b3 100%);
+      overflow: hidden;
+      z-index: 2;
+      will-change: transform;
+      pointer-events: none;
+    }
+
+    /* Background helical guide arcs */
+    #bg-arcs {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* Center horizontal hairline for the 3x2 grid */
+    #grid-hairline {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 50%;
+      height: 1px;
+      background: rgba(0, 0, 0, 0.08);
+      pointer-events: none;
+      z-index: 2;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    /* Hero split display typography layer (behind WebGL canvas) */
+    #hero-text-layer {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 3;
+      overflow: hidden;
+    }
+
+    .giant-word {
+      position: absolute;
+      font-family: 'Inter', sans-serif;
+      font-weight: 400;
+      font-size: clamp(54px, 8.2vw, 128px);
+      letter-spacing: -0.045em;
+      line-height: 0.92;
+      color: #222222;
+      white-space: nowrap;
+      will-change: transform, opacity;
+    }
+
+    #word-design-in {
+      top: 45.2%;
+      left: 0;
+      transform: translate3d(-29vw, -50%, 0);
+    }
+
+    #word-motion {
+      top: 55.4%;
+      left: 0;
+      transform: translate3d(94.5vw, -50%, 0);
+    }
+
+    #center-subheadline {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      font-size: clamp(8px, 0.72vw, 11px);
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      line-height: 1.38;
+      color: #2c2c2c;
+      text-transform: uppercase;
+      white-space: nowrap;
+      will-change: opacity, transform;
+    }
+
+    /* WebGL Canvas */
+    #webgl-container {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 5;
+      pointer-events: none;
+    }
+
+    /* Interactive HTML hit layer for the 3x2 grid */
+    #grid-hit-layer {
+      position: absolute;
+      inset: 0;
+      z-index: 6;
+      pointer-events: none;
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .grid-card-hit {
+      position: absolute;
+      cursor: pointer;
+      border-radius: 6px;
+      pointer-events: none;
+    }
+
+    .grid-card-hit.active {
+      pointer-events: auto;
+    }
+
+    .grid-card-hit.active:hover .card-badge {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .card-badge {
+      position: absolute;
+      bottom: 12px;
+      right: 12px;
+      background: rgba(20, 20, 20, 0.88);
+      -webkit-backdrop-filter: blur(8px);
+      backdrop-filter: blur(8px);
+      color: #f3f3f3;
+      font-family: 'Space Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 0.06em;
+      padding: 5px 10px;
+      border-radius: 999px;
+      opacity: 0;
+      transform: translateY(4px);
+      transition: all 0.22s ease;
+      pointer-events: none;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    /* Scrolling Top Architectural Bar */
+    #top-arch-bar {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 88px;
+      z-index: 7;
+      pointer-events: none;
+      will-change: transform, opacity;
+    }
+
+    .arch-arrow-box {
+      pointer-events: auto;
+      width: 48px;
+      height: 62px;
+      border-right: 1px solid rgba(0, 0, 0, 0.08);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      padding-bottom: 12px;
+      color: #2a2a2a;
+      font-size: 11px;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+
+    .arch-arrow-box:first-child {
+      border-left: 1px solid rgba(0, 0, 0, 0.08);
+    }
+
+    .arch-arrow-box:hover {
+      background: rgba(0, 0, 0, 0.04);
+    }
+
+    #become-client-top {
+      pointer-events: auto;
+      position: absolute;
+      left: 54%;
+      top: 24px;
+      transform: translateX(-50%);
+      width: clamp(130px, 15vw, 185px);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 6px;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.32);
+      font-family: 'Space Mono', monospace;
+      font-size: 9.5px;
+      letter-spacing: 0.06em;
+      color: #222;
+      cursor: pointer;
+      transition: opacity 0.2s ease;
+    }
+
+    #become-client-top:hover {
+      opacity: 0.65;
+    }
+
+    /* Fixed Top Navigation Chrome */
+    #top-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 68px;
+      padding: 0 clamp(18px, 2.6vw, 38px);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      z-index: 20;
+      pointer-events: none;
+    }
+
+    .nav-interactive {
+      pointer-events: auto;
+    }
+
+    /* Fixed Bottom Chrome */
+    #bottom-bar {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 0 clamp(18px, 2.6vw, 38px) clamp(16px, 2.2vw, 28px);
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      z-index: 12;
+      pointer-events: none;
+      will-change: opacity, transform;
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+    }
+
+    #bottom-left-copy {
+      font-size: clamp(10px, 0.85vw, 12.5px);
+      line-height: 1.35;
+      color: #2e2e2e;
+      font-weight: 400;
+      letter-spacing: -0.01em;
+      max-width: 250px;
+    }
+
+    #scroll-indicator {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'Space Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 0.12em;
+      color: rgba(30, 30, 30, 0.75);
+      text-transform: uppercase;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .scroll-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: #1d1d1d;
+      animation: scrollPulse 1.6s ease-in-out infinite;
+    }
+
+    @keyframes scrollPulse {
+      0%, 100% { opacity: 0.3; transform: translateY(0); }
+      50% { opacity: 1; transform: translateY(3px); }
+    }
+
+    #dribbble-link {
+      pointer-events: auto;
+      width: clamp(128px, 13.5vw, 168px);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 6px;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.35);
+      font-family: 'Space Mono', monospace;
+      font-size: clamp(8.5px, 0.72vw, 10px);
+      letter-spacing: 0.06em;
+      color: #222222;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+    }
+
+    #dribbble-link:hover {
+      opacity: 0.7;
+      transform: translateX(2px);
+    }
+
+    /* Bottom Dark Section Reveal (13.05s -> 14.0s) */
+    #next-dark-section {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 26vh;
+      background: #080808;
+      color: #f0f0f0;
+      z-index: 15;
+      transform: translateY(100%);
+      will-change: transform;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 clamp(24px, 4vw, 64px);
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* Equalizer Bars */
+    .eq-bar {
+      width: 1.5px;
+      background: #1d1d1d;
+      border-radius: 1px;
+      transition: height 0.15s ease;
+    }
+    .sound-on .eq-bar-1 { animation: eqPulse 0.55s ease-in-out infinite alternate; }
+    .sound-on .eq-bar-2 { animation: eqPulse 0.42s ease-in-out 0.15s infinite alternate; }
+    .sound-on .eq-bar-3 { animation: eqPulse 0.65s ease-in-out 0.25s infinite alternate; }
+    .sound-on .eq-bar-4 { animation: eqPulse 0.48s ease-in-out 0.08s infinite alternate; }
+
+    @keyframes eqPulse {
+      0% { height: 3px; }
+      100% { height: 11px; }
+    }
+
+    /* Modals & Backdrop */
+    .overlay-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(10, 10, 10, 0.55);
+      -webkit-backdrop-filter: blur(8px);
+      backdrop-filter: blur(8px);
+      z-index: 40;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .overlay-backdrop.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    /* Responsive Media Queries (Preserving Desktop Layout on screens >= 768px) */
+    @media (max-width: 768px) {
+      #top-arch-bar {
+        display: none !important;
+      }
+
+      .giant-word {
+        font-size: clamp(34px, 11vw, 68px);
+        letter-spacing: -0.035em;
+      }
+
+      #center-subheadline {
+        font-size: clamp(7.5px, 2.3vw, 10.5px);
+        letter-spacing: 0.04em;
+        line-height: 1.35;
+        width: 86%;
+        max-width: 320px;
+      }
+
+      #top-nav {
+        height: 60px;
+        padding: 0 14px;
+      }
+
+      #logo-btn img {
+        height: 36px;
+      }
+
+      #lets-talk-btn {
+        padding-left: 10px;
+        padding-right: 10px;
+        font-size: 8.5px;
+      }
+
+      #menu-btn {
+        padding-left: 10px;
+        padding-right: 10px;
+        font-size: 8.5px;
+      }
+
+      #sound-btn {
+        width: 28px;
+        height: 28px;
+      }
+
+      #bottom-bar {
+        padding: 0 14px 18px 14px;
+      }
+
+      #bottom-left-copy {
+        font-size: 9.5px;
+        line-height: 1.3;
+        max-width: 170px;
+      }
+
+      #dribbble-link {
+        width: auto;
+        gap: 6px;
+        font-size: 8.5px;
+      }
+
+      #next-dark-section {
+        height: auto;
+        min-height: 28vh;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: center;
+        gap: 16px;
+        padding: 24px 16px;
+      }
+    }
+
+    @media (max-width: 640px) {
+      #scroll-indicator {
+        display: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Navigation (HUD) -->
+  <header id="top-nav">
+    <!-- Brand Logo -->
+    <div class="flex items-center gap-4 nav-interactive">
+      <a href="../index.html" id="logo-btn" class="flex items-center gap-2 group focus:outline-none cursor-pointer" title="Go to Home Page">
+        <img src="../assets/images/sd logo png-03.png" alt="Project Stardust Logo" class="h-[46px] w-auto object-contain transition-transform duration-300 group-hover:scale-105" />
+      </a>
+    </div>
+
+    <!-- Right Controls: Sound, Let's Talk, Menu -->
+    <div class="flex items-center gap-2 nav-interactive">
+      <button id="sound-btn" class="w-[30px] h-[30px] rounded-full bg-black/10 hover:bg-black/15 flex items-center justify-center gap-[2px] transition-colors focus:outline-none" title="Toggle Ambient Sound">
+        <span class="eq-bar eq-bar-1 h-[4px]"></span>
+        <span class="eq-bar eq-bar-2 h-[8px]"></span>
+        <span class="eq-bar eq-bar-3 h-[5px]"></span>
+        <span class="eq-bar eq-bar-4 h-[7px]"></span>
+      </button>
+
+      <button id="lets-talk-btn" class="h-[30px] px-3.5 rounded-full bg-[#1C1C1C] hover:bg-[#000000] text-[#EBEBEB] text-[9.5px] font-medium tracking-[0.08em] uppercase transition-transform active:scale-95 focus:outline-none">
+        LET'S TALK
+      </button>
+
+      <button id="menu-btn" class="h-[30px] px-3.5 rounded-full border border-[#1C1C1C] hover:bg-black/5 text-[#1C1C1C] text-[9.5px] font-medium tracking-[0.08em] uppercase flex items-center gap-2 transition-colors focus:outline-none">
+        <span>MENU</span>
+        <span class="flex flex-col gap-[3px] w-2.5">
+          <span class="w-full h-[1.2px] bg-[#1C1C1C]"></span>
+          <span class="w-full h-[1.2px] bg-[#1C1C1C]"></span>
+        </span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Pinned Viewport Stage -->
+  <main id="stage">
+    <!-- Scrolling Top Architectural Bar (t: 0.0s -> 1.1s) -->
+    <div id="top-arch-bar">
+      <div class="flex items-start pl-[clamp(195px,18vw,235px)]">
+        <button id="step-prev-btn" class="arch-arrow-box" title="Previous Phase">←</button>
+        <button id="step-next-btn" class="arch-arrow-box" title="Next Phase">→</button>
+      </div>
+      <div id="become-client-top">
+        <span>COMMISSION A FILM</span>
+        <span>→</span>
+      </div>
+      <div class="w-full h-[1px] bg-black/[0.08] mt-6 relative">
+        <span class="absolute left-[24.8%] -top-[6px] text-[10px] text-black/25 font-mono leading-none">+</span>
+      </div>
+    </div>
+
+    <!-- Background Trajectory Wireframe Curves -->
+    <svg id="bg-arcs" viewBox="0 0 1440 900" preserveAspectRatio="none">
+      <path id="arc-path-1" d="M -100,820 C 320,620 980,480 1280,180" fill="none" stroke="rgba(0,0,0,0.055)" stroke-width="1" />
+      <path id="arc-path-2" d="M 120,920 C 520,700 1090,550 1490,260" fill="none" stroke="rgba(0,0,0,0.055)" stroke-width="1" />
+      <path id="arc-path-3" d="M 180,160 C 560,280 980,220 1290,-40" fill="none" stroke="rgba(0,0,0,0.055)" stroke-width="1" />
+    </svg>
+
+    <!-- Center 1px Hairline for the 3x2 Grid -->
+    <div id="grid-hairline"></div>
+
+    <!-- Phase 1: Opposing Split Display Typography Layer -->
+    <div id="hero-text-layer">
+      <div id="word-design-in" class="giant-word">CINEMA IN</div>
+      <div id="center-subheadline">
+        CRAFTING VISUAL STORIES THROUGH<br />CINEMATIC FILM &amp; PRODUCTION.
+      </div>
+      <div id="word-motion" class="giant-word">MOTION</div>
+    </div>
+
+    <!-- WebGL Canvas Layer (Three.js Ribbon + 3x2 Grid) -->
+    <div id="webgl-container"></div>
+
+    <!-- Interactive HTML Hit-Layer over the 3x2 Grid -->
+    <div id="grid-hit-layer">
+      <div class="grid-card-hit" data-card-index="0"><span class="card-badge">01 / MEDICAL VIDEOS ↗</span></div>
+      <div class="grid-card-hit" data-card-index="1"><span class="card-badge">02 / CONCEPT VIDEOS ↗</span></div>
+      <div class="grid-card-hit" data-card-index="2"><span class="card-badge">03 / EDUCATIONAL VIDEOS ↗</span></div>
+      <div class="grid-card-hit" data-card-index="3"><span class="card-badge">04 / DOCUMENTARIES ↗</span></div>
+      <div class="grid-card-hit" data-card-index="4"><span class="card-badge">05 / PODCASTS ↗</span></div>
+      <div class="grid-card-hit" data-card-index="5"><span class="card-badge">06 / AI VIDEOS ↗</span></div>
+    </div>
+
+    <!-- Pinned Bottom Bar -->
+    <div id="bottom-bar">
+      <p id="bottom-left-copy">
+        Commercials, narrative films, and visual<br />
+        experiments crafted with cinematic<br />
+        precision and motion.
+      </p>
+
+      <div id="scroll-indicator">
+        <span class="scroll-dot"></span>
+        <span>SCROLL TO EXPLORE</span>
+      </div>
+
+      <button id="dribbble-link" class="focus:outline-none">
+        <span>VIEW ALL WORKS</span>
+        <span>→</span>
+      </button>
+    </div>
+  </main>
+
+  <!-- Dark Next Section Reveal (13.05s -> 14.0s) -->
+  <section id="next-dark-section">
+    <div>
+      <p class="font-mono text-[10px] tracking-[0.14em] text-neutral-400 uppercase mb-1">PROJECT STARDUST® CINEMA STUDIOS</p>
+      <h2 class="text-xl sm:text-2xl font-light tracking-tight text-white">Crafting cinematic films with emotion, vision &amp; precision.</h2>
+    </div>
+    <div class="flex items-center gap-3">
+      <button id="replay-from-footer-btn" class="px-4 py-2 rounded-full border border-white/25 hover:bg-white/10 text-xs font-mono tracking-wider uppercase transition-colors">
+        ↺ Back to Top
+      </button>
+      <button id="footer-talk-btn" class="px-4 py-2 rounded-full bg-white text-black hover:bg-neutral-200 text-xs font-mono tracking-wider uppercase transition-colors">
+        Start a Production →
+      </button>
+    </div>
+  </section>
+
+  <!-- Virtual Scroll Spacer (620vh) -->
+  <div id="scroll-spacer"></div>
+
+  <!-- Case Study Lightbox Modal -->
+  <div id="card-modal" class="overlay-backdrop flex items-center justify-center p-3 sm:p-4">
+    <div class="bg-[#161616] text-white rounded-2xl max-w-2xl w-full max-h-[92dvh] overflow-y-auto shadow-2xl border border-white/10" style="-webkit-overflow-scrolling: touch;">
+      <div class="flex items-center justify-between px-4 sm:px-5 py-3 border-b border-white/10 sticky top-0 bg-[#161616] z-10">
+        <div class="flex items-center gap-2">
+          <span id="modal-tag" class="font-mono text-[9px] sm:text-[10px] uppercase tracking-widest px-2.5 py-0.5 rounded-full bg-white/10 text-neutral-300">01 / PRODUCTION SPEC</span>
+          <h3 id="modal-title" class="text-xs sm:text-sm font-medium tracking-tight truncate max-w-[170px] sm:max-w-none">Project Title</h3>
+        </div>
+        <button id="close-card-modal" class="text-neutral-400 hover:text-white text-xs font-mono uppercase px-2 py-1">ESC ✕</button>
+      </div>
+      <div class="relative bg-[#0e0e0e] aspect-[7/5] w-full overflow-hidden flex items-center justify-center">
+        <img id="modal-img" src="" alt="Project Preview" class="w-full h-full object-cover" />
+      </div>
+      <div class="p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <p id="modal-desc" class="text-xs text-neutral-300 leading-relaxed max-w-md"></p>
+        <div class="flex items-center gap-2 shrink-0">
+          <button id="modal-prev" class="px-3 py-1.5 rounded-full border border-white/20 hover:bg-white/10 text-[10px] font-mono uppercase">← Prev</button>
+          <button id="modal-next" class="px-3 py-1.5 rounded-full bg-white text-black hover:bg-neutral-200 text-[10px] font-mono uppercase">Next →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide-Over Inquiry Drawer -->
+  <div id="contact-modal" class="overlay-backdrop flex justify-end">
+    <div class="bg-[#141414] text-white w-full max-w-full sm:max-w-md h-full p-5 sm:p-7 flex flex-col justify-between border-l border-white/10 overflow-y-auto" style="-webkit-overflow-scrolling: touch;">
+      <div>
+        <div class="flex items-center justify-between pb-5 border-b border-white/10">
+          <span class="font-mono text-[10px] tracking-[0.15em] text-neutral-400 uppercase">COMMISSION A PRODUCTION</span>
+          <button id="close-contact-modal" class="text-neutral-400 hover:text-white text-xs font-mono">CLOSE ✕</button>
+        </div>
+        <h2 class="text-2xl font-light tracking-tight mt-6 mb-2">Let's craft something extraordinary on film.</h2>
+        <p class="text-xs text-neutral-400 leading-relaxed mb-6">Share your vision and our production team at PROJECT STARDUST® will respond within 24 hours.</p>
+
+        <form id="contact-form" class="space-y-4">
+          <div>
+            <label class="block font-mono text-[10px] uppercase tracking-wider text-neutral-400 mb-1.5">Your Name</label>
+            <input type="text" required placeholder="Alex Mercer" class="w-full bg-white/5 border border-white/15 rounded-lg px-3.5 py-2 text-xs text-white focus:outline-none focus:border-white/50" />
+          </div>
+          <div>
+            <label class="block font-mono text-[10px] uppercase tracking-wider text-neutral-400 mb-1.5">Work Email</label>
+            <input type="email" required placeholder="alex@studio.com" class="w-full bg-white/5 border border-white/15 rounded-lg px-3.5 py-2 text-xs text-white focus:outline-none focus:border-white/50" />
+          </div>
+          <div>
+            <label class="block font-mono text-[10px] uppercase tracking-wider text-neutral-400 mb-1.5">Production Scope</label>
+            <select class="w-full bg-[#1f1f1f] border border-white/15 rounded-lg px-3.5 py-2 text-xs text-white focus:outline-none focus:border-white/50">
+              <option>Commercial &amp; Brand Film</option>
+              <option>Narrative Feature &amp; Short Film</option>
+              <option>Music Video &amp; Visual Album</option>
+              <option>Documentary &amp; Episodic Production</option>
+              <option>VFX, Color Grading &amp; Post-Production</option>
+            </select>
+          </div>
+          <div>
+            <label class="block font-mono text-[10px] uppercase tracking-wider text-neutral-400 mb-1.5">Production Brief</label>
+            <textarea rows="3" placeholder="Tell us about your script, treatment, timeline, and production requirements..." class="w-full bg-white/5 border border-white/15 rounded-lg px-3.5 py-2 text-xs text-white focus:outline-none focus:border-white/50"></textarea>
+          </div>
+          <button type="submit" class="w-full py-2.5 rounded-full bg-white text-black hover:bg-neutral-200 font-mono text-[11px] uppercase tracking-wider font-bold transition-colors">
+            Send Film Inquiry →
+          </button>
+          <div id="contact-success" class="hidden p-3 rounded-lg bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 text-xs">
+            Inquiry received! Our executive producers at PROJECT STARDUST® will reach out shortly.
+          </div>
+        </form>
+      </div>
+      <div class="pt-6 border-t border-white/10 flex items-center justify-between text-[10px] font-mono text-neutral-500">
+        <span>PROJECT STARDUST® STUDIOS</span>
+        <span>CINEMATIC FILM &amp; PRODUCTION</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Navigation Menu Modal -->
+  <div id="menu-modal" class="overlay-backdrop flex items-center justify-center p-4 sm:p-6">
+    <div class="bg-[#141414] text-white rounded-2xl max-w-xl w-full max-h-[90dvh] overflow-y-auto p-5 sm:p-8 border border-white/10 shadow-2xl" style="-webkit-overflow-scrolling: touch;">
+      <div class="flex items-center justify-between pb-4 border-b border-white/10 mb-6">
+        <span class="font-mono text-[10px] tracking-[0.15em] text-neutral-400 uppercase">PROJECT STARDUST® NAVIGATION</span>
+        <button id="close-menu-modal" class="text-neutral-400 hover:text-white text-xs font-mono">CLOSE ✕</button>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6">
+        <button data-jump="0.0" class="menu-jump-btn text-left p-4 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 transition-colors">
+          <span class="font-mono text-[10px] text-neutral-400 block mb-1">01 / 00.0s</span>
+          <span class="text-base font-medium">Cinema Intro</span>
+        </button>
+        <button data-jump="0.25" class="menu-jump-btn text-left p-4 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 transition-colors">
+          <span class="font-mono text-[10px] text-neutral-400 block mb-1">02 / 03.5s</span>
+          <span class="text-base font-medium">3D Helical Film Reel</span>
+        </button>
+        <button data-jump="0.55" class="menu-jump-btn text-left p-4 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 transition-colors">
+          <span class="font-mono text-[10px] text-neutral-400 block mb-1">03 / 07.7s</span>
+          <span class="text-base font-medium">Cinematic Wave Transition</span>
+        </button>
+        <button data-jump="0.82" class="menu-jump-btn text-left p-4 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 transition-colors">
+          <span class="font-mono text-[10px] text-neutral-400 block mb-1">04 / 11.5s</span>
+          <span class="text-base font-medium">Featured Productions Grid</span>
+        </button>
+      </div>
+      <div class="flex items-center justify-between pt-4 border-t border-white/10 text-xs text-neutral-400">
+        <span>Scroll with mouse wheel or trackpad to explore</span>
+        <button id="menu-open-dribbble" class="font-mono text-[11px] text-white underline">View All Productions →</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // =========================================================================
+    // 1. PROJECT SPECIFICATIONS & HIGH-RES PROCEDURAL TEXTURE GENERATION
+    // =========================================================================
+    const CARD_DATA = [
+      {
+        id: 'medical',
+        title: 'Medical Videos — Clinical, Surgical & Health Tech Films',
+        tag: '01 / MEDICAL & SURGICAL CINEMA',
+        badge: '01 / MEDICAL VIDEOS ↗',
+        desc: 'High-precision surgical recordings, medical device demonstrations, healthcare communications, and clinical storytelling filmed with macro optics, medical-grade lighting, and scientific accuracy.',
+        theme: {
+          bgGrad: ['#07080f', '#121626', '#05060b'],
+          accent: '#4ecdc4',
+          subAccent: 'rgba(78, 205, 196, 0.75)',
+          tag: 'PRODUCTION SPEC. 01 — CLINICAL & SURGICAL',
+          num: '01',
+          headline: 'MEDICAL VIDEOS',
+          subline: 'CLINICAL & HEALTHCARE FILMS',
+          meta: '4K MACRO CINEMA • SURGICAL RIGS • BIO-ANIMATION'
+        }
+      },
+      {
+        id: 'concept',
+        title: 'Concept Videos — Futuristic Brand & Speculative Films',
+        tag: '02 / SPECULATIVE & VISIONARY FILMS',
+        badge: '02 / CONCEPT VIDEOS ↗',
+        desc: 'Avant-garde visionary concept films, speculative brand visions, and cinematic product reveals crafted with mood-driven lighting, surreal art direction, and bold visual symbolism.',
+        theme: {
+          bgGrad: ['#091118', '#132130', '#070c12'],
+          accent: '#c9a84c',
+          subAccent: 'rgba(201, 168, 76, 0.75)',
+          tag: 'PRODUCTION SPEC. 02 — SPECULATIVE VISIONS',
+          num: '02',
+          headline: 'CONCEPT VIDEOS',
+          subline: 'SPECULATIVE & VISIONARY BRAND FILMS',
+          meta: 'ANAMORPHIC CINEMA • SURREAL LIGHTING • 8K RAW'
+        }
+      },
+      {
+        id: 'educational',
+        title: 'Educational Videos — Masterclass & Explainer Films',
+        tag: '03 / MASTERCLASS & EXPLAINER CINEMA',
+        badge: '03 / EDUCATIONAL VIDEOS ↗',
+        desc: 'Dynamic educational masterclasses, technical explainer series, and interactive course cinematography combining compelling motion graphics, structured narrative pacing, and studio sound.',
+        theme: {
+          bgGrad: ['#140c0c', '#241418', '#0c0708'],
+          accent: '#e6a755',
+          subAccent: 'rgba(230, 167, 85, 0.75)',
+          tag: 'PRODUCTION SPEC. 03 — KNOWLEDGE & MASTERCLASS',
+          num: '03',
+          headline: 'EDUCATIONAL VIDEOS',
+          subline: 'MASTERCLASS & EXPLAINER CINEMA',
+          meta: 'MULTI-CAM 4K • MOTION INFOGRAPHICS • STUDIO AUDIO'
+        }
+      },
+      {
+        id: 'documentaries',
+        title: 'Documentaries — Real Stories & Deep Human Narratives',
+        tag: '04 / FEATURE & EPISODIC DOCUMENTARIES',
+        badge: '04 / DOCUMENTARIES ↗',
+        desc: 'Immersive expedition and character-driven documentaries filmed across global locations, capturing authentic human struggles, environmental frontiers, and transformative cultural narratives.',
+        theme: {
+          bgGrad: ['#0d0c14', '#1a172a', '#08080f'],
+          accent: '#b388ff',
+          subAccent: 'rgba(179, 136, 255, 0.75)',
+          tag: 'PRODUCTION SPEC. 04 — NARRATIVE EXPEDITION',
+          num: '04',
+          headline: 'DOCUMENTARIES',
+          subline: 'REAL STORIES & HUMAN NARRATIVES',
+          meta: 'RUN-AND-GUN CINEMA • EXPEDITION RIGS • ATMOS SOUND'
+        }
+      },
+      {
+        id: 'podcasts',
+        title: 'Podcasts — Studio Video Shows & Broadcast Talk',
+        tag: '05 / MULTI-CAM VIDEO PODCAST PRODUCTION',
+        badge: '05 / PODCASTS ↗',
+        desc: 'Turnkey multi-camera video podcast production featuring broadcast cinema optics, tuned acoustic spaces, automated switching, real-time color grading, and dynamic social clip extraction.',
+        theme: {
+          bgGrad: ['#0e1411', '#16221c', '#090d0b'],
+          accent: '#52d68a',
+          subAccent: 'rgba(82, 214, 138, 0.75)',
+          tag: 'PRODUCTION SPEC. 05 — STUDIO BROADCAST TALK',
+          num: '05',
+          headline: 'PODCASTS',
+          subline: 'STUDIO VIDEO SHOWS & BROADCAST TALK',
+          meta: '3-CAM ARRI/SONY • BROADCAST AUDIO • MULTI-TRACK'
+        }
+      },
+      {
+        id: 'ai',
+        title: 'AI Videos — Neural Generative Synthesis & VFX',
+        tag: '06 / NEURAL SYNTHESIS & AI CINEMA',
+        badge: '06 / AI VIDEOS ↗',
+        desc: 'Next-generation AI-driven video synthesis, neural style transfer, synthetic visual effects, and hybrid virtual productions blending real-world camera plates with cutting-edge diffusion models.',
+        theme: {
+          bgGrad: ['#14110a', '#241d11', '#0d0b06'],
+          accent: '#ffd166',
+          subAccent: 'rgba(255, 209, 102, 0.75)',
+          tag: 'PRODUCTION SPEC. 06 — GENERATIVE AI CINEMA',
+          num: '06',
+          headline: 'AI VIDEOS',
+          subline: 'NEURAL & GENERATIVE SYNTHESIS',
+          meta: 'NEURAL DIFFUSION • SYNTHETIC WORLDS • HYBRID VFX'
+        }
+      }
+    ];
+
+    // Helper: Generate 1200x857 (7:5) crisp high-res textures for cards
+    function generateTexture(card, isHoverVersion = false) {
+      const canvas = document.createElement('canvas');
+      canvas.width = 1200;
+      canvas.height = 857; // exact 7:5 aspect ratio
+      const ctx = canvas.getContext('2d');
+      const t = card.theme;
+
+      // Base Gradient
+      const grad = ctx.createLinearGradient(0, 0, 1200, 857);
+      if (!isHoverVersion) {
+        grad.addColorStop(0, t.bgGrad[0]);
+        grad.addColorStop(0.55, t.bgGrad[1]);
+        grad.addColorStop(1, t.bgGrad[2]);
+      } else {
+        grad.addColorStop(0, '#1a1824');
+        grad.addColorStop(0.55, t.accent + '22');
+        grad.addColorStop(1, '#08080a');
+      }
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, 1200, 857);
+
+      // Architectural Hairline Grid
+      ctx.strokeStyle = isHoverVersion ? 'rgba(255, 255, 255, 0.12)' : 'rgba(255, 255, 255, 0.06)';
+      ctx.lineWidth = 1;
+      for (let x = 80; x < 1200; x += 120) {
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, 857);
+        ctx.stroke();
+      }
+      for (let y = 80; y < 857; y += 120) {
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(1200, y);
+        ctx.stroke();
+      }
+
+      // Outer Border & Corner Crosshairs
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.18)';
+      ctx.strokeRect(36, 36, 1200 - 72, 857 - 72);
+
+      ctx.fillStyle = t.accent;
+      ctx.font = '700 13px "Space Mono", monospace';
+      ctx.fillText('+', 42, 54);
+      ctx.fillText('+', 1200 - 54, 54);
+      ctx.fillText('+', 42, 857 - 46);
+      ctx.fillText('+', 1200 - 54, 857 - 46);
+
+      // Top Tag Pill
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.08)';
+      ctx.fillRect(72, 72, 340, 36);
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.14)';
+      ctx.strokeRect(72, 72, 340, 36);
+
+      ctx.fillStyle = t.accent;
+      ctx.font = '700 12px "Space Mono", monospace';
+      ctx.fillText(t.tag, 92, 95);
+
+      // Giant background numeral
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.04)';
+      ctx.font = '700 240px "Inter", sans-serif';
+      ctx.textAlign = 'right';
+      ctx.fillText(t.num, 1120, 350);
+      ctx.textAlign = 'left';
+
+      // Graphic Art Centerpiece
+      ctx.save();
+      ctx.translate(680, 480);
+      if (card.id === 'medical') {
+        // Medical crosshair & clinical focus frame
+        ctx.strokeStyle = t.accent;
+        ctx.lineWidth = 2.5;
+        ctx.strokeRect(-160, -90, 320, 180); // focal frame
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.4)';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(-180, 0); ctx.lineTo(180, 0);
+        ctx.moveTo(0, -110); ctx.lineTo(0, 110);
+        ctx.stroke();
+        ctx.fillStyle = t.accent;
+        ctx.beginPath();
+        ctx.arc(0, 0, 8, 0, Math.PI * 2);
+        ctx.fill();
+      } else if (card.id === 'concept') {
+        // High-concept trajectory curve & speculative nexus
+        ctx.strokeStyle = t.accent;
+        ctx.lineWidth = 12;
+        ctx.beginPath();
+        ctx.arc(30, -10, 130, -Math.PI * 0.2, Math.PI * 1.4);
+        ctx.stroke();
+        ctx.fillStyle = '#ffffff';
+        ctx.beginPath();
+        ctx.arc(165, 80, 16, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.4)';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(-120, 110); ctx.lineTo(140, -110);
+        ctx.stroke();
+      } else if (card.id === 'educational') {
+        // Interlocking geometric frame representing structure & knowledge
+        ctx.strokeStyle = t.accent;
+        ctx.lineWidth = 5;
+        ctx.strokeRect(-110, -110, 220, 220);
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.5)';
+        ctx.lineWidth = 2.5;
+        ctx.save();
+        ctx.rotate(Math.PI / 4);
+        ctx.strokeRect(-100, -100, 200, 200);
+        ctx.restore();
+        ctx.fillStyle = t.accent;
+        ctx.beginPath();
+        ctx.arc(0, 0, 14, 0, Math.PI * 2);
+        ctx.fill();
+      } else if (card.id === 'documentaries') {
+        // Expedition documentary orbital rings
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+        ctx.lineWidth = 2.5;
+        ctx.beginPath();
+        ctx.arc(0, 0, 140, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.strokeStyle = t.accent;
+        ctx.lineWidth = 5;
+        ctx.beginPath();
+        ctx.arc(0, 0, 105, -Math.PI * 0.4, Math.PI * 0.85);
+        ctx.stroke();
+        ctx.fillStyle = t.accent;
+        for (let a = 0; a < Math.PI * 2; a += Math.PI / 3) {
+          ctx.beginPath();
+          ctx.arc(Math.cos(a) * 105, Math.sin(a) * 105, 5, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      } else if (card.id === 'podcasts') {
+        // Acoustic soundwave & podcast broadcast pulses
+        ctx.strokeStyle = t.accent;
+        ctx.lineWidth = 3;
+        for (let r = 40; r <= 140; r += 26) {
+          ctx.beginPath();
+          ctx.ellipse(0, 0, r * 1.25, r * 0.65, Math.PI * 0.1, 0, Math.PI * 2);
+          ctx.stroke();
+        }
+      } else {
+        // Neural AI synthetic energy spirals
+        ctx.strokeStyle = t.accent;
+        ctx.lineWidth = 3;
+        for (let r = 50; r <= 150; r += 32) {
+          ctx.beginPath();
+          ctx.ellipse(0, 0, r * 1.3, r * 0.75, Math.PI * 0.25, 0, Math.PI * 2);
+          ctx.stroke();
+        }
+      }
+      ctx.restore();
+
+      // Main Editorial Headline
+      ctx.fillStyle = '#ffffff';
+      ctx.font = '700 48px "Inter", sans-serif';
+      ctx.fillText(t.headline, 72, 600);
+
+      ctx.fillStyle = t.subAccent;
+      ctx.font = '500 24px "Inter", sans-serif';
+      ctx.fillText(t.subline, 74, 646);
+
+      // Meta Footnote
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+      ctx.font = '600 12px "Space Mono", monospace';
+      ctx.fillText(t.meta, 74, 765);
+
+      ctx.fillStyle = t.accent;
+      ctx.textAlign = 'right';
+      ctx.fillText('EXPLORE PRODUCTION ↗', 1200 - 74, 765);
+      ctx.textAlign = 'left';
+
+      const dataUrl = canvas.toDataURL('image/jpeg', 0.92);
+      if (!isHoverVersion) card.src = dataUrl;
+
+      const texture = new THREE.CanvasTexture(canvas);
+      texture.generateMipmaps = true;
+      texture.minFilter = THREE.LinearMipmapLinearFilter;
+      texture.magFilter = THREE.LinearFilter;
+      return texture;
+    }
+
+    const primaryTextures = CARD_DATA.map(c => generateTexture(c, false));
+    const hoverTextures = CARD_DATA.map(c => generateTexture(c, true));
+
+    // =========================================================================
+    // 2. THREE.JS SCENE, CAMERAS & CUSTOM GLSL SHADERS
+    // =========================================================================
+    const webglContainer = document.getElementById('webgl-container');
+    const scene = new THREE.Scene();
+
+    // PerspectiveCamera(35, aspect, 0.1, 100) at z = 13.5
+    const camera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, 0.1, 100);
+    camera.position.set(0, 0, 13.5);
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.05;
+    webglContainer.appendChild(renderer.domElement);
+
+    // Compute visible world viewport at z = 0
+    function getWorldViewport() {
+      const vFovRad = (camera.fov * Math.PI) / 180;
+      const hVp = 2 * Math.tan(vFovRad / 2) * camera.position.z;
+      const wVp = hVp * camera.aspect;
+      return { wVp, hVp };
+    }
+
+    // =========================================================================
+    // 3. PHASE 2: 3D HELICAL CYLINDRICAL RIBBON (t: 1.2s -> 7.5s)
+    // =========================================================================
+    const ribbonGroup = new THREE.Group();
+    ribbonGroup.rotation.z = THREE.MathUtils.degToRad(14.5);
+    ribbonGroup.rotation.x = THREE.MathUtils.degToRad(7.5);
+    scene.add(ribbonGroup);
+
+    const ribbonCards = [];
+    const ribbonCardWidth = 2.65;
+    const ribbonCardHeight = 1.88;
+
+    for (let i = 0; i < 10; i++) {
+      const geo = new THREE.PlaneGeometry(ribbonCardWidth, ribbonCardHeight, 28, 14);
+      const tex = primaryTextures[i % 6];
+      const mat = new THREE.MeshBasicMaterial({
+        map: tex,
+        side: THREE.DoubleSide,
+        transparent: true,
+        opacity: 0.0
+      });
+      const mesh = new THREE.Mesh(geo, mat);
+      ribbonGroup.add(mesh);
+      ribbonCards.push({
+        mesh,
+        geo,
+        basePositions: geo.attributes.position.clone()
+      });
+    }
+
+    // Deform ribbon vertices mathematically onto 3D cylinder
+    function updateHelicalRibbon(t) {
+      if (t < 1.1 || t > 7.7) {
+        ribbonGroup.visible = false;
+        return;
+      }
+      ribbonGroup.visible = true;
+
+      // Responsive scale for mobile portrait
+      if (camera.aspect < 1.0) {
+        const ribbonScale = Math.min(1.0, Math.max(0.70, camera.aspect * 1.15));
+        ribbonGroup.scale.set(ribbonScale, ribbonScale, ribbonScale);
+      } else {
+        ribbonGroup.scale.set(1.0, 1.0, 1.0);
+      }
+
+      // u = clamp((t - 1.35) / (7.25 - 1.35), 0, 1)
+      const u = Math.max(0, Math.min(1, (t - 1.35) / (7.25 - 1.35)));
+      const alphaLead = -1.25 + u * 10.6;
+      const yOffset = -2.55 + u * 3.15;
+
+      for (let i = 0; i < 10; i++) {
+        const item = ribbonCards[i];
+        const alphaI = alphaLead - i * 0.64;
+
+        // Smooth opacity fade at entry and exit
+        let opacity = 1.0;
+        if (alphaI < -1.85) {
+          opacity = Math.max(0, Math.min(1, (alphaI - (-2.35)) / 0.5));
+        } else if (alphaI > 5.05) {
+          opacity = Math.max(0, Math.min(1, 1 - (alphaI - 5.05) / 0.6));
+        }
+        item.mesh.material.opacity = opacity;
+
+        const posAttr = item.geo.attributes.position;
+        const basePos = item.basePositions;
+
+        for (let v = 0; v < posAttr.count; v++) {
+          const vx = basePos.getX(v);
+          const vy = basePos.getY(v);
+
+          const a = alphaI + (vx / ribbonCardWidth) * 0.58;
+          const x = 4.35 * Math.sin(a);
+          const z = -2.85 * Math.cos(a);
+
+          const yClimb = a > 2.8 ? 0.42 * Math.pow(a - 2.8, 1.35) : 0.0;
+          const y = 0.72 * a + yOffset + yClimb + vy;
+
+          posAttr.setXYZ(v, x, y, z);
+        }
+        posAttr.needsUpdate = true;
+      }
+    }
+
+    // =========================================================================
+    // 4. PHASE 3: STAGGERED CLOTH-WAVE 3x2 PORTFOLIO GRID (t: 6.75s -> 14.0s)
+    // =========================================================================
+    const gridGroup = new THREE.Group();
+    scene.add(gridGroup);
+
+    const gridVertexShader = `
+      varying vec2 vUv;
+      void main() {
+        vUv = uv;
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+      }
+    `;
+
+    const gridFragmentShader = `
+      uniform sampler2D uTexPrimary;
+      uniform sampler2D uTexHover;
+      uniform float uHoverMix;
+      uniform float uZoom;
+      uniform float uCornerRadius;
+      uniform vec2 uResolution;
+      varying vec2 vUv;
+
+      float roundedBoxSDF(vec2 p, vec2 b, float r) {
+        vec2 d = abs(p) - b + vec2(r);
+        return min(max(d.x, d.y), 0.0) + length(max(d, 0.0)) - r;
+      }
+
+      void main() {
+        vec2 centeredUv = (vUv - 0.5) * (1.0 - uZoom * 0.045) + 0.5;
+        vec4 col1 = texture2D(uTexPrimary, centeredUv);
+        vec4 col2 = texture2D(uTexHover, centeredUv);
+        vec4 color = mix(col1, col2, uHoverMix);
+
+        vec2 p = (vUv - 0.5) * uResolution;
+        float dist = roundedBoxSDF(p, uResolution * 0.5, uCornerRadius * min(uResolution.x, uResolution.y));
+        float alpha = 1.0 - smoothstep(0.0, 1.5, dist);
+
+        gl_FragColor = vec4(color.rgb, alpha);
+      }
+    `;
+
+    const gridCards = [];
+    const gridCardSchedules = [
+      // Row 1 (fromTop = true)
+      { col: 0, row: 0, fromTop: true,  tStart: 6.75, tEnd: 8.35 },
+      { col: 1, row: 0, fromTop: true,  tStart: 7.20, tEnd: 8.85 },
+      { col: 2, row: 0, fromTop: true,  tStart: 7.65, tEnd: 9.35 },
+      // Row 2 (fromTop = false)
+      { col: 0, row: 1, fromTop: false, tStart: 8.20, tEnd: 10.00 },
+      { col: 1, row: 1, fromTop: false, tStart: 8.75, tEnd: 10.60 },
+      { col: 2, row: 1, fromTop: false, tStart: 9.35, tEnd: 11.25 }
+    ];
+
+    for (let i = 0; i < 6; i++) {
+      const geo = new THREE.PlaneGeometry(1, 1, 24, 24);
+      const sched = gridCardSchedules[i];
+      const mat = new THREE.ShaderMaterial({
+        vertexShader: gridVertexShader,
+        fragmentShader: gridFragmentShader,
+        uniforms: {
+          uTexPrimary: { value: primaryTextures[i] },
+          uTexHover: { value: hoverTextures[i] },
+          uHoverMix: { value: 0.0 },
+          uZoom: { value: 0.0 },
+          uCornerRadius: { value: 0.028 },
+          uResolution: { value: new THREE.Vector2(700, 500) }
+        },
+        transparent: true,
+        side: THREE.DoubleSide
+      });
+      const mesh = new THREE.Mesh(geo, mat);
+      mesh.visible = false;
+      gridGroup.add(mesh);
+
+      gridCards.push({
+        mesh,
+        geo,
+        mat,
+        sched,
+        hoverVal: 0.0,
+        basePositions: geo.attributes.position.clone()
+      });
+    }
+
+    // Update 3x2 Grid Staggered Cloth-Wave & Positions
+    function updateGrid(t) {
+      if (t < 6.6) {
+        gridGroup.visible = false;
+        return;
+      }
+      gridGroup.visible = true;
+
+      const { wVp, hVp } = getWorldViewport();
+      const isMobilePortrait = window.innerWidth < 768 || camera.aspect < 0.92;
+
+      let Wc, Hc, Gx, Gy;
+      if (isMobilePortrait) {
+        // 2 Columns x 3 Rows on Mobile Portrait for large readable cards
+        Wc = 0.44 * wVp;
+        Hc = Wc * (5.0 / 7.0);
+        Gx = 0.032 * wVp;
+        Gy = 0.022 * hVp;
+      } else {
+        // Desktop / Tablet Landscape: Exact original 3 Columns x 2 Rows
+        Wc = 0.252 * wVp;
+        Hc = Math.min(0.288 * hVp, Wc * (5.0 / 7.0));
+        Gx = 0.0105 * wVp;
+        Gy = 0.022 * hVp;
+      }
+
+      // Lift grid upward by 16vh if t in [13.05, 14.0]
+      let gridLiftY = 0;
+      if (t > 13.05) {
+        const liftProgress = Math.min(1, (t - 13.05) / 0.95);
+        gridLiftY = liftProgress * (hVp * 0.16);
+      }
+      gridGroup.position.y = gridLiftY;
+
+      for (let i = 0; i < 6; i++) {
+        const item = gridCards[i];
+        const s = item.sched;
+
+        if (t < s.tStart) {
+          item.mesh.visible = false;
+          continue;
+        }
+        item.mesh.visible = true;
+
+        let targetX, targetY;
+        if (isMobilePortrait) {
+          const mCol = i % 2; // 0 (left) or 1 (right)
+          const mRow = Math.floor(i / 2); // 0 (top), 1 (mid), 2 (bottom)
+          targetX = (mCol === 0 ? -0.5 : 0.5) * (Wc + Gx);
+          targetY = (1 - mRow) * (Hc + Gy);
+        } else {
+          targetX = (s.col - 1) * (Wc + Gx);
+          targetY = (s.row === 0) ? (Hc * 0.5 + Gy * 0.5) : (-Hc * 0.5 - Gy * 0.5);
+        }
+
+        // Local progress r in [0, 1]
+        const r = Math.min(1, Math.max(0, (t - s.tStart) / (s.tEnd - s.tStart)));
+        const easedP = 1 - Math.pow(1 - r, 3);
+
+        const offscreenY = (s.fromTop ? 1 : -1) * (hVp * 0.5 + Hc * 0.78);
+        const currentCenterY = THREE.MathUtils.lerp(offscreenY, targetY, easedP);
+
+        // Soft Cloth / Jelly vertex displacement envelope
+        const w = Math.sin(r * Math.PI) * (1 - 0.65 * r);
+        const dirSign = s.fromTop ? 1.0 : -1.0;
+
+        const posAttr = item.geo.attributes.position;
+        const basePos = item.basePositions;
+
+        for (let v = 0; v < posAttr.count; v++) {
+          const bx = basePos.getX(v); // [-0.5, +0.5]
+          const by = basePos.getY(v); // [-0.5, +0.5]
+
+          const dYArch = Math.cos(bx * Math.PI) * 0.18 * Hc * w * dirSign;
+          const dYSkew = (bx + 0.5) * 0.22 * Hc * w * dirSign;
+          const dZCurl = Math.sin((by + 0.5) * Math.PI) * 0.35 * w;
+
+          const vx = bx * Wc;
+          const vy = by * Hc + dYArch + dYSkew;
+          const vz = dZCurl;
+
+          posAttr.setXYZ(v, vx, vy, vz);
+        }
+        posAttr.needsUpdate = true;
+
+        item.mesh.position.set(targetX, currentCenterY, 0);
+
+        // Interactive hover uniforms & tilt
+        const isHovered = (activeHoverIndex === i && t >= 11.2);
+        const targetHover = isHovered ? 1.0 : 0.0;
+        item.hoverVal += (targetHover - item.hoverVal) * 0.12;
+
+        item.mat.uniforms.uZoom.value = item.hoverVal;
+        item.mat.uniforms.uHoverMix.value = (i === 5) ? item.hoverVal : item.hoverVal * 0.45;
+        item.mat.uniforms.uResolution.value.set(Wc * 200, Hc * 200);
+
+        // Card tilt toward mouse when settled and hovered
+        if (t >= 11.2) {
+          if (isHovered) {
+            item.mesh.position.z = THREE.MathUtils.lerp(item.mesh.position.z, 0.42, 0.15);
+            item.mesh.rotation.x = THREE.MathUtils.lerp(item.mesh.rotation.x, -mouse.y * 0.12, 0.15);
+            item.mesh.rotation.y = THREE.MathUtils.lerp(item.mesh.rotation.y, mouse.x * 0.12, 0.15);
+          } else {
+            item.mesh.position.z = THREE.MathUtils.lerp(item.mesh.position.z, 0.0, 0.1);
+            item.mesh.rotation.x = THREE.MathUtils.lerp(item.mesh.rotation.x, 0.0, 0.1);
+            item.mesh.rotation.y = THREE.MathUtils.lerp(item.mesh.rotation.y, 0.0, 0.1);
+          }
+        }
+      }
+    }
+
+    // =========================================================================
+    // 5. MASTER CHOREOGRAPHY & PURE SCROLL-DRIVEN TIMELINE
+    // =========================================================================
+    let targetProgress = 0.0; // p in [0, 1]
+    let currentProgress = 0.0;
+    let activeHoverIndex = -1;
+
+    const mouse = { x: 0, y: 0 };
+    window.addEventListener('mousemove', (e) => {
+      mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+      mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+    });
+
+    // DOM References
+    const wordDesignIn = document.getElementById('word-design-in');
+    const wordMotion = document.getElementById('word-motion');
+    const centerSubheadline = document.getElementById('center-subheadline');
+    const topArchBar = document.getElementById('top-arch-bar');
+    const gridHairline = document.getElementById('grid-hairline');
+    const gridHitLayer = document.getElementById('grid-hit-layer');
+    const hitCards = document.querySelectorAll('.grid-card-hit');
+    const bottomBar = document.getElementById('bottom-bar');
+    const scrollIndicator = document.getElementById('scroll-indicator');
+    const nextDarkSection = document.getElementById('next-dark-section');
+    const logoBtn = document.getElementById('logo-btn');
+    const stepPrevBtn = document.getElementById('step-prev-btn');
+    const stepNextBtn = document.getElementById('step-next-btn');
+
+    // Update all visual states for time t = p * 14.0s
+    function updateMasterTimeline(t) {
+      // --- 1. Scrolling Top Arch Bar (t in [0.0s, 1.1s]) ---
+      if (t <= 1.1) {
+        const archRatio = Math.min(1, t / 1.05);
+        topArchBar.style.transform = `translate3d(0, ${-archRatio * 65}px, 0)`;
+        topArchBar.style.opacity = `${1 - archRatio}`;
+      } else {
+        topArchBar.style.opacity = '0';
+      }
+
+      // --- 2. Phase 1: Opposing Split Typography (t: 0.0s -> 7.2s) with Smooth Eased Velocity ---
+      if (t <= 7.25) {
+        const rawRatio = Math.max(0, Math.min(1, t / 7.1));
+        // Smooth Hermite blend so text glides with natural weight
+        const smoothRatio = rawRatio * rawRatio * (3.0 - 2.0 * rawRatio);
+
+        const isMobilePortrait = window.innerWidth < 768 || (camera && camera.aspect < 1.0);
+        const startDesign = isMobilePortrait ? -65.0 : -29.0;
+        const spanDesign = isMobilePortrait ? 180.0 : 131.0;
+        const startMotion = isMobilePortrait ? 100.0 : 94.5;
+        const spanMotion = isMobilePortrait ? 185.0 : 130.5;
+
+        const txDesign = startDesign + smoothRatio * spanDesign;
+        wordDesignIn.style.transform = `translate3d(${txDesign.toFixed(2)}vw, -50%, 0)`;
+        wordDesignIn.style.opacity = t > 6.75 ? `${Math.max(0, 1 - (t - 6.75) / 0.5).toFixed(3)}` : '1';
+
+        const txMotion = startMotion - smoothRatio * spanMotion;
+        wordMotion.style.transform = `translate3d(${txMotion.toFixed(2)}vw, -50%, 0)`;
+        wordMotion.style.opacity = t > 6.75 ? `${Math.max(0, 1 - (t - 6.75) / 0.5).toFixed(3)}` : '1';
+      } else {
+        wordDesignIn.style.opacity = '0';
+        wordMotion.style.opacity = '0';
+      }
+
+      // Center Subheadline: opacity: 1 for t: 0.0s -> 6.9s, smooth fade 6.9s -> 7.75s
+      if (t <= 6.9) {
+        centerSubheadline.style.opacity = '1';
+      } else if (t <= 7.75) {
+        const fadeP = (t - 6.9) / 0.85;
+        centerSubheadline.style.opacity = `${Math.max(0, (1 - fadeP) * (1 - fadeP)).toFixed(3)}`;
+      } else {
+        centerSubheadline.style.opacity = '0';
+      }
+
+      // --- 3. Phase 2: Three.js 3D Helical Cylindrical Ribbon ---
+      updateHelicalRibbon(t);
+
+      // --- 4. Phase 3 & 4: Staggered Cloth-Wave 3x2 Grid ---
+      updateGrid(t);
+
+      // 1px Center Hairline fades in as ribbon exits around t = 7.0s
+      if (t >= 6.85 && t <= 13.0) {
+        const hRatio = Math.min(1, (t - 6.85) / 0.6);
+        gridHairline.style.opacity = `${hRatio}`;
+      } else if (t > 13.0) {
+        gridHairline.style.opacity = `${Math.max(0, 1 - (t - 13.0) / 0.6)}`;
+      } else {
+        gridHairline.style.opacity = '0';
+      }
+
+      // Hit-Layer activation
+      if (t >= 11.2) {
+        hitCards.forEach(c => c.classList.add('active'));
+        alignHitLayers();
+      } else {
+        hitCards.forEach(c => c.classList.remove('active'));
+      }
+
+      // --- 5. Bottom Bar & Scroll Indicator Animation ---
+      if (t < 0.75) {
+        bottomBar.style.opacity = '0';
+        bottomBar.style.transform = 'translateY(16px)';
+      } else if (t >= 0.75 && t < 1.30) {
+        const inRatio = (t - 0.75) / 0.55;
+        bottomBar.style.opacity = `${inRatio}`;
+        bottomBar.style.transform = `translateY(${(1 - inRatio) * 16}px)`;
+      } else if (t >= 1.30 && t < 13.05) {
+        bottomBar.style.opacity = '1';
+        bottomBar.style.transform = 'translateY(0)';
+      } else {
+        const liftP = Math.min(1, (t - 13.05) / 0.95);
+        bottomBar.style.transform = `translateY(${-liftP * 16}vh)`;
+        gridHitLayer.style.transform = `translateY(${-liftP * 16}vh)`;
+      }
+
+      // Fade scroll indicator once user has scrolled past initial intro
+      if (scrollIndicator) {
+        scrollIndicator.style.opacity = t > 1.8 ? '0' : '1';
+      }
+
+      // --- 6. Dark Footer Reveal (t in [13.05s, 14.0s]) ---
+      if (t >= 13.05) {
+        const revealP = Math.min(1, (t - 13.05) / 0.95);
+        nextDarkSection.style.transform = `translateY(${(1 - revealP) * 100}%)`;
+      } else {
+        nextDarkSection.style.transform = 'translateY(100%)';
+      }
+    }
+
+    // Projects 3D mesh positions to 2D screen bounding boxes
+    function alignHitLayers() {
+      const halfW = window.innerWidth / 2;
+      const halfH = window.innerHeight / 2;
+      const { wVp, hVp } = getWorldViewport();
+      const isMobilePortrait = window.innerWidth < 768 || camera.aspect < 0.92;
+
+      let Wc, Hc;
+      if (isMobilePortrait) {
+        Wc = 0.44 * wVp;
+        Hc = Wc * (5.0 / 7.0);
+      } else {
+        Wc = 0.252 * wVp;
+        Hc = Math.min(0.288 * hVp, Wc * (5.0 / 7.0));
+      }
+
+      for (let i = 0; i < 6; i++) {
+        const item = gridCards[i];
+        const hitEl = hitCards[i];
+        if (!hitEl || !item.mesh.visible) continue;
+
+        const center = item.mesh.position.clone();
+        center.y += gridGroup.position.y;
+        center.project(camera);
+
+        const screenX = (center.x * halfW) + halfW;
+        const screenY = -(center.y * halfH) + halfH;
+
+        const corner = new THREE.Vector3(item.mesh.position.x + Wc * 0.5, item.mesh.position.y + gridGroup.position.y + Hc * 0.5, 0).project(camera);
+        const w = Math.abs((corner.x * halfW) + halfW - screenX) * 2;
+        const h = Math.abs(-(corner.y * halfH) + halfH - screenY) * 2;
+
+        hitEl.style.width = `${w.toFixed(1)}px`;
+        hitEl.style.height = `${h.toFixed(1)}px`;
+        hitEl.style.left = `${(screenX - w / 2).toFixed(1)}px`;
+        hitEl.style.top = `${(screenY - h / 2).toFixed(1)}px`;
+      }
+    }
+
+    // =========================================================================
+    // 6. HIGH-PERFORMANCE INERTIAL MOMENTUM SCROLL ENGINE
+    // =========================================================================
+    function getMaxScroll() {
+      const docH = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight);
+      return Math.max(docH - window.innerHeight, 1);
+    }
+
+    // Virtual physics-smoothed scroll coordinates
+    let targetScrollY = window.pageYOffset || window.scrollY || 0;
+    let smoothScrollY = targetScrollY;
+    let isInternalScrolling = false;
+
+    // Wheel event with weighted momentum accumulation
+    window.addEventListener('wheel', (e) => {
+      e.preventDefault();
+      const maxScroll = getMaxScroll();
+
+      // Normalize wheel deltas across mouse vs trackpad
+      let delta = e.deltaY;
+      if (e.deltaMode === 1) delta *= 32;
+      else if (e.deltaMode === 2) delta *= window.innerHeight;
+
+      // Apply subtle friction scaling for velvety, weighted momentum
+      targetScrollY = Math.max(0, Math.min(maxScroll, targetScrollY + delta * 0.85));
+    }, { passive: false });
+
+    // Touch gesture swipe support with iOS inertial momentum
+    let touchStartY = 0;
+    let touchVelocity = 0;
+    let lastTouchTime = performance.now();
+
+    window.addEventListener('touchstart', (e) => {
+      if (e.touches.length > 0) {
+        touchStartY = e.touches[0].clientY;
+        touchVelocity = 0;
+        lastTouchTime = performance.now();
+      }
+    }, { passive: true });
+
+    window.addEventListener('touchmove', (e) => {
+      // Don't intercept scroll if a modal dialog is open
+      if (cardModal && cardModal.classList.contains('open')) return;
+      if (contactModal && contactModal.classList.contains('open')) return;
+      if (menuModal && menuModal.classList.contains('open')) return;
+
+      if (e.touches.length > 0) {
+        const now = performance.now();
+        const dt = Math.max(1, now - lastTouchTime);
+        const touchY = e.touches[0].clientY;
+        const deltaY = (touchStartY - touchY);
+        touchVelocity = (deltaY / dt) * 16.0;
+        touchStartY = touchY;
+        lastTouchTime = now;
+
+        const maxScroll = getMaxScroll();
+        targetScrollY = Math.max(0, Math.min(maxScroll, targetScrollY + deltaY * 1.5));
+      }
+    }, { passive: true });
+
+    window.addEventListener('touchend', () => {
+      if (Math.abs(touchVelocity) > 2) {
+        const maxScroll = getMaxScroll();
+        targetScrollY = Math.max(0, Math.min(maxScroll, targetScrollY + touchVelocity * 16.0));
+      }
+    }, { passive: true });
+
+    // Keyboard navigation (ArrowDown, ArrowUp, PageDown, PageUp, Space)
+    window.addEventListener('keydown', (e) => {
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+      const maxScroll = getMaxScroll();
+      if (e.key === 'ArrowDown') {
+        targetScrollY = Math.max(0, Math.min(maxScroll, targetScrollY + 160));
+      } else if (e.key === 'ArrowUp') {
+        targetScrollY = Math.max(0, Math.min(maxScroll, targetScrollY - 160));
+      } else if (e.key === 'PageDown' || e.key === ' ') {
+        targetScrollY = Math.max(0, Math.min(maxScroll, targetScrollY + window.innerHeight * 0.85));
+      } else if (e.key === 'PageUp') {
+        targetScrollY = Math.max(0, Math.min(maxScroll, targetScrollY - window.innerHeight * 0.85));
+      }
+    });
+
+    // Native scrollbar thumb dragging synchronization
+    window.addEventListener('scroll', () => {
+      if (isInternalScrolling) return;
+      const curY = window.pageYOffset || window.scrollY || 0;
+      // If user drags the native scrollbar track, sync target smoothly
+      if (Math.abs(curY - smoothScrollY) > 25) {
+        targetScrollY = curY;
+      }
+    }, { passive: true });
+
+    // Intro load-in camera glide
+    let introStartTime = performance.now();
+    const introDuration = 1200; // 1.2s smooth load-in
+    let lastRenderTime = performance.now();
+
+    function renderLoop(now) {
+      requestAnimationFrame(renderLoop);
+
+      const dt = Math.min((now - lastRenderTime) / 1000, 0.1);
+      lastRenderTime = now;
+
+      // Intro subtle glide on initial load
+      const elapsed = now - introStartTime;
+      if (elapsed < introDuration) {
+        const introT = elapsed / introDuration;
+        const easedIntro = 1 - Math.pow(1 - introT, 3);
+        camera.position.z = 13.5 + (1 - easedIntro) * 0.8;
+      } else {
+        camera.position.z = 13.5;
+      }
+
+      // Delta-time independent exponential smoothing (Locomotive/Lenis formula)
+      // lambda = 7.2 produces a butter-smooth, silky cinematic glide
+      const maxScroll = getMaxScroll();
+      const friction = 1.0 - Math.exp(-dt * 7.2);
+      smoothScrollY += (targetScrollY - smoothScrollY) * friction;
+
+      // Sync window scrollbar without triggering redundant events
+      isInternalScrolling = true;
+      window.scrollTo(0, smoothScrollY);
+      isInternalScrolling = false;
+
+      // Master normalized timeline progress
+      const currentProgress = maxScroll > 0 ? (smoothScrollY / maxScroll) : 0;
+      const currentT = currentProgress * 14.0;
+      updateMasterTimeline(currentT);
+
+      renderer.render(scene, camera);
+    }
+    requestAnimationFrame(renderLoop);
+
+    // =========================================================================
+    // 7. USER NAVIGATION, PHASE JUMPS & MODALS
+    // =========================================================================
+
+    // Logo Navigation to Home Page
+    logoBtn.addEventListener('click', (e) => {
+      window.location.href = logoBtn.getAttribute('href') || 'index.html';
+    });
+    // Footer Replay (Reset to Top)
+    document.getElementById('replay-from-footer-btn').addEventListener('click', () => {
+      targetScrollY = 0;
+    });
+
+    // Phase Navigation Arrows (Smoothly glides to chapter boundaries)
+    const phases = [0.0, 0.25, 0.55, 0.82, 0.98];
+    stepNextBtn.addEventListener('click', () => {
+      const maxScroll = getMaxScroll();
+      const curP = maxScroll > 0 ? (targetScrollY / maxScroll) : 0;
+      const nextP = phases.find(p => p > curP + 0.04) ?? 0.0;
+      targetScrollY = nextP * maxScroll;
+    });
+
+    stepPrevBtn.addEventListener('click', () => {
+      const maxScroll = getMaxScroll();
+      const curP = maxScroll > 0 ? (targetScrollY / maxScroll) : 0;
+      const rev = [...phases].reverse();
+      const prevP = rev.find(p => p < curP - 0.04) ?? 0.0;
+      targetScrollY = prevP * maxScroll;
+    });
+
+    // Interactive Hit Cards Hover & Click
+    let activeModalIndex = 0;
+    let cardTouchStart = { x: 0, y: 0 };
+    hitCards.forEach((hitEl, index) => {
+      hitEl.addEventListener('mouseenter', () => {
+        activeHoverIndex = index;
+      });
+      hitEl.addEventListener('mouseleave', () => {
+        if (activeHoverIndex === index) {
+          activeHoverIndex = -1;
+        }
+      });
+      hitEl.addEventListener('click', () => {
+        openCardModal(index);
+      });
+      hitEl.addEventListener('touchstart', (e) => {
+        if (e.touches.length > 0) {
+          cardTouchStart.x = e.touches[0].clientX;
+          cardTouchStart.y = e.touches[0].clientY;
+        }
+      }, { passive: true });
+      hitEl.addEventListener('touchend', (e) => {
+        if (e.changedTouches.length > 0) {
+          const dx = Math.abs(e.changedTouches[0].clientX - cardTouchStart.x);
+          const dy = Math.abs(e.changedTouches[0].clientY - cardTouchStart.y);
+          if (dx < 12 && dy < 12) {
+            openCardModal(index);
+          }
+        }
+      }, { passive: true });
+    });
+
+    // Lightbox Modal
+    const cardModal = document.getElementById('card-modal');
+    const modalTag = document.getElementById('modal-tag');
+    const modalTitle = document.getElementById('modal-title');
+    const modalDesc = document.getElementById('modal-desc');
+    const modalImg = document.getElementById('modal-img');
+    const closeCardModal = document.getElementById('close-card-modal');
+    const modalPrev = document.getElementById('modal-prev');
+    const modalNext = document.getElementById('modal-next');
+
+    function openCardModal(idx) {
+      activeModalIndex = idx;
+      const c = CARD_DATA[idx];
+      modalTag.textContent = c.tag;
+      modalTitle.textContent = c.title;
+      modalDesc.textContent = c.desc;
+      modalImg.src = c.src;
+      cardModal.classList.add('open');
+    }
+
+    closeCardModal.addEventListener('click', () => cardModal.classList.remove('open'));
+    cardModal.addEventListener('click', (e) => {
+      if (e.target === cardModal) cardModal.classList.remove('open');
+    });
+
+    modalPrev.addEventListener('click', () => {
+      activeModalIndex = (activeModalIndex - 1 + CARD_DATA.length) % CARD_DATA.length;
+      openCardModal(activeModalIndex);
+    });
+
+    modalNext.addEventListener('click', () => {
+      activeModalIndex = (activeModalIndex + 1) % CARD_DATA.length;
+      openCardModal(activeModalIndex);
+    });
+
+    // Contact Slide-Over Drawer
+    const contactModal = document.getElementById('contact-modal');
+    const closeContactModal = document.getElementById('close-contact-modal');
+    const letsTalkBtn = document.getElementById('lets-talk-btn');
+    const becomeClientTop = document.getElementById('become-client-top');
+    const footerTalkBtn = document.getElementById('footer-talk-btn');
+    const contactForm = document.getElementById('contact-form');
+    const contactSuccess = document.getElementById('contact-success');
+
+    function openContactDrawer() {
+      contactModal.classList.add('open');
+    }
+
+    letsTalkBtn.addEventListener('click', openContactDrawer);
+    becomeClientTop.addEventListener('click', openContactDrawer);
+    footerTalkBtn.addEventListener('click', openContactDrawer);
+    closeContactModal.addEventListener('click', () => contactModal.classList.remove('open'));
+    contactModal.addEventListener('click', (e) => {
+      if (e.target === contactModal) contactModal.classList.remove('open');
+    });
+
+    contactForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      contactSuccess.classList.remove('hidden');
+      setTimeout(() => {
+        contactSuccess.classList.add('hidden');
+        contactForm.reset();
+        contactModal.classList.remove('open');
+      }, 2200);
+    });
+
+    // Navigation Menu Modal
+    const menuModal = document.getElementById('menu-modal');
+    const menuBtn = document.getElementById('menu-btn');
+    const closeMenuModal = document.getElementById('close-menu-modal');
+    const menuJumpBtns = document.querySelectorAll('.menu-jump-btn');
+
+    menuBtn.addEventListener('click', () => {
+      menuModal.classList.add('open');
+    });
+
+    closeMenuModal.addEventListener('click', () => menuModal.classList.remove('open'));
+    menuModal.addEventListener('click', (e) => {
+      if (e.target === menuModal) menuModal.classList.remove('open');
+    });
+
+    menuJumpBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const jumpTarget = parseFloat(btn.dataset.jump);
+        const maxScroll = getMaxScroll();
+        targetScrollY = jumpTarget * maxScroll;
+        menuModal.classList.remove('open');
+      });
+    });
+
+    // Works Navigation Triggers
+    const dribbbleLink = document.getElementById('dribbble-link');
+    const menuOpenDribbble = document.getElementById('menu-open-dribbble');
+    const openWorks = () => window.location.href = '../work.html';
+    dribbbleLink.addEventListener('click', openWorks);
+    menuOpenDribbble.addEventListener('click', openWorks);
+
+    // Global ESC Key Close
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        cardModal.classList.remove('open');
+        contactModal.classList.remove('open');
+        menuModal.classList.remove('open');
+      }
+    });
+
+    // =========================================================================
+    // 8. AMBIENT WEB AUDIO SYNTHESIZER
+    // =========================================================================
+    let audioCtx = null, osc1 = null, osc2 = null, gainNode = null;
+    let isSoundOn = false;
+    const soundBtn = document.getElementById('sound-btn');
+
+    soundBtn.addEventListener('click', () => {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        gainNode = audioCtx.createGain();
+        gainNode.gain.setValueAtTime(0.001, audioCtx.currentTime);
+
+        const filter = audioCtx.createBiquadFilter();
+        filter.type = 'lowpass';
+        filter.frequency.setValueAtTime(280, audioCtx.currentTime);
+
+        osc1 = audioCtx.createOscillator();
+        osc1.type = 'sine';
+        osc1.frequency.setValueAtTime(55, audioCtx.currentTime); // 55Hz (A1)
+
+        osc2 = audioCtx.createOscillator();
+        osc2.type = 'triangle';
+        osc2.frequency.setValueAtTime(110.2, audioCtx.currentTime);
+
+        osc1.connect(filter);
+        osc2.connect(filter);
+        filter.connect(gainNode);
+        gainNode.connect(audioCtx.destination);
+
+        osc1.start();
+        osc2.start();
+      }
+
+      isSoundOn = !isSoundOn;
+      if (isSoundOn) {
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        gainNode.gain.linearRampToValueAtTime(0.042, audioCtx.currentTime + 0.4);
+        soundBtn.classList.add('sound-on');
+      } else {
+        gainNode.gain.linearRampToValueAtTime(0.0001, audioCtx.currentTime + 0.3);
+        soundBtn.classList.remove('sound-on');
+      }
+    });
+
+    // WebGL Context Preservation for iOS Safari
+    renderer.domElement.addEventListener('webglcontextlost', (e) => {
+      e.preventDefault();
+      console.warn('WebGL context lost. Awaiting restoration...');
+    }, false);
+
+    renderer.domElement.addEventListener('webglcontextrestored', () => {
+      console.log('WebGL context restored.');
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    }, false);
+
+    // Window Resize & Orientation Handler for Mobile/Tablets
+    function handleResize() {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      alignHitLayers();
+    }
+    window.addEventListener('resize', handleResize);
+    window.addEventListener('orientationchange', () => {
+      setTimeout(handleResize, 100);
+      setTimeout(handleResize, 350);
+    });
+  </script>
+</body>
+</html>

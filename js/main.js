@@ -9,7 +9,7 @@ import Nav from './nav.js';
 import ScrollAnimations from './scroll.js';
 import Marquee from './marquee.js';
 import Reel from './reel.js';
-import Hero3D from './hero-3d.js';
+import Hero3D from './hero-3d.js?v=2';
 import ProximityText from './proximity-text.js';
 import CircularCarousel from './circular-carousel.js';
 import CarouselEditor from './carousel-editor.js';
