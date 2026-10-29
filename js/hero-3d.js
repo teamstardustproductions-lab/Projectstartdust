@@ -330,14 +330,6 @@ export class Hero3D {
       this.pivotGroup.rotation.set(this.baseRadX, this.baseRadY, this.baseRadZ);
 
       this.container.classList.add('is-loaded');
-
-      // Update badge with Cache & Quality status tag
-      const badge = document.querySelector('.hero-3d-badge');
-      if (badge) {
-        const cacheTag = fromCache ? 'CACHED' : 'CACHE ACTIVE';
-        const qualityName = this.cacheManager?.qualityProfile?.quality?.toUpperCase() || 'ULTRA HD';
-        badge.innerHTML = `<span class="badge-dot"></span><span>35MM ANAMORPHIC CINE OPTICS</span><span class="badge-cache-tag">${cacheTag} ▪ ${qualityName}</span>`;
-      }
     };
 
     // Load with Cache Storage API if available
