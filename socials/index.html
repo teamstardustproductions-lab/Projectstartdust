@@ -17,19 +17,6 @@
             sans: ['Inter', 'system-ui', 'sans-serif'],
             display: ['Inter', 'system-ui', 'sans-serif'],
             mono: ['JetBrains Mono', 'monospace'],
-          },
-          colors: {
-            neon: {
-              DEFAULT: '#B77BFF',
-              dim: '#7C3AED',
-              glow: 'rgba(183, 123, 255, 0.38)',
-              soft: 'rgba(168, 85, 247, 0.08)'
-            },
-            obsidian: {
-              DEFAULT: '#05030A',
-              card: 'rgba(11, 7, 20, 0.62)',
-              border: 'rgba(183, 123, 255, 0.14)'
-            }
           }
         }
       }
@@ -37,11 +24,12 @@
   </script>
   <style>
     :root {
-      --neon: #B77BFF;
-      --neon-bright: #E9D5FF;
-      --neon-deep: #7C3AED;
-      --neon-rgb: 183, 123, 255;
-      --bg-dark: #05030A;
+      --bg-base: #060309;
+      --brand-color: #E1306C;
+      --brand-glow: rgba(225, 48, 108, 0.45);
+      --glow-1: rgba(225, 48, 108, 0.28);
+      --glow-2: rgba(131, 58, 180, 0.22);
+      --glow-center: rgba(253, 29, 29, 0.16);
     }
 
     * {
@@ -51,84 +39,94 @@
 
     html, body {
       height: 100%;
-      background-color: var(--bg-dark);
+      background-color: var(--bg-base);
       color: #F5F3FF;
       font-family: 'Inter', sans-serif;
       overflow: hidden;
+      transition: background-color 0.9s cubic-bezier(0.2, 0.8, 0.2, 1);
     }
 
     ::selection {
-      background: #B77BFF;
+      background: var(--brand-color);
       color: #05030A;
     }
 
-    /* Ambient Motion Background Grid */
-    .mg-grid-backdrop {
+    /* SILKY AMBIENT SHADER GRADIENT BACKDROP (NO LINES, NO BOXES, NO SPARKLES) */
+    .shader-backdrop {
       position: fixed;
       inset: 0;
       z-index: 0;
       pointer-events: none;
       overflow: hidden;
-      background:
-        radial-gradient(circle at 26% 50%, rgba(139, 92, 246, 0.16) 0%, rgba(124, 58, 237, 0.04) 42%, transparent 72%),
-        radial-gradient(circle at 82% 22%, rgba(192, 132, 252, 0.08) 0%, transparent 55%),
-        radial-gradient(circle at 50% 100%, rgba(88, 28, 135, 0.12) 0%, transparent 60%),
-        #05030A;
+      background: radial-gradient(circle at 50% 50%, var(--bg-base) 0%, #030106 100%);
+      transition: background 0.9s cubic-bezier(0.2, 0.8, 0.2, 1);
     }
 
-    .mg-grid-plane {
+    .shader-glow-1 {
       position: absolute;
-      inset: -45%;
-      background-size: 64px 64px;
-      background-image:
-        linear-gradient(to right, rgba(183, 123, 255, 0.085) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(183, 123, 255, 0.085) 1px, transparent 1px);
-      transform: perspective(920px) rotateX(58deg) rotateZ(-14deg) translateY(-6%);
-      transform-origin: center center;
-      animation: gridDrift 20s linear infinite;
-      mask-image: radial-gradient(ellipse at 42% 50%, rgba(0,0,0,0.95) 12%, rgba(0,0,0,0.38) 58%, transparent 84%);
-      -webkit-mask-image: radial-gradient(ellipse at 42% 50%, rgba(0,0,0,0.95) 12%, rgba(0,0,0,0.38) 58%, transparent 84%);
+      top: 10%;
+      left: 12%;
+      width: 58vw;
+      height: 58vw;
+      max-width: 780px;
+      max-height: 780px;
+      border-radius: 50%;
+      background: var(--glow-1);
+      filter: blur(130px);
+      transition: background 0.9s cubic-bezier(0.2, 0.8, 0.2, 1);
+      will-change: transform;
+      animation: floatOrb1 20s ease-in-out infinite alternate;
     }
 
-    .mg-subgrid-overlay {
+    .shader-glow-2 {
       position: absolute;
-      inset: 0;
-      background-size: 128px 128px;
-      background-image:
-        linear-gradient(to right, rgba(183, 123, 255, 0.035) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(183, 123, 255, 0.035) 1px, transparent 1px);
-      mask-image: radial-gradient(circle at 45% 50%, black 20%, transparent 88%);
-      -webkit-mask-image: radial-gradient(circle at 45% 50%, black 20%, transparent 88%);
+      bottom: 8%;
+      right: 14%;
+      width: 52vw;
+      height: 52vw;
+      max-width: 700px;
+      max-height: 700px;
+      border-radius: 50%;
+      background: var(--glow-2);
+      filter: blur(140px);
+      transition: background 0.9s cubic-bezier(0.2, 0.8, 0.2, 1);
+      will-change: transform;
+      animation: floatOrb2 24s ease-in-out infinite alternate;
     }
 
-    @keyframes gridDrift {
-      0% {
-        background-position: 0px 0px;
-      }
-      100% {
-        background-position: 64px 128px;
-      }
+    .shader-glow-3 {
+      position: absolute;
+      top: 50%;
+      left: 45%;
+      width: 44vw;
+      height: 44vw;
+      max-width: 560px;
+      max-height: 560px;
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      background: radial-gradient(circle, var(--glow-center) 0%, transparent 72%);
+      filter: blur(100px);
+      transition: background 0.9s cubic-bezier(0.2, 0.8, 0.2, 1);
     }
 
-    .mg-scanlines {
-      position: fixed;
-      inset: 0;
-      z-index: 1;
-      pointer-events: none;
-      background: repeating-linear-gradient(
-        to bottom,
-        transparent 0px,
-        transparent 3px,
-        rgba(183, 123, 255, 0.01) 4px
-      );
+    @keyframes floatOrb1 {
+      0% { transform: translate(0px, 0px) scale(1); }
+      50% { transform: translate(60px, -45px) scale(1.08); }
+      100% { transform: translate(-45px, 55px) scale(0.94); }
     }
 
-    /* FULL-SCREEN 3D KINETIC DRUM STAGE */
+    @keyframes floatOrb2 {
+      0% { transform: translate(0px, 0px) scale(1); }
+      50% { transform: translate(-75px, 35px) scale(1.1); }
+      100% { transform: translate(45px, -65px) scale(0.92); }
+    }
+
+    /* VERTICALLY CENTERED 3D KINETIC DRUM STAGE */
     .kinetic-stage {
       position: relative;
-      height: calc(100vh - 7.5rem);
+      height: calc(100vh - 11rem);
       min-height: 480px;
-      max-height: 860px;
+      max-height: 720px;
       width: 100%;
       perspective: 1200px;
       user-select: none;
@@ -136,26 +134,26 @@
       mask-image: linear-gradient(
         to bottom,
         transparent 0%,
-        rgba(0, 0, 0, 0.35) 10%,
-        #000 28%,
-        #000 72%,
-        rgba(0, 0, 0, 0.35) 90%,
+        rgba(0, 0, 0, 0.3) 12%,
+        #000 30%,
+        #000 70%,
+        rgba(0, 0, 0, 0.3) 88%,
         transparent 100%
       );
       -webkit-mask-image: linear-gradient(
         to bottom,
         transparent 0%,
-        rgba(0, 0, 0, 0.35) 10%,
-        #000 28%,
-        #000 72%,
-        rgba(0, 0, 0, 0.35) 90%,
+        rgba(0, 0, 0, 0.3) 12%,
+        #000 30%,
+        #000 70%,
+        rgba(0, 0, 0, 0.3) 88%,
         transparent 100%
       );
     }
 
     @media (max-width: 768px) {
       .kinetic-stage {
-        height: 56vh;
+        height: 54vh;
         min-height: 380px;
       }
     }
@@ -175,38 +173,35 @@
       cursor: pointer;
       display: flex;
       align-items: center;
-      padding-left: 0.25rem;
+      padding-left: 0.5rem;
       text-decoration: none;
     }
 
-    /* Brand Icon displayed on focus */
+    /* REAL OFFICIAL BRAND ICON DISPLAYED ON FOCUS */
     .kinetic-brand-icon {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      width: 3.25rem;
-      height: 3.25rem;
-      margin-right: 1.15rem;
-      border-radius: 1rem;
-      background: rgba(183, 123, 255, 0.12);
-      border: 1px solid rgba(183, 123, 255, 0.35);
-      color: #E9D5FF;
+      width: 3.5rem;
+      height: 3.5rem;
+      margin-right: 1.25rem;
+      border-radius: 1.15rem;
       transform: translateX(-24px) scale(0.65);
       opacity: 0;
       pointer-events: none;
       transition:
         transform 0.48s cubic-bezier(0.2, 0.8, 0.2, 1),
         opacity 0.38s ease,
-        box-shadow 0.38s ease,
-        border-color 0.35s ease;
+        filter 0.38s ease;
       flex-shrink: 0;
+      overflow: hidden;
     }
 
     @media (min-width: 768px) {
       .kinetic-brand-icon {
-        width: 4rem;
-        height: 4rem;
-        margin-right: 1.35rem;
+        width: 4.25rem;
+        height: 4.25rem;
+        margin-right: 1.5rem;
       }
     }
 
@@ -214,158 +209,157 @@
       transform: translateX(0) scale(1);
       opacity: 1;
       pointer-events: auto;
-      box-shadow: 0 0 32px rgba(183, 123, 255, 0.6), inset 0 0 16px rgba(183, 123, 255, 0.22);
-      border-color: rgba(183, 123, 255, 0.7);
+      filter: drop-shadow(0 0 28px var(--brand-glow));
     }
 
     .kinetic-item:hover .kinetic-brand-icon {
-      box-shadow: 0 0 42px rgba(183, 123, 255, 0.85), inset 0 0 20px rgba(183, 123, 255, 0.35);
+      filter: drop-shadow(0 0 38px var(--brand-glow)) brightness(1.1);
     }
 
     .kinetic-word {
       font-weight: 800;
       letter-spacing: -0.04em;
       line-height: 0.98;
-      color: #B77BFF;
+      color: rgba(255, 255, 255, 0.55);
       white-space: nowrap;
-      transition: text-shadow 0.45s ease, color 0.35s ease, transform 0.35s ease;
+      transition: text-shadow 0.45s ease, color 0.45s ease, transform 0.35s ease;
     }
 
     .kinetic-item.is-active .kinetic-word {
-      color: #C490FF;
+      color: #FFFFFF;
       text-shadow:
-        0 0 42px rgba(168, 85, 247, 0.62),
-        0 0 12px rgba(216, 180, 254, 0.35);
+        0 0 45px var(--brand-glow),
+        0 0 16px var(--brand-glow);
     }
 
     .kinetic-item:hover:not(.is-active) .kinetic-word {
-      color: #D8B4FE;
-      text-shadow: 0 0 20px rgba(183, 123, 255, 0.45);
+      color: #FFFFFF;
+      text-shadow: 0 0 24px rgba(255, 255, 255, 0.4);
     }
 
-    /* Clickable hyperlink tag when active */
+    /* CLICKABLE HYPERLINK TAG WHEN ACTIVE */
     .kinetic-link-tag {
       display: inline-flex;
       align-items: center;
       gap: 0.35rem;
       margin-left: 1.25rem;
-      padding: 0.4rem 0.85rem;
+      padding: 0.42rem 0.95rem;
       border-radius: 9999px;
       font-size: 0.75rem;
       font-family: 'JetBrains Mono', monospace;
       font-weight: 700;
-      background: rgba(183, 123, 255, 0.16);
-      border: 1px solid rgba(183, 123, 255, 0.4);
-      color: #E9D5FF;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      color: #FFFFFF;
       transform: translateX(-12px);
       opacity: 0;
       pointer-events: none;
       transition: all 0.35s ease;
       white-space: nowrap;
+      backdrop-filter: blur(12px);
     }
 
     .kinetic-item.is-active .kinetic-link-tag {
       transform: translateX(0);
       opacity: 1;
       pointer-events: auto;
+      border-color: var(--brand-color);
+      box-shadow: 0 0 20px var(--brand-glow);
     }
 
     .kinetic-item.is-active:hover .kinetic-link-tag {
-      background: #B77BFF;
-      color: #05030A;
-      box-shadow: 0 0 24px rgba(183, 123, 255, 0.75);
+      background: var(--brand-color);
+      color: #FFFFFF;
+      box-shadow: 0 0 30px var(--brand-glow);
     }
 
-    /* Minimal Translucent Card */
+    /* MINIMAL TRANSLUCENT CARD */
     .neon-card {
-      background: rgba(11, 7, 20, 0.65);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border: 1px solid rgba(183, 123, 255, 0.18);
-      transition: all 0.28s cubic-bezier(0.2, 0.8, 0.2, 1);
+      background: rgba(12, 8, 18, 0.68);
+      backdrop-filter: blur(28px);
+      -webkit-backdrop-filter: blur(28px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      transition: all 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
     }
 
     .neon-card:hover {
-      border-color: rgba(183, 123, 255, 0.38);
-      box-shadow: 0 10px 34px -14px rgba(139, 92, 246, 0.25);
+      border-color: var(--brand-color);
+      box-shadow: 0 14px 44px -10px var(--brand-glow);
     }
   </style>
 </head>
-<body class="h-screen w-screen relative selection:bg-neon selection:text-black overflow-hidden flex flex-col justify-between">
+<body class="h-screen w-screen relative selection:bg-white selection:text-black overflow-hidden flex flex-col justify-between">
 
-  <!-- MOTION GRAPHICS BACKGROUND GRID & INTERACTIVE CANVAS -->
-  <div class="mg-grid-backdrop" aria-hidden="true">
-    <div id="gridPlane" class="mg-grid-plane"></div>
-    <div class="mg-subgrid-overlay"></div>
-    <canvas id="mgCanvas" class="absolute inset-0 w-full h-full opacity-80"></canvas>
+  <!-- SILKY AMBIENT SHADER GRADIENT BACKDROP -->
+  <div class="shader-backdrop" aria-hidden="true">
+    <div class="shader-glow-1"></div>
+    <div class="shader-glow-2"></div>
+    <div class="shader-glow-3"></div>
   </div>
-  <div class="mg-scanlines" aria-hidden="true"></div>
 
-  <!-- MAIN REEL CONTAINER -->
-  <main class="relative z-10 w-full h-full flex flex-col justify-between p-4 sm:p-8 lg:px-14 overflow-hidden">
-    <!-- Ambient Deep Violet Backlight -->
-    <div class="absolute left-[10%] top-1/2 -translate-y-1/2 w-[28rem] h-[28rem] rounded-full bg-purple-600/20 blur-[140px] pointer-events-none"></div>
+  <!-- MAIN REEL CONTAINER (CENTERED VERTICALLY) -->
+  <main class="relative z-10 w-full h-full flex flex-col justify-between p-4 sm:p-6 lg:px-12 overflow-hidden">
 
     <!-- MINIMAL TOP BAR: LOGO & ACTIVE COUNTER -->
-    <div class="relative z-20 max-w-7xl w-full mx-auto flex items-center justify-between text-[11px] font-mono text-neutral-400 shrink-0 py-2">
+    <div class="relative z-20 max-w-7xl w-full mx-auto flex items-center justify-between text-[11px] font-mono text-neutral-400 shrink-0 pt-2 pb-1">
       <a href="/" class="flex items-center gap-2 text-neutral-300 hover:text-white transition group" title="Return to Home">
-        <span class="text-neon group-hover:-translate-x-0.5 transition-transform font-bold text-sm">←</span>
-        <span class="font-extrabold tracking-tight text-white text-xs sm:text-sm">PROJECT<span class="text-neon">STARDUST</span></span>
+        <span class="text-white group-hover:-translate-x-0.5 transition-transform font-bold text-sm">←</span>
+        <span class="font-extrabold tracking-tight text-white text-xs sm:text-sm">PROJECT<span style="color: var(--brand-color)">STARDUST</span></span>
       </a>
 
       <div class="flex items-center gap-2.5">
-        <span class="inline-block w-1.5 h-1.5 rounded-full bg-neon animate-pulse"></span>
-        <span class="text-neutral-400 hidden sm:inline">CHANNELS</span>
+        <span class="inline-block w-1.5 h-1.5 rounded-full animate-pulse" style="background-color: var(--brand-color)"></span>
+        <span class="text-neutral-400 hidden sm:inline tracking-wider">CHANNELS</span>
         <span class="text-neutral-600 hidden sm:inline">//</span>
-        <span id="activeIndexCounter" class="text-neon font-bold">01/08</span>
+        <span id="activeIndexCounter" class="font-bold text-white">01/08</span>
       </div>
     </div>
 
-    <!-- FULL-SCREEN STAGE: UNBOXED 3D KINETIC REEL + MINIMAL RIGHT DETAIL WINDOW -->
-    <div class="relative z-10 max-w-7xl w-full mx-auto my-auto grid grid-cols-1 lg:grid-cols-12 items-center gap-6">
+    <!-- VERTICALLY CENTERED FULL-SCREEN STAGE -->
+    <div class="relative z-10 max-w-7xl w-full mx-auto my-auto grid grid-cols-1 lg:grid-cols-12 items-center gap-8 py-2">
 
-      <!-- LEFT: UNBOXED 3D KINETIC DRUM (CLICK TO OPEN HYPERLINK) -->
-      <div class="lg:col-span-8 relative">
+      <!-- LEFT: 3D KINETIC DRUM (VERTICALLY CENTERED ACTIVE WORD) -->
+      <div class="lg:col-span-8 relative flex items-center justify-center">
         <div id="kineticStage" class="kinetic-stage focus:outline-none" tabindex="0" aria-label="Project Stardust Social Channels 3D Wheel">
           <!-- Populated dynamically by JS -->
         </div>
       </div>
 
-      <!-- RIGHT: MINIMAL DETAIL WINDOW -->
+      <!-- RIGHT: MINIMAL DETAIL WINDOW (DYNAMICALLY MATCHES BRAND PALETTE) -->
       <div class="lg:col-span-4 flex flex-col items-start lg:items-end justify-center">
-        <div id="activeLinkCard" class="w-full max-w-sm rounded-2xl neon-card p-6 space-y-4 shadow-[0_0_50px_rgba(124,58,237,0.18)]">
-          <!-- Minimal Header: Glowing Brand Icon + Title + Handle -->
+        <div id="activeLinkCard" class="w-full max-w-sm rounded-2xl neon-card p-6 space-y-4 shadow-[0_0_50px_rgba(0,0,0,0.4)]">
+          <!-- Header: Real Official Brand Icon + Title + Handle -->
           <div class="flex items-center gap-3.5">
-            <div id="inspectorIconContainer" class="w-12 h-12 rounded-xl bg-neon/15 border border-neon/35 flex items-center justify-center text-neon shadow-[0_0_20px_rgba(183,123,255,0.45)] shrink-0">
-              <!-- Dynamically populated SVG -->
+            <div id="inspectorIconContainer" class="w-13 h-13 rounded-2xl p-1 flex items-center justify-center shadow-lg shrink-0">
+              <!-- Dynamically populated SVG with real brand icon -->
             </div>
             <div class="min-w-0">
-              <div class="flex items-center gap-1.5">
+              <div class="flex items-center gap-2">
                 <h2 id="inspectorTitle" class="text-xl font-black tracking-tight text-white truncate">Instagram</h2>
-                <span class="w-1.5 h-1.5 rounded-full bg-neon"></span>
+                <span class="w-1.5 h-1.5 rounded-full" style="background-color: var(--brand-color)"></span>
               </div>
-              <p id="inspectorHandle" class="text-xs font-mono text-neon truncate">@projectstardust.in</p>
+              <p id="inspectorHandle" class="text-xs font-mono text-neutral-300 truncate">@projectstardust.in</p>
             </div>
           </div>
 
           <!-- Concise Description -->
-          <p id="inspectorDesc" class="text-xs text-neutral-300/95 leading-relaxed">
-            Official Instagram reels, behind-the-scenes & latest film drops.
+          <p id="inspectorDesc" class="text-xs text-neutral-300/90 leading-relaxed">
+            Official Instagram reels, cinematography teasers & behind-the-scenes.
           </p>
 
           <!-- Destination URL & Copy Button -->
-          <div class="p-3 rounded-xl bg-black/60 border border-white/[0.08] flex items-center justify-between gap-2">
+          <div class="p-3 rounded-xl bg-black/50 border border-white/[0.08] flex items-center justify-between gap-2">
             <div class="min-w-0">
               <div class="text-[9px] font-mono text-neutral-500 uppercase tracking-wider">DIRECT DESTINATION</div>
-              <div id="activeShortUrl" class="text-xs font-mono text-neon/90 truncate">instagram.com/projectstardust.in</div>
+              <div id="activeShortUrl" class="text-xs font-mono text-white/90 truncate">instagram.com/projectstardust.in</div>
             </div>
-            <button id="copyActiveUrlBtn" type="button" class="px-2.5 py-1.5 rounded-lg border border-white/10 bg-white/[0.04] hover:border-neon hover:text-neon text-[10px] font-mono text-neutral-300 transition shrink-0" title="Copy Link">
+            <button id="copyActiveUrlBtn" type="button" class="px-2.5 py-1.5 rounded-lg border border-white/10 bg-white/[0.04] hover:bg-white/10 text-[10px] font-mono text-neutral-300 hover:text-white transition shrink-0" title="Copy Link">
               Copy
             </button>
           </div>
 
-          <!-- Direct Visit Button -->
-          <a id="openDestinationBtn" href="https://www.instagram.com/projectstardust.in/" target="_blank" rel="noopener noreferrer" class="w-full py-3 px-4 rounded-xl bg-neon text-[#05030A] font-extrabold text-xs tracking-tight hover:brightness-110 active:scale-[0.99] transition shadow-[0_0_25px_rgba(183,123,255,0.45)] flex items-center justify-center gap-2">
+          <!-- Direct Visit Button (Styled with real brand gradient/color) -->
+          <a id="openDestinationBtn" href="https://www.instagram.com/projectstardust.in/" target="_blank" rel="noopener noreferrer" class="w-full py-3.5 px-4 rounded-xl text-white font-extrabold text-xs tracking-tight hover:brightness-110 active:scale-[0.99] transition flex items-center justify-center gap-2 shadow-lg" style="background: var(--brand-color); box-shadow: 0 0 25px var(--brand-glow);">
             <span id="openBtnLabel">Visit Instagram</span>
             <span class="text-sm font-black">↗</span>
           </a>
@@ -375,16 +369,16 @@
     </div>
 
     <!-- BOTTOM FLOATING REEL TRANSPORT BAR -->
-    <div class="relative z-20 max-w-7xl w-full mx-auto flex flex-wrap items-center justify-between gap-3 text-[11px] font-mono text-neutral-400 shrink-0">
+    <div class="relative z-20 max-w-7xl w-full mx-auto flex flex-wrap items-center justify-between gap-3 text-[11px] font-mono text-neutral-400 shrink-0 pb-1">
       <div class="flex items-center gap-1.5">
-        <button id="prevWheelBtn" type="button" class="w-7 h-7 rounded-full border border-white/15 bg-white/[0.03] hover:border-neon text-neutral-200 hover:text-neon flex items-center justify-center transition" title="Previous Item">
+        <button id="prevWheelBtn" type="button" class="w-7 h-7 rounded-full border border-white/15 bg-white/[0.03] hover:border-white text-neutral-200 hover:text-white flex items-center justify-center transition" title="Previous Item">
           ↑
         </button>
-        <button id="toggleAutoPlayBtn" type="button" class="px-3 h-7 rounded-full border border-neon/40 bg-neon/10 hover:bg-neon/20 text-neon flex items-center gap-1.5 transition" title="Pause or Resume Auto-Scroll">
+        <button id="toggleAutoPlayBtn" type="button" class="px-3 h-7 rounded-full border border-white/20 bg-white/[0.05] hover:bg-white/10 text-white flex items-center gap-1.5 transition" title="Pause or Resume Auto-Scroll">
           <span id="autoPlayIcon">❚❚</span>
           <span id="autoPlayText">AUTO</span>
         </button>
-        <button id="nextWheelBtn" type="button" class="w-7 h-7 rounded-full border border-white/15 bg-white/[0.03] hover:border-neon text-neutral-200 hover:text-neon flex items-center justify-center transition" title="Next Item">
+        <button id="nextWheelBtn" type="button" class="w-7 h-7 rounded-full border border-white/15 bg-white/[0.03] hover:border-white text-neutral-200 hover:text-white flex items-center justify-center transition" title="Next Item">
           ↓
         </button>
         <span class="ml-2 hidden sm:inline text-neutral-500">CLICK ACTIVE TO VISIT • SCROLL TO EXPLORE</span>
@@ -392,18 +386,18 @@
 
       <div class="flex items-center gap-2">
         <span class="text-neutral-500">TEMPO:</span>
-        <button type="button" data-speed="2400" class="speed-btn text-neutral-400 hover:text-neon">SLOW</button>
+        <button type="button" data-speed="2400" class="speed-btn text-neutral-400 hover:text-white">SLOW</button>
         <span class="text-neutral-700">/</span>
-        <button type="button" data-speed="1600" class="speed-btn text-neon font-bold underline">NORMAL</button>
+        <button type="button" data-speed="1600" class="speed-btn text-white font-bold underline">NORMAL</button>
         <span class="text-neutral-700">/</span>
-        <button type="button" data-speed="900" class="speed-btn text-neutral-400 hover:text-neon">FAST</button>
+        <button type="button" data-speed="900" class="speed-btn text-neutral-400 hover:text-white">FAST</button>
       </div>
     </div>
   </main>
 
   <!-- TOAST NOTIFICATION -->
   <div id="toastBanner" class="fixed bottom-5 right-5 z-50 pointer-events-none opacity-0 translate-y-3 transition-all duration-300">
-    <div class="px-4 py-3 rounded-xl bg-neon text-[#05030A] font-mono text-xs font-bold shadow-[0_0_30px_rgba(183,123,255,0.55)] flex items-center gap-2">
+    <div class="px-4 py-3 rounded-xl bg-white text-black font-mono text-xs font-bold shadow-2xl flex items-center gap-2">
       <span>→</span>
       <span id="toastMessage">Link copied to clipboard!</span>
     </div>
@@ -412,7 +406,7 @@
   <!-- APPLICATION SCRIPT -->
   <script>
     (function () {
-      // --- 1. ONLY THE 8 SPECIFIED SOCIAL CHANNELS WITH SVGS & HYPERLINKS ---
+      // --- 1. CHANNELS WITH REAL OFFICIAL SVG ICONS, EXACT BRAND COLORS & BACKGROUND SHADERS ---
       const SOCIAL_ITEMS = [
         {
           id: 'instagram',
@@ -421,10 +415,26 @@
           displayUrl: 'instagram.com/projectstardust.in',
           handle: '@projectstardust.in',
           desc: 'Official Instagram reels, cinematography teasers & behind-the-scenes.',
-          iconSvg: `<svg class="w-6 h-6 md:w-8 md:h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+          brandColor: '#E1306C',
+          brandGlow: 'rgba(225, 48, 108, 0.5)',
+          bgBase: '#0c0208',
+          glow1: 'rgba(225, 48, 108, 0.28)',
+          glow2: 'rgba(131, 58, 180, 0.24)',
+          glowCenter: 'rgba(253, 29, 29, 0.18)',
+          iconSvg: `<svg class="w-10 h-10 md:w-12 md:h-12" viewBox="0 0 24 24" fill="none">
+            <defs>
+              <linearGradient id="igIconGrad" x1="0%" y1="100%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="#FFDC80" />
+                <stop offset="25%" stop-color="#FD1D1D" />
+                <stop offset="50%" stop-color="#E1306C" />
+                <stop offset="75%" stop-color="#C13584" />
+                <stop offset="100%" stop-color="#833AB4" />
+              </linearGradient>
+            </defs>
+            <rect x="2" y="2" width="20" height="20" rx="5.5" fill="url(#igIconGrad)" />
+            <circle cx="12" cy="12" r="4.2" stroke="#FFFFFF" stroke-width="1.8" />
+            <circle cx="17.2" cy="6.8" r="1.1" fill="#FFFFFF" />
+            <rect x="5.2" y="5.2" width="13.6" height="13.6" rx="3.5" stroke="#FFFFFF" stroke-width="1.8" />
           </svg>`
         },
         {
@@ -434,8 +444,15 @@
           displayUrl: 'linkedin.com/company/project-stardust-1',
           handle: 'Project Stardust',
           desc: 'Executive announcements, corporate film collaborations & industry network.',
-          iconSvg: `<svg class="w-6 h-6 md:w-8 md:h-8" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.46 10.9h2.77v8.37H6.46v-8.37M7.84 6.2a1.62 1.62 0 1 0 0 3.24 1.62 1.62 0 0 0 0-3.24z"/>
+          brandColor: '#0A66C2',
+          brandGlow: 'rgba(10, 102, 194, 0.55)',
+          bgBase: '#020914',
+          glow1: 'rgba(10, 102, 194, 0.3)',
+          glow2: 'rgba(0, 140, 255, 0.22)',
+          glowCenter: 'rgba(0, 70, 150, 0.2)',
+          iconSvg: `<svg class="w-10 h-10 md:w-12 md:h-12" viewBox="0 0 24 24" fill="none">
+            <rect width="24" height="24" rx="5" fill="#0A66C2" />
+            <path d="M19 19h-3.1v-4.9c0-1.2 0-2.7-1.7-2.7s-1.9 1.3-1.9 2.6V19H9.2V9h3v1.4h0.04c0.42-0.8 1.45-1.65 2.99-1.65 3.2 0 3.79 2.11 3.79 4.85V19zM6.1 7.63c-1 0-1.8-.81-1.8-1.81 0-1 0.8-1.81 1.8-1.81 1 0 1.8 0.81 1.8 1.81 0 1-0.8 1.81-1.8 1.81zM7.65 19H4.55V9h3.1V19z" fill="#FFFFFF" />
           </svg>`
         },
         {
@@ -445,8 +462,15 @@
           displayUrl: 'projectstardust.in',
           handle: 'Project Stardust',
           desc: 'Official company releases, documentary broadcasts & event recaps.',
-          iconSvg: `<svg class="w-6 h-6 md:w-8 md:h-8" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H7v-3h3V9.5C10 6.57 11.75 5 14.36 5c1.25 0 2.55.22 2.55.22v2.8h-1.44c-1.45 0-1.9.9-1.9 1.83V12h3.16l-.51 3h-2.65v6.8c4.56-.93 8-4.96 8-9.8z"/>
+          brandColor: '#1877F2',
+          brandGlow: 'rgba(24, 119, 242, 0.55)',
+          bgBase: '#020b18',
+          glow1: 'rgba(24, 119, 242, 0.3)',
+          glow2: 'rgba(66, 103, 178, 0.24)',
+          glowCenter: 'rgba(12, 60, 130, 0.2)',
+          iconSvg: `<svg class="w-10 h-10 md:w-12 md:h-12" viewBox="0 0 24 24" fill="none">
+            <circle cx="12" cy="12" r="12" fill="#1877F2" />
+            <path d="M15.4 12.35l0.42-2.76h-2.65V7.79c0-0.76 0.37-1.5 1.57-1.5h1.21V3.94s-1.1-.19-2.15-.19c-2.19 0-3.63 1.33-3.63 3.74v2.1H7.8v2.76h2.37V19.8c0.47 0.08 0.96 0.12 1.45 0.12s0.98-0.04 1.45-0.12v-7.45h2.33z" fill="#FFFFFF" />
           </svg>`
         },
         {
@@ -456,8 +480,15 @@
           displayUrl: 'projectstardust.in',
           handle: '@projectstardust.in',
           desc: 'Real-time studio thoughts, director journals & post-production banter.',
-          iconSvg: `<svg class="w-6 h-6 md:w-8 md:h-8" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12.186 24C5.467 24 0 18.533 0 11.814 0 5.094 5.467 0 12.186 0c6.602 0 12.06 5.275 12.184 11.854v.303c0 .59-.478 1.069-1.068 1.069-.59 0-1.069-.479-1.069-1.069v-.303c-.12-5.409-4.606-9.716-10.047-9.716-5.558 0-10.049 4.49-10.049 10.048 0 5.557 4.491 10.048 10.049 10.048 3.033 0 5.792-1.343 7.644-3.57.382-.458 1.054-.518 1.512-.136.459.382.518 1.054.136 1.512-2.227 2.678-5.539 4.288-9.292 4.288zm.29-15.087c-2.457 0-4.456 1.999-4.456 4.457s1.999 4.456 4.456 4.456c1.688 0 3.167-.942 3.935-2.336.27-.492.09-.724-.396-.94-.486-.216-.718.093-.94.396-.518.706-1.353 1.179-2.29 1.179-1.493 0-2.709-1.216-2.709-2.71 0-1.494 1.216-2.71 2.709-2.71 1.494 0 2.71 1.216 2.71 2.71v.791c0 .762.618 1.38 1.38 1.38.763 0 1.381-.618 1.381-1.38v-.791c0-3.327-2.707-6.035-6.035-6.035z"/>
+          brandColor: '#E4E4E7',
+          brandGlow: 'rgba(255, 255, 255, 0.4)',
+          bgBase: '#070708',
+          glow1: 'rgba(255, 255, 255, 0.15)',
+          glow2: 'rgba(120, 120, 130, 0.2)',
+          glowCenter: 'rgba(180, 180, 190, 0.14)',
+          iconSvg: `<svg class="w-10 h-10 md:w-12 md:h-12" viewBox="0 0 24 24" fill="none">
+            <rect width="24" height="24" rx="6" fill="#141416" stroke="rgba(255,255,255,0.2)" stroke-width="1" />
+            <path d="M12.186 19.5c-3.9 0-7.07-3.17-7.07-7.07s3.17-7.07 7.07-7.07c3.83 0 7 3.06 7.07 6.88v.18c0 .34-.28.62-.62.62s-.62-.28-.62-.62v-.18c-.07-3.14-2.67-5.65-5.83-5.65-3.23 0-5.84 2.61-5.84 5.84s2.61 5.84 5.84 5.84c1.76 0 3.36-.78 4.44-2.07.22-.27.62-.3.88-.08.27.22.3.62.08.88-1.29 1.55-3.21 2.49-5.41 2.49zm.17-8.77c-1.43 0-2.59 1.16-2.59 2.59s1.16 2.59 2.59 2.59c.98 0 1.84-.55 2.29-1.36.16-.29.05-.42-.23-.55-.28-.13-.42.05-.55.23-.3.41-.79.68-1.51.68-.87 0-1.58-.71-1.58-1.58 0-.87.71-1.58 1.58-1.58.87 0 1.58.71 1.58 1.58v.46c0 .44.36.8.8.8s.8-.36.8-.8v-.46c0-1.93-1.57-3.5-3.5-3.5z" fill="#FFFFFF" />
           </svg>`
         },
         {
@@ -467,8 +498,15 @@
           displayUrl: 'projectstardust.in',
           handle: 'projectstardust',
           desc: 'Visual moodboards, cinematic color grades & creative reference decks.',
-          iconSvg: `<svg class="w-6 h-6 md:w-8 md:h-8" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12 0C5.373 0 0 5.372 0 12c0 5.084 3.163 9.426 7.627 11.174-.105-.949-.2-2.405.042-3.441.218-.937 1.407-5.965 1.407-5.965s-.359-.719-.359-1.782c0-1.668.967-2.914 2.171-2.914 1.023 0 1.518.769 1.518 1.69 0 1.029-.655 2.568-.994 3.995-.283 1.194.599 2.169 1.777 2.169 2.133 0 3.772-2.249 3.772-5.495 0-2.873-2.064-4.882-5.012-4.882-3.414 0-5.418 2.561-5.418 5.207 0 1.031.397 2.138.893 2.738.098.119.112.224.083.345-.09.375-.291 1.199-.334 1.357-.057.235-.188.286-.434.172-1.624-.756-2.639-3.129-2.639-5.035 0-4.099 2.978-7.865 8.59-7.865 4.51 0 8.016 3.214 8.016 7.512 0 4.481-2.825 8.087-6.746 8.087-1.317 0-2.556-.687-2.981-1.498l-.813 3.097c-.295 1.137-1.094 2.562-1.629 3.428C9.566 23.856 10.757 24 12 24c6.627 0 12-5.373 12-12 0-6.628-5.373-12-12-12z"/>
+          brandColor: '#E60023',
+          brandGlow: 'rgba(230, 0, 35, 0.55)',
+          bgBase: '#120205',
+          glow1: 'rgba(230, 0, 35, 0.3)',
+          glow2: 'rgba(180, 0, 40, 0.24)',
+          glowCenter: 'rgba(255, 60, 80, 0.18)',
+          iconSvg: `<svg class="w-10 h-10 md:w-12 md:h-12" viewBox="0 0 24 24" fill="none">
+            <circle cx="12" cy="12" r="12" fill="#E60023" />
+            <path d="M12 4.5c-4.14 0-7.5 3.36-7.5 7.5 0 3.18 1.98 5.89 4.77 6.98-.07-.59-.13-1.5.03-2.15.14-.59.88-3.73.88-3.73s-.22-.45-.22-1.11c0-1.04.6-1.82 1.36-1.82.64 0 .95.48.95 1.06 0 .64-.41 1.61-.62 2.5-.18.75.37 1.36 1.11 1.36 1.33 0 2.36-1.41 2.36-3.43 0-1.8-1.29-3.05-3.13-3.05-2.13 0-3.39 1.6-3.39 3.25 0 .64.25 1.34.56 1.71.06.07.07.14.05.22-.06.23-.18.75-.21.85-.04.15-.12.18-.27.11-1.02-.47-1.65-1.96-1.65-3.15 0-2.56 1.86-4.92 5.37-4.92 2.82 0 5.01 2.01 5.01 4.7 0 2.8-1.77 5.05-4.22 5.05-.82 0-1.6-.43-1.86-.94l-.51 1.94c-.18.71-.68 1.6-1.02 2.14 1.04.32 2.14.49 3.28.49 4.14 0 7.5-3.36 7.5-7.5s-3.36-7.5-7.5-7.5z" fill="#FFFFFF" />
           </svg>`
         },
         {
@@ -478,8 +516,16 @@
           displayUrl: 'projectstardust.in',
           handle: '@projectstardust',
           desc: 'High-fidelity 4K video productions, commercials, documentaries & reels.',
-          iconSvg: `<svg class="w-6 h-6 md:w-8 md:h-8" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+          brandColor: '#FF0000',
+          brandGlow: 'rgba(255, 0, 0, 0.55)',
+          bgBase: '#120202',
+          glow1: 'rgba(255, 0, 0, 0.32)',
+          glow2: 'rgba(180, 0, 20, 0.22)',
+          glowCenter: 'rgba(255, 60, 60, 0.18)',
+          iconSvg: `<svg class="w-10 h-10 md:w-12 md:h-12" viewBox="0 0 24 24" fill="none">
+            <rect width="24" height="24" rx="6" fill="#FF0000" />
+            <path d="M19.66 8.16a2.02 2.02 0 0 0-1.42-1.43C17 6.4 12 6.4 12 6.4s-5 0-6.24.33c-.68.18-1.23.73-1.42 1.43C4 9.4 4 12 4 12s0 2.6.34 3.84c.19.7.74 1.25 1.42 1.43C7 17.6 12 17.6 12 17.6s5 0 6.24-.33c.68-.18 1.24-.73 1.42-1.43.34-1.24.34-3.84.34-3.84s0-2.6-.34-3.84z" fill="#FF0000" />
+            <path d="M10.4 14.4V9.6L14.6 12l-4.2 2.4z" fill="#FFFFFF" />
           </svg>`
         },
         {
@@ -489,8 +535,15 @@
           displayUrl: '+91 79079 87676',
           handle: '+91 79079 87676',
           desc: 'Direct production desk for rapid bookings, schedules & quote estimates.',
-          iconSvg: `<svg class="w-6 h-6 md:w-8 md:h-8" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0 0 12.04 2zm0 17.06c-1.48 0-2.93-.4-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.19 8.19 0 0 1-1.26-4.3c0-4.54 3.7-8.24 8.24-8.24 2.2 0 4.27.86 5.82 2.42a8.18 8.18 0 0 1 2.41 5.83c.01 4.54-3.69 8.24-8.22 8.24zm4.52-6.17c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.12-.17.25-.64.81-.79.97-.14.17-.29.19-.54.06-.25-.12-1.05-.39-2-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.02-.38.11-.5.11-.11.25-.29.37-.43.12-.14.17-.25.25-.41.08-.17.04-.31-.02-.43s-.56-1.34-.76-1.84c-.2-.48-.41-.42-.56-.43h-.48c-.17 0-.44.06-.66.31-.23.25-.88.86-.88 2.1 0 1.23.9 2.43 1.03 2.6.12.17 1.78 2.71 4.3 3.8.6.26 1.07.41 1.44.53.6.19 1.15.16 1.59.1.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.07.14-1.18-.06-.11-.22-.17-.47-.29z"/>
+          brandColor: '#25D366',
+          brandGlow: 'rgba(37, 211, 102, 0.55)',
+          bgBase: '#021207',
+          glow1: 'rgba(37, 211, 102, 0.3)',
+          glow2: 'rgba(18, 140, 66, 0.25)',
+          glowCenter: 'rgba(40, 220, 120, 0.18)',
+          iconSvg: `<svg class="w-10 h-10 md:w-12 md:h-12" viewBox="0 0 24 24" fill="none">
+            <circle cx="12" cy="12" r="12" fill="#25D366" />
+            <path d="M12.04 4.5c-4.14 0-7.5 3.36-7.5 7.5 0 1.33.35 2.61.99 3.75L4.5 19.5l3.9-1.02c1.1.6 2.34.92 3.64.92 4.14 0 7.5-3.36 7.5-7.5s-3.36-7.4-7.5-7.4zm4.45 10.6c-.19.53-1.12.98-1.54 1.04-.39.06-.89.09-2.73-.67-2.35-.97-3.84-3.37-3.96-3.53-.12-.16-.96-1.27-.96-2.42 0-1.15.6-1.72.82-1.95.22-.23.47-.28.63-.28.16 0 .32 0 .45.01.14.01.33-.05.51.39.19.46.65 1.59.71 1.7.06.12.1.25.02.4-.08.15-.12.25-.24.39-.12.14-.25.31-.36.42-.12.12-.24.25-.1.49.14.24.62 1.02 1.33 1.65.91.81 1.68 1.06 1.92 1.18.24.12.38.1.52-.06.14-.16.6-.7.76-.94.16-.24.32-.2.54-.12.22.08 1.4.66 1.64.78.24.12.4.18.46.28.06.1.06.58-.13 1.11z" fill="#FFFFFF" />
           </svg>`
         },
         {
@@ -500,8 +553,15 @@
           displayUrl: 'behance.net/joefostory',
           handle: 'joefostory',
           desc: 'Comprehensive visual treatments, director treatments & portfolio showcases.',
-          iconSvg: `<svg class="w-6 h-6 md:w-8 md:h-8" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M22 7h-7v-2h7v2zm1.726 10c-.442 1.297-2.029 3-4.976 3-3.418 0-5.75-2.428-5.75-5.733 0-3.376 2.378-5.767 5.617-5.767 3.491 0 5.483 2.502 5.234 6.273h-8.567c.105 1.545 1.231 2.658 2.925 2.658 1.458 0 2.296-.642 2.666-1.431h2.851zm-7.625-4h5.688c-.144-1.294-1.078-2.128-2.613-2.128-1.637 0-2.738.834-3.075 2.128zm-8.851 7h-7.25v-16h7.525c3.551 0 5.725 1.838 5.725 4.887 0 1.79-.877 3.197-2.387 3.91 2.057.739 3.037 2.449 3.037 4.542 0 3.51-2.825 5.661-6.65 5.661zm-4.25-9.395h3.625c1.477 0 2.375-.722 2.375-1.921s-.898-1.884-2.375-1.884h-3.625v3.805zm0 6.595h3.9c1.69 0 2.725-.826 2.725-2.193 0-1.421-1.035-2.207-2.725-2.207h-3.9v4.4z"/>
+          brandColor: '#0057FF',
+          brandGlow: 'rgba(0, 87, 255, 0.55)',
+          bgBase: '#020718',
+          glow1: 'rgba(0, 87, 255, 0.32)',
+          glow2: 'rgba(0, 140, 255, 0.22)',
+          glowCenter: 'rgba(30, 100, 255, 0.2)',
+          iconSvg: `<svg class="w-10 h-10 md:w-12 md:h-12" viewBox="0 0 24 24" fill="none">
+            <rect width="24" height="24" rx="5" fill="#0057FF" />
+            <path d="M15.5 8h4.5v1.5h-4.5V8zm1.1 7.2c-.3.9-1.3 2-3.3 2-2.3 0-3.9-1.6-3.9-3.9 0-2.3 1.6-3.9 3.8-3.9 2.3 0 3.6 1.7 3.5 4.2h-5.7c.1 1 1 1.8 2.2 1.8 1 0 1.6-.5 1.9-1.1h1.5zm-5.1-2.7h4c-.1-.8-.7-1.5-1.9-1.5-1.1 0-1.8.6-2.1 1.5zm-6.8 4.2H8c2.4 0 3.9-1.2 3.9-3.3 0-1.2-.6-2.1-1.6-2.6 1.4-.5 2-1.7 2-2.9 0-2.3-1.9-3.4-4.5-3.4H4.7v12.2zm2-7.2h1.5c1.1 0 2 .5 2 1.5s-.9 1.5-2 1.5H6.7V9.5zm0 3.7h1.7c1.3 0 2.2.6 2.2 1.7 0 1.2-1 1.8-2.2 1.8H6.7v-3.5z" fill="#FFFFFF" />
           </svg>`
         }
       ];
@@ -515,7 +575,18 @@
       const kineticStage = document.getElementById('kineticStage');
       const activeIndexCounter = document.getElementById('activeIndexCounter');
 
-      // --- 3. RENDER 3D REEL WITH BRAND ICONS & CLICKABLE HYPERLINK MODE ---
+      // --- 3. DYNAMIC COLOR ADAPTATION ---
+      function applyBrandTheme(item) {
+        const root = document.documentElement;
+        root.style.setProperty('--bg-base', item.bgBase);
+        root.style.setProperty('--brand-color', item.brandColor);
+        root.style.setProperty('--brand-glow', item.brandGlow);
+        root.style.setProperty('--glow-1', item.glow1);
+        root.style.setProperty('--glow-2', item.glow2);
+        root.style.setProperty('--glow-center', item.glowCenter);
+      }
+
+      // --- 4. RENDER 3D REEL WITH VERTICAL CENTERING ---
       function renderWheelDOM() {
         kineticStage.innerHTML = '';
         SOCIAL_ITEMS.forEach((item, idx) => {
@@ -540,13 +611,11 @@
             </span>
           `;
 
-          // Click behavior: if clicked when active -> opens hyperlink immediately; if inactive -> focuses first
+          // Direct click behavior:
           row.addEventListener('click', (e) => {
             if (idx === activeIndex) {
-              // Active: let the browser open the link naturally (or window.open)
-              return;
+              return; // Let browser launch link
             } else {
-              // Inactive: prevent navigation, bring into focus first
               e.preventDefault();
               setActiveIndex(idx, true);
             }
@@ -571,7 +640,7 @@
         const total = SOCIAL_ITEMS.length;
         const nodes = kineticStage.querySelectorAll('.kinetic-item');
         const isMobile = window.innerWidth < 640;
-        const verticalStep = isMobile ? 66 : 96;
+        const verticalStep = isMobile ? 66 : 94;
 
         nodes.forEach((node, idx) => {
           const offset = getCircularOffset(idx, activeIndex, total);
@@ -628,10 +697,12 @@
         }
       }
 
-      // --- 4. MINIMAL INSPECTOR CARD UPDATE ---
+      // --- 5. MINIMAL DETAIL WINDOW UPDATE ---
       function updateInspectorCard() {
         const item = SOCIAL_ITEMS[activeIndex];
         if (!item) return;
+
+        applyBrandTheme(item);
 
         document.getElementById('inspectorIconContainer').innerHTML = item.iconSvg;
         document.getElementById('inspectorTitle').textContent = item.word;
@@ -641,10 +712,12 @@
 
         const openBtn = document.getElementById('openDestinationBtn');
         openBtn.href = item.url;
+        openBtn.style.background = item.brandColor;
+        openBtn.style.boxShadow = `0 0 28px ${item.brandGlow}`;
         document.getElementById('openBtnLabel').textContent = `Visit ${item.word}`;
       }
 
-      // --- 5. AUTO-PLAY LOOP & WHEEL INTERACTION ---
+      // --- 6. AUTO-PLAY LOOP & INTERACTIONS ---
       function startAutoPlayTimer() {
         stopAutoPlayTimer();
         autoPlayTimer = setInterval(() => {
@@ -722,7 +795,7 @@
         }
       });
 
-      // --- 6. CLIPBOARD COPY ---
+      // --- 7. CLIPBOARD COPY ---
       function copyTextToClipboard(text) {
         if (navigator.clipboard && navigator.clipboard.writeText) {
           navigator.clipboard.writeText(text).then(() => {
@@ -762,7 +835,7 @@
         }, 2200);
       }
 
-      // --- 7. EVENT LISTENERS ---
+      // --- 8. CONTROLS LISTENERS ---
       document.getElementById('prevWheelBtn').addEventListener('click', () => setActiveIndex(activeIndex - 1, true));
       document.getElementById('nextWheelBtn').addEventListener('click', () => setActiveIndex(activeIndex + 1, true));
 
@@ -777,10 +850,10 @@
         btn.addEventListener('click', () => {
           autoPlayIntervalMs = Number(btn.getAttribute('data-speed'));
           document.querySelectorAll('.speed-btn').forEach(b => {
-            b.classList.remove('text-neon', 'font-bold', 'underline');
+            b.classList.remove('text-white', 'font-bold', 'underline');
             b.classList.add('text-neutral-400');
           });
-          btn.classList.add('text-neon', 'font-bold', 'underline');
+          btn.classList.add('text-white', 'font-bold', 'underline');
           btn.classList.remove('text-neutral-400');
           if (isAutoPlaying) startAutoPlayTimer();
         });
@@ -791,62 +864,13 @@
         if (current) copyTextToClipboard(current.url);
       });
 
-      // --- 8. MOTION GRAPHICS INTERACTIVE CANVAS ---
-      const canvas = document.getElementById('mgCanvas');
-      const ctx = canvas.getContext('2d');
-      let cw = 0, ch = 0;
-      let pointerX = -999, pointerY = -999;
-      let tick = 0;
-
-      function resizeCanvas() {
-        cw = canvas.width = window.innerWidth;
-        ch = canvas.height = window.innerHeight;
-      }
       window.addEventListener('resize', () => {
-        resizeCanvas();
         updateWheelPositions();
       });
-      window.addEventListener('mousemove', (e) => {
-        pointerX = e.clientX;
-        pointerY = e.clientY;
-      });
 
-      function drawMotionGridNodes() {
-        ctx.clearRect(0, 0, cw, ch);
-        tick += 0.016;
-        const spacing = 104;
-        const cols = Math.ceil(cw / spacing) + 1;
-        const rows = Math.ceil(ch / spacing) + 1;
-
-        for (let r = 0; r < rows; r++) {
-          for (let c = 0; c < cols; c++) {
-            const x = c * spacing + ((tick * 12) % spacing);
-            const y = r * spacing + Math.sin(tick + c * 0.6 + r * 0.4) * 6;
-            const dx = x - pointerX;
-            const dy = y - pointerY;
-            const dist = Math.sqrt(dx * dx + dy * dy);
-            const proximity = Math.max(0, 1 - dist / 280);
-
-            const alpha = 0.10 + proximity * 0.52;
-            ctx.strokeStyle = `rgba(183, 123, 255, ${alpha.toFixed(3)})`;
-            ctx.lineWidth = 1;
-            const arm = 3 + proximity * 4;
-            ctx.beginPath();
-            ctx.moveTo(x - arm, y);
-            ctx.lineTo(x + arm, y);
-            ctx.moveTo(x, y - arm);
-            ctx.lineTo(x, y + arm);
-            ctx.stroke();
-          }
-        }
-        requestAnimationFrame(drawMotionGridNodes);
-      }
-
-      // Initialize everything on load
-      resizeCanvas();
+      // Initialize on load
       renderWheelDOM();
       startAutoPlayTimer();
-      drawMotionGridNodes();
     })();
   </script>
 </body>
