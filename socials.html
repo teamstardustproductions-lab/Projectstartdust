@@ -5,24 +5,53 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Socials // Project Stardust</title>
   <script src="https://cdn.tailwindcss.com/3.4.17"></script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <script>
     tailwind.config = {
       darkMode: 'class',
       theme: {
         extend: {
           fontFamily: {
-            sans: ['Inter', 'system-ui', 'sans-serif'],
-            display: ['Inter', 'system-ui', 'sans-serif'],
-            mono: ['JetBrains Mono', 'monospace'],
+            ogg: ['Ogg', 'Georgia', 'serif'],
+            caramel: ['Caramel', 'cursive', 'sans-serif'],
+            aveton: ['Aveton', 'system-ui', 'sans-serif'],
+            sans: ['Aveton', 'system-ui', 'sans-serif'],
           }
         }
       }
     }
   </script>
   <style>
+    /* CUSTOM FONT DEFINITIONS FROM ASSETS/FONT */
+    @font-face {
+      font-family: 'Caramel';
+      src: url('/assets/Font/Caramel.woff2') format('woff2'),
+           url('../assets/Font/Caramel.woff2') format('woff2'),
+           url('assets/Font/Caramel.woff2') format('woff2');
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    @font-face {
+      font-family: 'Ogg';
+      src: url('/assets/Font/Ogg-Regular.otf') format('opentype'),
+           url('../assets/Font/Ogg-Regular.otf') format('opentype'),
+           url('assets/Font/Ogg-Regular.otf') format('opentype');
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    @font-face {
+      font-family: 'Aveton';
+      src: url('/assets/Font/AvetonRegular-MARon.woff2') format('woff2'),
+           url('../assets/Font/AvetonRegular-MARon.woff2') format('woff2'),
+           url('assets/Font/AvetonRegular-MARon.woff2') format('woff2');
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+
     :root {
       --bg-base: #060309;
       --brand-color: #E1306C;
@@ -41,7 +70,7 @@
       height: 100%;
       background-color: var(--bg-base);
       color: #F5F3FF;
-      font-family: 'Inter', sans-serif;
+      font-family: 'Aveton', sans-serif;
       overflow: hidden;
       transition: background-color 0.9s cubic-bezier(0.2, 0.8, 0.2, 1);
     }
@@ -50,6 +79,10 @@
       background: var(--brand-color);
       color: #05030A;
     }
+
+    .font-ogg { font-family: 'Ogg', Georgia, serif; }
+    .font-caramel { font-family: 'Caramel', cursive, sans-serif; }
+    .font-aveton { font-family: 'Aveton', system-ui, sans-serif; }
 
     /* SILKY AMBIENT SHADER GRADIENT BACKDROP (NO LINES, NO BOXES, NO SPARKLES) */
     .shader-backdrop {
@@ -124,9 +157,9 @@
     /* VERTICALLY CENTERED 3D KINETIC DRUM STAGE */
     .kinetic-stage {
       position: relative;
-      height: calc(100vh - 11rem);
-      min-height: 480px;
-      max-height: 720px;
+      height: calc(100vh - 10.5rem);
+      min-height: 460px;
+      max-height: 740px;
       width: 100%;
       perspective: 1200px;
       user-select: none;
@@ -153,8 +186,13 @@
 
     @media (max-width: 768px) {
       .kinetic-stage {
-        height: 54vh;
-        min-height: 380px;
+        height: 60vh;
+        min-height: 400px;
+      }
+      .kinetic-item {
+        justify-content: center;
+        padding-left: 0;
+        transform-origin: center center;
       }
     }
 
@@ -184,7 +222,7 @@
       justify-content: center;
       width: 3.5rem;
       height: 3.5rem;
-      margin-right: 1.25rem;
+      margin-right: 1.15rem;
       border-radius: 1.15rem;
       transform: translateX(-24px) scale(0.65);
       opacity: 0;
@@ -195,6 +233,20 @@
         filter 0.38s ease;
       flex-shrink: 0;
       overflow: hidden;
+    }
+
+    @media (max-width: 640px) {
+      .kinetic-brand-icon {
+        width: 2.4rem;
+        height: 2.4rem;
+        margin-right: 0.6rem;
+        border-radius: 0.75rem;
+      }
+      .kinetic-link-tag {
+        margin-left: 0.6rem;
+        padding: 0.28rem 0.65rem;
+        font-size: 0.68rem;
+      }
     }
 
     @media (min-width: 768px) {
@@ -216,9 +268,11 @@
       filter: drop-shadow(0 0 38px var(--brand-glow)) brightness(1.1);
     }
 
+    /* KINETIC WORD IN OGG EDITORIAL SERIF FONT */
     .kinetic-word {
-      font-weight: 800;
-      letter-spacing: -0.04em;
+      font-family: 'Ogg', Georgia, serif;
+      font-weight: 400;
+      letter-spacing: -0.02em;
       line-height: 0.98;
       color: rgba(255, 255, 255, 0.55);
       white-space: nowrap;
@@ -246,8 +300,8 @@
       padding: 0.42rem 0.95rem;
       border-radius: 9999px;
       font-size: 0.75rem;
-      font-family: 'JetBrains Mono', monospace;
-      font-weight: 700;
+      font-family: 'Aveton', sans-serif;
+      font-weight: 600;
       background: rgba(255, 255, 255, 0.1);
       border: 1px solid rgba(255, 255, 255, 0.25);
       color: #FFFFFF;
@@ -300,66 +354,68 @@
   <!-- MAIN REEL CONTAINER (CENTERED VERTICALLY) -->
   <main class="relative z-10 w-full h-full flex flex-col justify-between p-4 sm:p-6 lg:px-12 overflow-hidden">
 
-    <!-- MINIMAL TOP BAR: LOGO & ACTIVE COUNTER -->
-    <div class="relative z-20 max-w-7xl w-full mx-auto flex items-center justify-between text-[11px] font-mono text-neutral-400 shrink-0 pt-2 pb-1">
-      <a href="/" class="flex items-center gap-2 text-neutral-300 hover:text-white transition group" title="Return to Home">
+    <!-- MINIMAL TOP BAR: ORIGINAL SD LOGO & ACTIVE COUNTER -->
+    <div class="relative z-20 max-w-7xl w-full mx-auto flex items-center justify-between text-[11px] font-aveton text-neutral-400 shrink-0 pt-2 pb-1">
+      <a href="/" class="flex items-center gap-3 text-neutral-300 hover:text-white transition group" title="Return to Home">
         <span class="text-white group-hover:-translate-x-0.5 transition-transform font-bold text-sm">←</span>
-        <span class="font-extrabold tracking-tight text-white text-xs sm:text-sm">PROJECT<span style="color: var(--brand-color)">STARDUST</span></span>
+        <!-- ORIGINAL SD LOGO -->
+        <img
+          src="/assets/images/sd logo png-03.png"
+          onerror="this.onerror=null;this.src='../assets/images/sd logo png-03.png';"
+          alt="Project Stardust Logo"
+          class="h-8 sm:h-9 w-auto object-contain transition-transform duration-300 group-hover:scale-105 filter drop-shadow-[0_0_14px_rgba(255,255,255,0.22)]"
+        />
+        <span class="font-caramel text-sm sm:text-base text-white/70 hidden sm:inline-block ml-1">cinema &amp; stories</span>
       </a>
 
-      <div class="flex items-center gap-2.5">
+      <div class="flex items-center gap-2.5 font-aveton">
         <span class="inline-block w-1.5 h-1.5 rounded-full animate-pulse" style="background-color: var(--brand-color)"></span>
-        <span class="text-neutral-400 hidden sm:inline tracking-wider">CHANNELS</span>
+        <span class="text-neutral-400 hidden sm:inline tracking-wider uppercase text-[10px]">CHANNELS</span>
         <span class="text-neutral-600 hidden sm:inline">//</span>
-        <span id="activeIndexCounter" class="font-bold text-white">01/08</span>
+        <span id="activeIndexCounter" class="font-bold text-white text-xs">01/08</span>
       </div>
     </div>
 
     <!-- VERTICALLY CENTERED FULL-SCREEN STAGE -->
     <div class="relative z-10 max-w-7xl w-full mx-auto my-auto grid grid-cols-1 lg:grid-cols-12 items-center gap-8 py-2">
 
-      <!-- LEFT: 3D KINETIC DRUM (VERTICALLY CENTERED ACTIVE WORD) -->
-      <div class="lg:col-span-8 relative flex items-center justify-center">
+      <!-- LEFT: 3D KINETIC DRUM (FULL WIDTH ON MOBILE, 8-COLS ON DESKTOP) -->
+      <div class="col-span-12 lg:col-span-8 relative flex items-center justify-center">
         <div id="kineticStage" class="kinetic-stage focus:outline-none" tabindex="0" aria-label="Project Stardust Social Channels 3D Wheel">
           <!-- Populated dynamically by JS -->
         </div>
       </div>
 
-      <!-- RIGHT: MINIMAL DETAIL WINDOW (DYNAMICALLY MATCHES BRAND PALETTE) -->
-      <div class="lg:col-span-4 flex flex-col items-start lg:items-end justify-center">
-        <div id="activeLinkCard" class="w-full max-w-sm rounded-2xl neon-card p-6 space-y-4 shadow-[0_0_50px_rgba(0,0,0,0.4)]">
-          <!-- Header: Real Official Brand Icon + Title + Handle -->
+      <!-- RIGHT: MINIMAL DETAIL WINDOW (DESKTOP ONLY: HIDDEN ON MOBILE, VISIBLE ON LG+) -->
+      <div class="hidden lg:flex lg:col-span-4 flex-col items-end justify-center">
+        <div id="activeLinkCard" class="w-full max-w-sm rounded-2xl neon-card p-6 space-y-5 shadow-[0_0_50px_rgba(0,0,0,0.4)]">
+          <!-- Header: Real Brand Icon + Title in Ogg font + Handle -->
           <div class="flex items-center gap-3.5">
             <div id="inspectorIconContainer" class="w-13 h-13 rounded-2xl p-1 flex items-center justify-center shadow-lg shrink-0">
               <!-- Dynamically populated SVG with real brand icon -->
             </div>
             <div class="min-w-0">
               <div class="flex items-center gap-2">
-                <h2 id="inspectorTitle" class="text-xl font-black tracking-tight text-white truncate">Instagram</h2>
+                <h2 id="inspectorTitle" class="text-2xl font-ogg tracking-tight text-white truncate">Instagram</h2>
                 <span class="w-1.5 h-1.5 rounded-full" style="background-color: var(--brand-color)"></span>
               </div>
-              <p id="inspectorHandle" class="text-xs font-mono text-neutral-300 truncate">@projectstardust.in</p>
+              <p id="inspectorHandle" class="text-xs font-aveton text-neutral-300 truncate font-medium">@projectstardust.in</p>
             </div>
           </div>
 
-          <!-- Concise Description -->
-          <p id="inspectorDesc" class="text-xs text-neutral-300/90 leading-relaxed">
-            Official Instagram reels, cinematography teasers & behind-the-scenes.
-          </p>
-
-          <!-- Destination URL & Copy Button -->
-          <div class="p-3 rounded-xl bg-black/50 border border-white/[0.08] flex items-center justify-between gap-2">
-            <div class="min-w-0">
-              <div class="text-[9px] font-mono text-neutral-500 uppercase tracking-wider">DIRECT DESTINATION</div>
-              <div id="activeShortUrl" class="text-xs font-mono text-white/90 truncate">instagram.com/projectstardust.in</div>
+          <!-- Social Media Detail Only (No Direct Link) -->
+          <div class="p-4 rounded-xl bg-black/40 border border-white/[0.06] space-y-2">
+            <div class="text-[10px] font-aveton uppercase tracking-wider text-neutral-400 font-semibold flex items-center gap-1.5">
+              <span class="w-1 h-1 rounded-full" style="background: var(--brand-color)"></span>
+              <span>CHANNEL OVERVIEW</span>
             </div>
-            <button id="copyActiveUrlBtn" type="button" class="px-2.5 py-1.5 rounded-lg border border-white/10 bg-white/[0.04] hover:bg-white/10 text-[10px] font-mono text-neutral-300 hover:text-white transition shrink-0" title="Copy Link">
-              Copy
-            </button>
+            <p id="inspectorDesc" class="text-xs font-aveton text-neutral-200 leading-relaxed">
+              Official Instagram reels, cinematography teasers &amp; behind-the-scenes.
+            </p>
           </div>
 
           <!-- Direct Visit Button (Styled with real brand gradient/color) -->
-          <a id="openDestinationBtn" href="https://www.instagram.com/projectstardust.in/" target="_blank" rel="noopener noreferrer" class="w-full py-3.5 px-4 rounded-xl text-white font-extrabold text-xs tracking-tight hover:brightness-110 active:scale-[0.99] transition flex items-center justify-center gap-2 shadow-lg" style="background: var(--brand-color); box-shadow: 0 0 25px var(--brand-glow);">
+          <a id="openDestinationBtn" href="https://www.instagram.com/projectstardust.in/" target="_blank" rel="noopener noreferrer" class="w-full py-3.5 px-4 rounded-xl text-white font-aveton font-bold text-xs tracking-wide hover:brightness-110 active:scale-[0.99] transition flex items-center justify-center gap-2 shadow-lg" style="background: var(--brand-color); box-shadow: 0 0 25px var(--brand-glow);">
             <span id="openBtnLabel">Visit Instagram</span>
             <span class="text-sm font-black">↗</span>
           </a>
@@ -369,7 +425,7 @@
     </div>
 
     <!-- BOTTOM FLOATING REEL TRANSPORT BAR -->
-    <div class="relative z-20 max-w-7xl w-full mx-auto flex flex-wrap items-center justify-between gap-3 text-[11px] font-mono text-neutral-400 shrink-0 pb-1">
+    <div class="relative z-20 max-w-7xl w-full mx-auto flex flex-wrap items-center justify-between gap-3 text-[11px] font-aveton text-neutral-400 shrink-0 pb-1">
       <div class="flex items-center gap-1.5">
         <button id="prevWheelBtn" type="button" class="w-7 h-7 rounded-full border border-white/15 bg-white/[0.03] hover:border-white text-neutral-200 hover:text-white flex items-center justify-center transition" title="Previous Item">
           ↑
@@ -381,10 +437,10 @@
         <button id="nextWheelBtn" type="button" class="w-7 h-7 rounded-full border border-white/15 bg-white/[0.03] hover:border-white text-neutral-200 hover:text-white flex items-center justify-center transition" title="Next Item">
           ↓
         </button>
-        <span class="ml-2 hidden sm:inline text-neutral-500">CLICK ACTIVE TO VISIT • SCROLL TO EXPLORE</span>
+        <span class="ml-2 hidden sm:inline text-neutral-500 font-aveton">CLICK ACTIVE TO VISIT • SCROLL TO EXPLORE</span>
       </div>
 
-      <div class="flex items-center gap-2">
+      <div class="flex items-center gap-2 font-aveton">
         <span class="text-neutral-500">TEMPO:</span>
         <button type="button" data-speed="2400" class="speed-btn text-neutral-400 hover:text-white">SLOW</button>
         <span class="text-neutral-700">/</span>
@@ -395,14 +451,6 @@
     </div>
   </main>
 
-  <!-- TOAST NOTIFICATION -->
-  <div id="toastBanner" class="fixed bottom-5 right-5 z-50 pointer-events-none opacity-0 translate-y-3 transition-all duration-300">
-    <div class="px-4 py-3 rounded-xl bg-white text-black font-mono text-xs font-bold shadow-2xl flex items-center gap-2">
-      <span>→</span>
-      <span id="toastMessage">Link copied to clipboard!</span>
-    </div>
-  </div>
-
   <!-- APPLICATION SCRIPT -->
   <script>
     (function () {
@@ -412,9 +460,8 @@
           id: 'instagram',
           word: 'Instagram',
           url: 'https://www.instagram.com/projectstardust.in/',
-          displayUrl: 'instagram.com/projectstardust.in',
           handle: '@projectstardust.in',
-          desc: 'Official Instagram reels, cinematography teasers & behind-the-scenes.',
+          desc: 'Official Instagram reels, cinematography teasers, photography and behind-the-scenes production footage.',
           brandColor: '#E1306C',
           brandGlow: 'rgba(225, 48, 108, 0.5)',
           bgBase: '#0c0208',
@@ -441,9 +488,8 @@
           id: 'linkedin',
           word: 'LinkedIn',
           url: 'https://www.linkedin.com/company/project-stardust-1/',
-          displayUrl: 'linkedin.com/company/project-stardust-1',
           handle: 'Project Stardust',
-          desc: 'Executive announcements, corporate film collaborations & industry network.',
+          desc: 'Executive announcements, corporate film collaborations, brand case studies & industry partnerships.',
           brandColor: '#0A66C2',
           brandGlow: 'rgba(10, 102, 194, 0.55)',
           bgBase: '#020914',
@@ -459,9 +505,8 @@
           id: 'facebook',
           word: 'Facebook',
           url: 'https://projectstardust.in/',
-          displayUrl: 'projectstardust.in',
           handle: 'Project Stardust',
-          desc: 'Official company releases, documentary broadcasts & event recaps.',
+          desc: 'Official company releases, documentary broadcasts, commercial film launches & event stories.',
           brandColor: '#1877F2',
           brandGlow: 'rgba(24, 119, 242, 0.55)',
           bgBase: '#020b18',
@@ -477,9 +522,8 @@
           id: 'threads',
           word: 'Threads',
           url: 'https://projectstardust.in/',
-          displayUrl: 'projectstardust.in',
           handle: '@projectstardust.in',
-          desc: 'Real-time studio thoughts, director journals & post-production banter.',
+          desc: 'Real-time studio thoughts, director journals, filmmaking experiments & candid production banter.',
           brandColor: '#E4E4E7',
           brandGlow: 'rgba(255, 255, 255, 0.4)',
           bgBase: '#070708',
@@ -495,9 +539,8 @@
           id: 'pinterest',
           word: 'Pinterest',
           url: 'https://projectstardust.in/',
-          displayUrl: 'projectstardust.in',
           handle: 'projectstardust',
-          desc: 'Visual moodboards, cinematic color grades & creative reference decks.',
+          desc: 'Curated visual moodboards, cinematic color palettes, film grading inspirations & creative lighting references.',
           brandColor: '#E60023',
           brandGlow: 'rgba(230, 0, 35, 0.55)',
           bgBase: '#120205',
@@ -513,9 +556,8 @@
           id: 'youtube',
           word: 'YouTube',
           url: 'https://projectstardust.in/',
-          displayUrl: 'projectstardust.in',
           handle: '@projectstardust',
-          desc: 'High-fidelity 4K video productions, commercials, documentaries & reels.',
+          desc: 'High-fidelity 4K video productions, commercials, documentaries, short films & director breakdown cuts.',
           brandColor: '#FF0000',
           brandGlow: 'rgba(255, 0, 0, 0.55)',
           bgBase: '#120202',
@@ -532,9 +574,8 @@
           id: 'whatsapp',
           word: 'WhatsApp',
           url: 'https://wa.me/917907987676',
-          displayUrl: '+91 79079 87676',
           handle: '+91 79079 87676',
-          desc: 'Direct production desk for rapid bookings, schedules & quote estimates.',
+          desc: 'Direct production hotline for rapid client bookings, project schedules, equipment inquiries & quote estimates.',
           brandColor: '#25D366',
           brandGlow: 'rgba(37, 211, 102, 0.55)',
           bgBase: '#021207',
@@ -550,9 +591,8 @@
           id: 'behance',
           word: 'Behance',
           url: 'https://www.behance.net/joefostory',
-          displayUrl: 'behance.net/joefostory',
           handle: 'joefostory',
-          desc: 'Comprehensive visual treatments, director treatments & portfolio showcases.',
+          desc: 'Comprehensive visual treatments, creative director decks, cinematographic treatments & studio portfolio.',
           brandColor: '#0057FF',
           brandGlow: 'rgba(0, 87, 255, 0.55)',
           bgBase: '#020718',
@@ -602,7 +642,7 @@
             <span class="kinetic-brand-icon" aria-hidden="true">
               ${item.iconSvg}
             </span>
-            <span class="kinetic-word text-5xl sm:text-7xl md:text-8xl lg:text-[6.25rem] tracking-tight">
+            <span class="kinetic-word text-4xl sm:text-6xl md:text-8xl lg:text-[6.25rem] tracking-tight">
               ${item.word}
             </span>
             <span class="kinetic-link-tag">
@@ -697,24 +737,34 @@
         }
       }
 
-      // --- 5. MINIMAL DETAIL WINDOW UPDATE ---
+      // --- 5. MINIMAL DETAIL WINDOW UPDATE (DESKTOP DETAIL ONLY) ---
       function updateInspectorCard() {
         const item = SOCIAL_ITEMS[activeIndex];
         if (!item) return;
 
         applyBrandTheme(item);
 
-        document.getElementById('inspectorIconContainer').innerHTML = item.iconSvg;
-        document.getElementById('inspectorTitle').textContent = item.word;
-        document.getElementById('inspectorHandle').textContent = item.handle;
-        document.getElementById('inspectorDesc').textContent = item.desc;
-        document.getElementById('activeShortUrl').textContent = item.displayUrl;
+        const iconContainer = document.getElementById('inspectorIconContainer');
+        if (iconContainer) iconContainer.innerHTML = item.iconSvg;
+        
+        const title = document.getElementById('inspectorTitle');
+        if (title) title.textContent = item.word;
+
+        const handle = document.getElementById('inspectorHandle');
+        if (handle) handle.textContent = item.handle;
+
+        const desc = document.getElementById('inspectorDesc');
+        if (desc) desc.textContent = item.desc;
 
         const openBtn = document.getElementById('openDestinationBtn');
-        openBtn.href = item.url;
-        openBtn.style.background = item.brandColor;
-        openBtn.style.boxShadow = `0 0 28px ${item.brandGlow}`;
-        document.getElementById('openBtnLabel').textContent = `Visit ${item.word}`;
+        if (openBtn) {
+          openBtn.href = item.url;
+          openBtn.style.background = item.brandColor;
+          openBtn.style.boxShadow = `0 0 28px ${item.brandGlow}`;
+        }
+
+        const openBtnLabel = document.getElementById('openBtnLabel');
+        if (openBtnLabel) openBtnLabel.textContent = `Visit ${item.word}`;
       }
 
       // --- 6. AUTO-PLAY LOOP & INTERACTIONS ---
@@ -795,47 +845,7 @@
         }
       });
 
-      // --- 7. CLIPBOARD COPY ---
-      function copyTextToClipboard(text) {
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-          navigator.clipboard.writeText(text).then(() => {
-            showToast(`Copied: ${text}`);
-          }).catch(() => fallbackCopy(text));
-        } else {
-          fallbackCopy(text);
-        }
-      }
-
-      function fallbackCopy(text) {
-        const ta = document.createElement('textarea');
-        ta.value = text;
-        ta.style.position = 'fixed';
-        ta.style.opacity = '0';
-        document.body.appendChild(ta);
-        ta.select();
-        try {
-          document.execCommand('copy');
-          showToast(`Copied: ${text}`);
-        } catch (err) {
-          showToast('Link ready to share');
-        }
-        document.body.removeChild(ta);
-      }
-
-      let toastTimeout = null;
-      function showToast(msg) {
-        const banner = document.getElementById('toastBanner');
-        document.getElementById('toastMessage').textContent = msg;
-        banner.classList.remove('opacity-0', 'translate-y-3');
-        banner.classList.add('opacity-100', 'translate-y-0');
-        if (toastTimeout) clearTimeout(toastTimeout);
-        toastTimeout = setTimeout(() => {
-          banner.classList.add('opacity-0', 'translate-y-3');
-          banner.classList.remove('opacity-100', 'translate-y-0');
-        }, 2200);
-      }
-
-      // --- 8. CONTROLS LISTENERS ---
+      // --- 7. CONTROLS LISTENERS ---
       document.getElementById('prevWheelBtn').addEventListener('click', () => setActiveIndex(activeIndex - 1, true));
       document.getElementById('nextWheelBtn').addEventListener('click', () => setActiveIndex(activeIndex + 1, true));
 
@@ -857,11 +867,6 @@
           btn.classList.remove('text-neutral-400');
           if (isAutoPlaying) startAutoPlayTimer();
         });
-      });
-
-      document.getElementById('copyActiveUrlBtn').addEventListener('click', () => {
-        const current = SOCIAL_ITEMS[activeIndex];
-        if (current) copyTextToClipboard(current.url);
       });
 
       window.addEventListener('resize', () => {
